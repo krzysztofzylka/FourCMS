@@ -16,7 +16,7 @@ if (isset($_POST['install'])) {
     } else {
         echo '<span style="color: green">> Poprawnie połączono z bazą danych</span><br />';
         $database = core::$library->database->conn;
-        $database->exec("CREATE TABLE `AP_groupPermission` (
+        $exec = $database->exec("CREATE TABLE `AP_groupPermission` (
             `id` int(24) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
             `permission` text NOT NULL,
@@ -25,8 +25,15 @@ if (isset($_POST['install'])) {
         INSERT INTO `AP_groupPermission` (`id`, `name`, `permission`) VALUES
         (1, 'Administrator', '[\"all_granted\"]'),
         (2, 'Użytkownik', '[]');");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli AP_groupPermission</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
         
-        $database->exec("CREATE TABLE `AP_user` (
+		
+        
+        $exec = $database->exec("CREATE TABLE `AP_user` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `login` varchar(30) NOT NULL,
             `password` varchar(50) NOT NULL,
@@ -39,8 +46,14 @@ if (isset($_POST['install'])) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         INSERT INTO `AP_user` (`id`, `login`, `password`, `email`, `name`, `avatar`, `permission`, `blocked`) VALUES
         (1, '".$_POST['admin_login']."', '".core::$library->crypt->hash($_POST['admin_password'])."', '', 'Administrator', NULL, 1, 0);");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli AP_user</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
+        
 
-        $database->exec("CREATE TABLE `config` (
+        $exec = $database->exec("CREATE TABLE `config` (
             `id` int(24) NOT NULL AUTO_INCREMENT,
             `name` varchar(128) NOT NULL,
             `value` text NOT NULL,
@@ -65,8 +78,14 @@ if (isset($_POST['install'])) {
         (16, 'template_name', 'defaultBlog'),
         (17, 'textarea_filePath', 'images/'),
         (18, 'title', 'Nagłówek');");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli config</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
+        
 
-        $database->exec("CREATE TABLE `jumbotron` (
+        $exec = $database->exec("CREATE TABLE `jumbotron` (
             `name` varchar(128) NOT NULL,
             `value` text NOT NULL,
             PRIMARY KEY (`name`)
@@ -76,8 +95,14 @@ if (isset($_POST['install'])) {
         ('show', '1'),
         ('text', 'Treść telebimu'),
         ('url', '#');");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli jumbotron</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
+        
 
-        $database->exec("CREATE TABLE `menu` (
+        $exec = $database->exec("CREATE TABLE `menu` (
             `id` int(12) NOT NULL AUTO_INCREMENT,
             `name` varchar(128) NOT NULL,
             `link` varchar(255) NOT NULL,
@@ -86,45 +111,45 @@ if (isset($_POST['install'])) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         INSERT INTO `menu` (`id`, `name`, `link`, `position`) VALUES
         (1, 'Strona główna', 'index.php', 0);");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli menu</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
         
-        $database->exec("CREATE TABLE `permissionList` (
+        
+        $exec = $database->exec("CREATE TABLE `permissionList` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `permName` varchar(255) NOT NULL,
             `name` varchar(255) NOT NULL,
             `description` text NOT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-        INSERT INTO `permissionList` (`id`, `permName`, `name`, `description`) VALUES
-        (1, 'all_granted', 'Wszystkie uprawnienia', 'Wszystkie uprawnienia'),
-        (2, 'post', 'Posty', 'Dostęp do wszystkich funkcji postów'),
-        (3, 'jumbotron', 'Telebim', 'Dostęp do wszystkich funkcji telebimu'),
-        (4, 'menu', 'Menu', 'Dostęp do wszystkich funkcji menu'),
-        (5, 'permissionUserEdit', 'Edycja uprawnień użytkownika', 'Opcja ta zezwala użytkownikowi na edycję uprawnień innych użytkowników'),
-        (6, 'option_editTemplate', 'Edycja szablonów', 'Opcja pozwala na edycję szablonów strony'),
-        (7, 'option_editConfig', 'Edycja konfiguracji', 'Opcja ta pozwala na edycję konfiguracji strony'),
-        (8, 'option_users', 'Użytkownicy', 'Dostęp do wszystkich funkcji strony Użytkownicy'),
-        (9, 'option_usersAdd', 'Dodanie użytkowników', 'Dostęp do opcji dodania nowego użytkownika'),
-        (10, 'option_permissionEdit', 'Zarządzanie uprawnieniami', 'Opcja umożliwiająca edycję/dodanie nowej grupy uprawnień'),
-        (11, 'service', 'Serwis', 'Dostęp do wszystkich funkcji serwisu'),
-        (12, 'service_library', 'Biblioteki', 'Dostęp do informacji o bibliotekach'),
-        (13, 'service_module', 'Moduły', 'Dostęp do informacji o modułach'),
-        (14, 'service_logs', 'Logi', 'Dostęp do logów serwisu'),
-        (15, 'service_phpinfo', 'PHPInfo', 'Dostęp do informacji o PHP'),
-        (16, 'module_projects_projects', 'Moduł projekty', 'Dostęp do modułu projekty'),
-        (17, 'module_projects_projectsEdit', 'Edycja projektów', 'Dostęp do edycji projektów'),
-        (18, 'module_projects_projectsAdd', 'Tworzenie projektów', 'Dostęp do tworzenia projektów'),
-        (19, 'module', 'Moduły', 'Dostęp do Panelów Administracyjnych zainstalowanych modułów'),
-        (20, 'module_projects_projectsAddActivity', 'Dodanie aktywności', 'Dodanie aktywności/wiadomości do projektu'),
-        (21, 'module_projects_taskAdd', 'Dodanie zadania', 'Dodanie nowego zadania'),
-        (22, 'module_projects_taskEdit', 'Edycja zadaniń', 'Edycja utworzonych zadań'),
-        (23, 'otherUser', 'Przeglądanie użytkowników', 'Przeglądanie profili innych użytkowników'),
-        (24, 'module_projects_payments', 'Płatności', 'Zarządzanie płatnościami projektu'),
-        (25, 'module_projects_paymentsAdd', 'Dodanie płatności', 'Dodanie nowych płatności'),
-        (26, 'module_projects_paymentsEdit', 'Edycja płatności', 'Edycja istniejących płatności'),
-        (27, 'module_projects_files', 'Dostęp do plików', 'Dostęp do plików w projekcie'),
-        (29, 'module_projects_filesAdd', 'Dodanie pliku', 'Dodanie nowego pliku do projektu');");
+        INSERT INTO `permissionList` (`permName`, `name`, `description`) VALUES
+        ('all_granted', 'Wszystkie uprawnienia', 'Wszystkie uprawnienia'),
+        ('post', 'Posty', 'Dostęp do wszystkich funkcji postów'),
+        ('jumbotron', 'Telebim', 'Dostęp do wszystkich funkcji telebimu'),
+        ('menu', 'Menu', 'Dostęp do wszystkich funkcji menu'),
+        ('permissionUserEdit', 'Edycja uprawnień użytkownika', 'Opcja ta zezwala użytkownikowi na edycję uprawnień innych użytkowników'),
+        ('option_editTemplate', 'Edycja szablonów', 'Opcja pozwala na edycję szablonów strony'),
+        ('option_editConfig', 'Edycja konfiguracji', 'Opcja ta pozwala na edycję konfiguracji strony'),
+        ('option_users', 'Użytkownicy', 'Dostęp do wszystkich funkcji strony Użytkownicy'),
+        ('option_usersAdd', 'Dodanie użytkowników', 'Dostęp do opcji dodania nowego użytkownika'),
+        ('option_permissionEdit', 'Zarządzanie uprawnieniami', 'Opcja umożliwiająca edycję/dodanie nowej grupy uprawnień'),
+        ('service', 'Serwis', 'Dostęp do wszystkich funkcji serwisu'),
+        ('service_library', 'Biblioteki', 'Dostęp do informacji o bibliotekach'),
+        ('service_module', 'Moduły', 'Dostęp do informacji o modułach'),
+        ('service_logs', 'Logi', 'Dostęp do logów serwisu'),
+        ('service_phpinfo', 'PHPInfo', 'Dostęp do informacji o PHP'),
+        ('module', 'Moduły', 'Dostęp do Panelów Administracyjnych zainstalowanych modułów'),
+        ('otherUser', 'Przeglądanie użytkowników', 'Przeglądanie profili innych użytkowników');");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli permissionList</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
         
-        $database->exec("CREATE TABLE `post` (
+        $exec = $database->exec("CREATE TABLE `post` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `title` varchar(80) NOT NULL,
             `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -133,11 +158,17 @@ if (isset($_POST['install'])) {
             `url` varchar(128) NOT NULL,
             `type` varchar(255) NOT NULL DEFAULT 'post',
             `hidden` int(1) NOT NULL DEFAULT '0',
-			`showMetaData` int(1) NOT NULL DEFAULT `1`,
+			`showMetaData` int(1) NOT NULL DEFAULT '1',
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         INSERT INTO `post` (`id`, `title`, `date`, `text`, `user`, `url`, `type`, `hidden`) VALUES
         (1, 'Strona główna', '0000-00-00 00-00-00', 'Witaj w pierwszym poście twojego CMSa', 1, 'auto', 'post', 0);");
+		if(is_bool($exec)){
+			echo '<span style="color: red">> Błąd wgrania tabeli post</span><br /><pre>';
+			print_r($database->errorInfo());
+			echo '</pre>';
+		}
+		
         echo '<span style="color: green">> Wgrano bazę danych</span><br />';
         file_put_contents('file/db_config.php', '<?php return [\'type\' => \'mysql\', \'host\' => \''.$_POST['host'].'\', \'name\' => \''.$_POST['name'].'\', \'user\' => \''.$_POST['login'].'\', \'password\' => \''.$_POST['password'].'\']; ?>');
         echo '<span style="color: green">> Wgrano konfigurację</span><br />
