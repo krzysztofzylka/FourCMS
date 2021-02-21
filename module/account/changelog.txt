@@ -1,3 +1,6 @@
+1.5
+- Przebudowa modułu
+
 1.4a
 - Dodano do funkcji createUser sprawdzanie błędów SQL
 
