@@ -38,7 +38,7 @@ if (isset($_POST['install'])) {
             `login` varchar(30) NOT NULL,
             `password` varchar(50) NOT NULL,
             `email` varchar(50) DEFAULT NULL,
-            `name` varchar(128) NOT NULL,
+            `name` varchar(128) DEFAULT NULL,
             `avatar` varchar(256) DEFAULT NULL,
             `permission` int(24) NOT NULL DEFAULT '1',
             `blocked` int(1) NOT NULL DEFAULT '0',

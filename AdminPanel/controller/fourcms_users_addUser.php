@@ -24,6 +24,13 @@ return new class(){
 						case 2:
 							core::$model['gui']->alert('Użytkownik o takim loginie już istnieje', 'danger');
 							break;
+						case 3:
+							core::$model['gui']->alert('Błąd wykonywania polecenia', 'danger');
+							core::$library->debug->print_r(core::$error[2]);
+							break;
+						default:
+							core::$model['gui']->alert('Nieznany błąd o numerze '.core::$error[0], 'danger');
+							break;
 					}
 				}else{
 					$idUser = core::$module['account']->getUserID(htmlspecialchars($_POST['login']));
