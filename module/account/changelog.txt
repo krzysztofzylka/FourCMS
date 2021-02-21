@@ -1,3 +1,6 @@
+1.4a
+- Dodano do funkcji createUser sprawdzanie błędów SQL
+
 1.4
 - Możliwość zmiany prefixa dla bazy danych
 - Wyłączono automatyczne pobieranie danych uzytkownika, blednie dzialalo z prefixem

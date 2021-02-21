@@ -43,7 +43,9 @@ return new class(){ //create main class
 		$check = $this->dbConn->query('SELECT count(*) as count FROM '.$this->DBTablePrefix.'user WHERE login="'.htmlspecialchars($login).'" LIMIT 1')->fetch(PDO::FETCH_ASSOC); //count user
 		if($check['count'] > 0) //check user
 			return core::setError(2, 'a user with such a login already exists'); //return error 2
-		$this->dbConn->exec($exec); //exec script
+		$exec = $this->dbConn->exec($exec); //exec script
+		if(!$exec)
+			return core::setError(3, 'SQL Error', $this->dbConn->errorInfo());
 		return true; //return success
 	}
 	public function loginUser(string $login, string $password) : bool { //login user
