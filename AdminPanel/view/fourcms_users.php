@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="card-body p-0 table-responsive">
-                <table class="table table-sm text-nowrap">
+                <table class="table table-sm text-nowrap dataTable">
                     <thead>
                         <tr>
                             <th style="width: 200px">Login</th>

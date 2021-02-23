@@ -17,6 +17,7 @@ core::init(['localPath' => true]);
 core::$library->global->write('mainPanel', [
     'panelData/adminPanelVersion.php'
 ]);
+
 //for permission
 core::$library->global->createArray('permissionConfig');
 
@@ -47,6 +48,7 @@ core::loadModel([
     core::$module['smarty']->smarty->assign('title', 'FourCMS - Admin Panel');
     //load front-end module
     core::loadModule('bootstrap');
+        core::$module['bootstrap']->loadBootstrapDataTable(true);
     core::loadModule('font-awesome');
     core::loadModule('adminlte');
     core::loadModule('summernote');

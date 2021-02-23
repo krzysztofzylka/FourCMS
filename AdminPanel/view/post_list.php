@@ -8,7 +8,7 @@
 				</div>
 			</div>
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover table-sm text-nowrap">
+				<table class="dataTable table table-hover table-sm text-nowrap">
 					<thead>
 						<tr>
 							<th>Tytuł</th>
