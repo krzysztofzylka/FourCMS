@@ -8,8 +8,22 @@ return new class(){
 		if(isset($_POST['login']) and isset($_POST['haslo'])){
 			if(core::$module['account']->loginUser($_POST['login'], $_POST['haslo'])) //success
 				header('location: index.php');
-			else //failed
-                core::$module['smarty']->smarty->assign('error', 'Błędne dane logowania');
+			else{
+				switch(core::$error[0]){
+					case 1:
+						core::$module['smarty']->smarty->assign('error', 'Użytkownik o takim loginie nie istnieje');
+						break;
+					case 2:
+						core::$module['smarty']->smarty->assign('error', 'Błędne hasło');
+						break;
+					case 3:
+						core::$module['smarty']->smarty->assign('error', 'Błąd SQL');
+						break;
+					default:
+						core::$module['smarty']->smarty->assign('error', 'Błędne dane logowania');
+						break;
+				}
+			}
 		}
 		core::$module['smarty']->smarty->display('login.tpl'); //loading login page
 	}
