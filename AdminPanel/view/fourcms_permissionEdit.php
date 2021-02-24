@@ -50,6 +50,7 @@ function permissionPregReplace($matches){
                         <?php echo core::$model['permission']->showHTMLItem('permissionUserEdit', !is_bool(array_search('permissionUserEdit', $permission))) ?>
                         <!-- Ustawienia -->
                         <b>Ustawienia</b>
+                        <?php echo core::$model['permission']->showHTMLItem('option_template', !is_bool(array_search('option_template', $permission))) ?>
                         <?php echo core::$model['permission']->showHTMLItem('option_editTemplate', !is_bool(array_search('option_editTemplate', $permission))) ?>
                         <?php echo core::$model['permission']->showHTMLItem('option_editConfig', !is_bool(array_search('option_editConfig', $permission))) ?>
                         <?php echo core::$model['permission']->showHTMLItem('option_users', !is_bool(array_search('option_users', $permission))) ?>

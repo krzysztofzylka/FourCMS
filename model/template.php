@@ -14,5 +14,23 @@ return new class() {
         core::setError();
         core::$module['smarty']->setTemplateDir($this->templateDir);
     }
+    public function templateList(){
+        $return = [];
+        foreach(scandir('../template/') as $dir){
+            $path = core::$library->file->repairPath('../template/'.$dir.'/');
+            if(file_exists($path.'template.php')){
+                $include = include($path.'template.php');
+                if(is_array($include)){
+                    $return[] = [
+                        'name' => isset($include['name'])?$include['name']:$dir,
+                        'description' => isset($include['description'])?$include['description']:'',
+                        'image' => isset($include['image'])?$path.$include['image']:'',
+                        'templateName' => $dir
+                    ];
+                }
+            }
+        }
+        return $return;
+    }
 };
 ?>

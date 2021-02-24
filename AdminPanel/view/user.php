@@ -28,14 +28,14 @@ $userData = core::$module['account']->getData($userID);
                         <!-- name -->
                         <h3 class="profile-username text-center"><?php echo $userData['name'] ?></h3>
                         <p class="text-center"><?php echo $userAcc ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangeName" href="#collapseChangeName">Zmień nazwę użytkownika</a>' : ''; ?></p>
-                        <div class="collapse" id="collapseChangeName">
+                        <div class="collapse mt-1" id="collapseChangeName">
                             <div class="card card-body">
                                 <form method="POST">
                                     <div class="form-group">
                                         <label>Nowa nazwa</label>
                                         <input type="text" name="name" class="form-control" placeholder="Nazwa" value="<?php echo $userData['name'] ?>">
                                     </div>
-                                    <button type="submit" name="save_name" class="btn btn-primary">Zmień nazwę</button>
+                                    <button type="submit" name="save_name" class="btn btn-primary btn-block">Zmień nazwę</button>
                                 </form>
                             </div>
                         </div>
@@ -44,7 +44,7 @@ $userData = core::$module['account']->getData($userID);
                         <ul class="list-group list-group-unbordered mb-3">
                             <!-- permission -->
                             <li class="list-group-item"><b>Uprawnienia <?php echo core::$module['account']->checkPermission('permissionUserEdit') ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangePermission" href="#collapseChangePermission">Zmień</a>' : ''; ?></b> <a class="float-right"><?php echo core::$module['account']->getPermissionName((int)$userData['permission']); ?></a>
-                                <div class="collapse" id="collapseChangePermission">
+                                <div class="collapse mt-2" id="collapseChangePermission">
                                     <div class="card card-body">
                                         <form method="POST">
                                             <div class="form-group">
@@ -56,7 +56,7 @@ $userData = core::$module['account']->getData($userID);
                                                     ?>
                                                 </select>
                                             </div>
-                                            <button type="submit" name="save_permission" class="btn btn-primary">Zmień uprawnienia</button>
+                                            <button type="submit" name="save_permission" class="btn btn-primary btn-block">Zmień uprawnienia</button>
                                         </form>
                                     </div>
                                 </div>
@@ -64,14 +64,14 @@ $userData = core::$module['account']->getData($userID);
                             <!-- email -->
                             <li class="list-group-item">
                                 <b>Adres E-Mail <?php echo $userAcc ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangeEmail" href="#collapseChangeEmail">Zmień</a>' : ''; ?></b> <a class="float-right"><?php echo $userData['email'] ?></a>
-                                <div class="collapse" id="collapseChangeEmail">
+                                <div class="collapse mt-2" id="collapseChangeEmail">
                                     <div class="card card-body">
                                         <form method="POST">
                                             <div class="form-group">
                                                 <label>Nowy adres E-Mail</label>
                                                 <input type="text" name="email" class="form-control" placeholder="Nazwa" value="<?php echo $userData['email'] ?>">
                                             </div>
-                                            <button type="submit" name="save_email" class="btn btn-primary">Zmień nazwę</button>
+                                            <button type="submit" name="save_email" class="btn btn-primary btn-block">Zmień nazwę</button>
                                         </form>
                                     </div>
                                 </div>

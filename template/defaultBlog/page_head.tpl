@@ -5,3 +5,8 @@
 <meta name="description" content="{$header_description}">
 <title>{$header_title}</title>
 {$bootstrap}
+<style>
+.blog-post img {
+    max-width: 100%;
+}
+</style>

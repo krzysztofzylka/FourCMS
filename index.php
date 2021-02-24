@@ -7,6 +7,9 @@ core::init(); //init core
 core::$option['showCoreError'] = false; //ukrywanie błędów rdzenia
 core::$option['saveCoreError'] = false; //zapisywanie błędów rdzenia
 
+if(!file_exists('file/db_config.php'))
+    die('CMS has not been installed');
+
 //load database and config
 core::$library->database->connect(include('file/db_config.php'));
 

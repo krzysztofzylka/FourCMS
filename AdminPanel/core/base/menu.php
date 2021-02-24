@@ -35,6 +35,12 @@ return [
 		'name' => 'Ustawienia',
 		'menu' => [
 			[
+				'href' => 'index.php?page=fourcms_template',
+				'icon' => 'fas fa-paint-brush',
+				'name' => 'Szablony strony',
+				'permission' => 'option_template'
+			],
+			[
 				'href' => 'index.php?page=fourcms_config',
 				'icon' => 'fas fa-database',
 				'name' => 'Zmiana konfiguracji',

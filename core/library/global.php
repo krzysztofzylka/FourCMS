@@ -1,6 +1,6 @@
 <?php
 return $this->global = new class(){ 
-	public $version = '1.1a'; 
+	public $version = '1.2'; 
 	public $__globalVar = []; 
 	public $__globalList = []; 
 	public function read(string $name){ 
@@ -29,7 +29,10 @@ return $this->global = new class(){
 	}
 	public function writeArray(string $name, string $arrayName, $data) : void{
 		core::setError(); 
-		$this->__globalVar[$name][$arrayName] = $data; 
+		if($arrayName == '')
+		$this->__globalVar[$name][] = $data; 
+		else
+			$this->__globalVar[$name][$arrayName] = $data; 
 		array_push($this->__globalList, $name); 
 		return;
 	}

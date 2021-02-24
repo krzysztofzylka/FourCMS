@@ -7,3 +7,7 @@ Allow from all
 Order deny,allow
 Allow from all
 </Files>
+<Files *.png>
+Order deny,allow
+Allow from all
+</Files>

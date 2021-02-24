@@ -1,10 +1,8 @@
-<div class="col-md-3">
-	<div class="card card-primary">
-	    <div class="card-header">
-			<h3 class="card-title">Wersja panelu administratora</h3>
-		</div>
-		<div class="card-body">
-			<?php echo $GLOBALS['FourCMSVersion'] ?>
-		</div>
-	</div>
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-secondary">
+        <div class="inner">
+			<h1><?php echo core::$model['config']->read('version') ?></h1>
+            <p>Wersja FourCMS</p>
+        </div>
+    </div>
 </div>
