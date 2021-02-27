@@ -17,8 +17,8 @@ return new class(){
 						core::loadView('menu_edit');
 					break;
 				case 'delete':
-					core::$model['menu']->topMenu_delete((int)$_GET['id']);
-					core::$model['gui']->showAlert(!core::$isError, 'Poprawnie usunięto element', 'Błąd usuwanięcia elementu'); //show info
+					$delete = core::$model['menu']->topMenu_delete((int)$_GET['id']);
+					core::$model['gui']->showAlert($delete, 'Poprawnie usunięto element', 'Błąd usuwanięcia elementu'); //show info
 					core::loadView('menu');
 					break;
 				case 'edit':
