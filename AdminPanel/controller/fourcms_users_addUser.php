@@ -7,7 +7,7 @@ return new class(){
 			if($_POST['password'] <> $_POST['password2'])
 				core::$model['gui']->alert('Podane hasła się nie zgadzają', 'danger');
 			elseif(strlen($_POST['password']) < 6)
-				core::$model['gui']->alert('Hasło muisi posiadać przynajmniej 6 znaków', 'danger');
+				core::$model['gui']->alert('Hasło musi posiadać przynajmniej 6 znaków', 'danger');
 			elseif(strlen($_POST['login']) < 4)
 				core::$model['gui']->alert('Login musi posiadać minimum 4 znaki', 'danger');
 			elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
