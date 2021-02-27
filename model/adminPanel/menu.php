@@ -8,8 +8,8 @@ return new class(){
 	private $moduleExPosition = 2;
 	public function __construct(){
 		core::setError();
-		$this->setActiveURL(basename($_SERVER['REQUEST_URI']));
-        $this->load = include(core::$path['base'].'/menu.php');
+		$this->setActiveURL(basename(isset($_SERVER['REDIRECT_URL'])?$_SERVER['REDIRECT_URL']:$_SERVER['SCRIPT_NAME']));
+        $this->load = include('../file/adminPanel_menu.php');
 		$this->loadModuleMenu();
 		$this->hiddenElement();
 		$this->loadModuleMenuEx();
