@@ -5,9 +5,9 @@
                 <h3 class="card-title">Użytkownicy</h3>
                 <div class="card-tools">
                     <!-- edycja uprawnień użytkownika -->
-                    <a href="<?php echo core::$model['link']->generate(['page' => 'fourcms_permission']); ?>" type="button" class="btn btn-tool " data-toggle="tooltip" title="Uprawnienia użytkowników"><i class="far fa-object-group"></i></a>
+                    <a href="permission.html" type="button" class="btn btn-tool " data-toggle="tooltip" title="Uprawnienia użytkowników"><i class="far fa-object-group"></i></a>
                     <!-- dodanie użytkownika -->
-                    <a href="<?php echo core::$model['link']->generate(['page' => 'fourcms_users_addUser']); ?>" type="button" class="btn btn-tool <?php echo !core::$module['account']->checkPermission('option_usersAdd') ? 'disabled' : '' ?>" data-toggle="tooltip" title="Dodanie nowego użytkownika"><i class="fas fa-user-plus"></i></a>
+                    <a href="createNewUser.html" type="button" class="btn btn-tool <?php echo !core::$module['account']->checkPermission('option_usersAdd') ? 'disabled' : '' ?>" data-toggle="tooltip" title="Dodanie nowego użytkownika"><i class="fas fa-user-plus"></i></a>
                 </div>
             </div>
             <div class="card-body p-0 table-responsive">
@@ -25,7 +25,7 @@
                         foreach (core::$module['account']->userList() as $item) {
                             echo '<tr>
                                 <td>' . $item['login'] . '</td>
-                                <td><a href="' . core::$model['link']->generate(['page' => 'user', 'userID' => $item['id']]) . '">' . $item['name'] . '</a></td>
+                                <td><a href="user-'.$item['id'].'.html">' . $item['name'] . '</a></td>
                                 <td>' . $item['email'] . '</td>
                                 <td></td>
                             </tr>';

@@ -7,7 +7,7 @@ return new class(){
 	private function login(){ //login
 		if(isset($_POST['login']) and isset($_POST['haslo'])){
 			if(core::$module['account']->loginUser($_POST['login'], $_POST['haslo'])) //success
-				header('location: index.php');
+				header('location: index.html');
 			else{
 				switch(core::$error[0]){
 					case 1:

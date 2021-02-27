@@ -22,19 +22,9 @@ return new class(){
 		}
 		return 'index.php?'.$arrayData;
 	}
-	public function generateAP($array=[], $autoIncludeAllGet = false, array $unsetData = []){
+	public function generateAP($array=[]){
 		core::setError();
-		$array = array_merge($array, ['page', 'type', 'modul']);
 		$arrayData = '';
-		if($autoIncludeAllGet == true){
-			foreach($_GET as $name => $value){
-				if(!isset($array[$name]))
-					$array[$name] = $value;
-			}
-		}
-		if(count($unsetData) > 0)
-			foreach($unsetData as $name)
-				unset($array[$name]);
 		foreach($array as $name => $value){
 			if (is_int($name)) {
 				if(!isset($_GET[$value]))
@@ -43,7 +33,10 @@ return new class(){
 			}else
 				$arrayData .= ($arrayData==''?'':'&').$name.'='.$value;
 		}
-		return 'index.php?'.$arrayData;
+		if(isset($_GET['modul']))
+			return 'FrameworkModuleAP-'.$_GET['modul'].'.html?'.$arrayData;
+		else
+		return 'index.html?'.$arrayData;
 	}
 	public function bootstrapLinkGenerator($actual='', $showList=['post', 'module', 'link'], $inputName='link'){
 		core::setError();

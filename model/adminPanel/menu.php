@@ -3,6 +3,7 @@ return new class(){
 	private $load = null;
 	private $data = '';
 	private $activeUrl = null;
+	private $activeUrlFull = null;
 	private $lastGroupID = '';
 	private $moduleExPosition = 2;
 	public function __construct(){
@@ -34,9 +35,10 @@ return new class(){
 				continue;
 			$config = $cfg['fourCMS']['menuItem'];
 			$insert = [
-				'href' => core::$model['link']->generate(['page' => 'fourframework_module', 'type' => 'adminpanel', 'modul' => $item['name']]),
+				'href' => 'FrameworkModuleAP-'.$item['name'].'.html',
 				'name' => $config['name'],
-				'icon' => isset($config['icon'])?$config['icon']:'fas fa-circle'
+				'icon' => isset($config['icon'])?$config['icon']:'fas fa-circle',
+				'htmlPage' => isset($config['htmlPage'])?$config['htmlPage']:[],
 			];
 			if(isset($config['permission']))
 				$insert['permission'] = $config['permission'];
@@ -50,7 +52,10 @@ return new class(){
 				if(!core::$module['account']->checkPermission($item['permission']))
 					continue;
 			}
-			$actUrl = ($item['href'] == $this->activeUrl);
+			$actUrl = false;
+			if(isset($item['htmlPage']))
+				if(!is_bool(array_search($this->activeUrl, $item['htmlPage'])) or !is_bool(array_search($this->activeUrlFull, $item['htmlPage'])))
+					$actUrl = true;
 			if($actUrl)
 				$item['class'] = 'active';
 			$this->lastGroupID = core::$library->string->generateString(15, [true, true, false, false]);
@@ -77,14 +82,26 @@ return new class(){
 				if(isset($item['config']['adminPanel']['menu'])){
 					$apMenu = $item['config']['adminPanel']['menu'];
 					array_push($this->load[$search]['menu'], [
-						'href' => core::$model['link']->generate(['page' => 'fourframework_module', 'type' => 'adminpanel', 'modul' => $item['name']]),
+						'href' => 'FrameworkModuleAP-'.$item['name'].'.html',
 						'icon' => 'fas '.$apMenu['icon'],
-						'name' => $apMenu['name']
+						'name' => $apMenu['name'],
+						'htmlPage' => isset($apMenu['htmlPage'])?$apMenu['htmlPage']:[],
 					]);
 				}
+		if(count($this->load[$search]['menu']) == 0)
+			unset($this->load[$search]);
 	}
 	public function setActiveURL($url){
+		$urlFull = $url;
+		if(!is_bool(strpos($url, '-'))){
+			$between = core::$library->string->between($url, '-', '.html');
+			if(!is_null($between)){
+				$urlFull = $url;
+				$url = str_replace($between, '*', $url);
+			}
+		}
 		$this->activeUrl = $url;
+		$this->activeUrlFull = $urlFull;
 	}
 }
 ?>

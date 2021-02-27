@@ -2,7 +2,7 @@
 $name = htmlspecialchars($_GET['name']);
 $path = core::$path['module'] . $name . '/';
 if (!file_exists($path . 'config.php'))
-	header('location: index.php?page=404');
+	header('location: 404.html');
 $config = include($path . 'config.php');
 ?>
 <div class="content-header">
@@ -67,7 +67,7 @@ $config = include($path . 'config.php');
 				</div>
 				<div class="card-body">
 					<?php
-					echo isset($config['adminPanel']) ? '<a href="?page=fourframework_module&type=adminpanel&modul=' . $name . '"><button type="button" class="btn btn-primary btn-sm">Przejdź do panelu</button></a>' : 'NIE';
+					echo isset($config['adminPanel']) ? '<a href="FrameworkModuleAP-' . $name . '.html"><button type="button" class="btn btn-primary btn-sm">Przejdź do panelu</button></a>' : 'NIE';
 					?>
 				</div>
 			</div>
@@ -78,7 +78,7 @@ $config = include($path . 'config.php');
 					<h3 class="card-title">Debug</h3>
 				</div>
 				<div class="card-body">
-					<a href="index.php?page=fourframework_module&type=debug&name=<?php echo $name ?>">Debug</a>
+					<a href="FrameworkModuleDebug-<?php echo $name ?>.html">Debug</a>
 				</div>
 			</div>
 		</div>

@@ -1,109 +1,109 @@
 <?php
 return [
     [
-        'link' => core::$model['link']->generate(['page' => 'user_changePassword']),
+        'link' => 'userChangePassword.html',
         'name' => 'Zmiana hasła',
         'description' => 'Zmiana hasła użytkownika',
         'tags' => 'użytkownik|user|zmiana hasła|hasło|zmiana'
     ],
     [
-        'link' => 'index.php',
+        'link' => 'index.html',
         'name' => 'Panel główny',
         'description' => 'Panel główny CMS',
         'tags' => 'panel|panel głowny|informacje'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'user']),
+        'link' => 'user.html',
         'name' => 'Użytkownik',
         'description' => 'Panel użytkownika oraz jego posty i ustawienia',
         'tags' => 'użytkownik|user|ustawienia'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'post']),
+        'link' => 'post.html',
         'name' => 'Posty',
         'description' => 'Podgląd postów na stronie',
         'tags' => 'post|posty'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'post', 'id' => 'dodaj']),
+        'link' => 'postAdd.html',
         'name' => 'Dodanie posta',
         'description' => 'Dodanie nowego posta na stronę',
         'tags' => 'post|add|posty|dodaj posta|dodaj|strony'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'menu']),
+        'link' => 'menu.html',
         'name' => 'Menu',
         'description' => 'Podgląd menu',
         'tags' => 'menu|strony'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'menu', 'type' => 'add']),
+        'link' => 'menuAdd.html',
         'name' => 'Dodanie menu',
         'description' => 'Dodanie nowego menu do strony',
         'tags' => 'menu|dodaj|nowy|dodaj menu'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'jumbotron']),
+        'link' => 'jumbotron.html',
         'name' => 'Telebim',
         'description' => 'Ustawienia telebimu',
         'tags' => 'telebim|jumbotron|edycja|ustawienia'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourcms_config']),
+        'link' => 'config.html',
         'name' => 'Konfiguracja',
         'description' => 'Zmiana konfiguracji strony',
         'tags' => 'ustawienia|opcje|zmiana ustawień|konfiguracja'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'template_edit']),
+        'link' => 'templateEdit.html',
         'name' => 'Edycja szablonu',
         'description' => 'Edycja szablonu strony',
         'tags' => 'szablon|template|edit|edycja|konfiguracja|ustawienia'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourcms_users']),
+        'link' => 'userAdmin.html',
         'name' => 'Użytkownicy',
         'description' => 'Podgląd listy użytkowników',
         'tags' => 'user|users|użytkownicy|lista użytkowników|podgląd użytkowników|użytkownik'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourcms_users_addUser']),
+        'link' => 'createNewUser.html',
         'name' => 'Dodanie użytkownika',
         'description' => 'Dodanie nowego użytkownika do serwisu',
         'tags' => 'user|users|użytkownicy|dodanie|add|dodanie użytkownika|użytkownik'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourcms_permission']),
+        'link' => 'permission.html',
         'name' => 'Grupy uprawnień',
         'description' => 'Przegląd grup uprawnień',
         'tags' => 'permission|uprawnienia|group|grupy uprawnień'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourcms_permission', 'editID' => 'addNew']),
+        'link' => 'permissionAdd.html',
         'name' => 'Dodanie grupy uprawnień',
         'description' => 'Dodanie nowej grupy uprawnień',
         'tags' => 'permission|uprawnienia|group|grupy uprawnień|add|dodaj|dodanie grupy uprawnień|dodanie uprawnień'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourframework_library']),
+        'link' => 'FrameworkLibrary.html',
         'name' => 'Biblioteki',
         'description' => 'Przegląd bibliotek',
         'tags' => 'library|service|serwis|biblioteki|fourframework'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourframework_module']),
+        'link' => 'FrameworkModule.html',
         'name' => 'Moduły',
         'description' => 'Przegląd modułów',
         'tags' => 'module|moduł|moduły|fourframework|service|serwis'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourframework_logs']),
+        'link' => 'logs.html',
         'name' => 'Logi',
         'description' => 'Logi',
         'tags' => 'log|logs|logi|fourframework|service|serwis'
     ],
     [
-        'link' => core::$model['link']->generate(['page' => 'fourframework_phpinfo']),
+        'link' => 'phpInfo.html',
         'name' => 'PHPInfo',
         'description' => 'Informacje o PHP',
         'tags' => 'phpinfo|php|info|fourframework|service|serwis'

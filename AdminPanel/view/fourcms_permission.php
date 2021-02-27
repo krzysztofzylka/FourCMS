@@ -4,7 +4,7 @@
             <div class='card-header'>
                 <div class="card-title">Kategorie uprawnień</div>
                 <div class="card-tools">
-                    <a href="<?php echo core::$model['link']->generate(['page' => 'fourcms_permission', 'editID' => 'addNew']) ?>" class="btn btn-tool <?php echo !core::$module['account']->checkPermission('option_permissionEdit') ? 'disabled' : '' ?>" data-toggle="tooltip" data-placement="left" title="Dodaj kategorię"><i class="fas fa-plus"></i></a>
+                    <a href="permissionAdd.html" class="btn btn-tool <?php echo !core::$module['account']->checkPermission('option_permissionEdit') ? 'disabled' : '' ?>" data-toggle="tooltip" data-placement="left" title="Dodaj kategorię"><i class="fas fa-plus"></i></a>
                 </div>
             </div>
             <div class='card-body p-0'>
@@ -24,7 +24,7 @@
                                 $permission .= '<span class="badge bg-info" data-toggle="tooltip" title="' . $perm['description'] . '">' . $perm['name'] . '</span> ';
                             }
                             echo '<tr>
-                            <td>' . $item['name'] . ' ' . (core::$module['account']->checkPermission('option_permissionEdit') ? ('<a href="' . core::$model['link']->generate(['page' => 'fourcms_permission', 'editID' => $item['id']]) . '"><i class="fas fa-edit"></i></a>') : '') . '</td>
+                            <td>' . $item['name'] . ' ' . (core::$module['account']->checkPermission('option_permissionEdit') ? ('<a href="permissionEdit-'.$item['id'].'.html"><i class="fas fa-edit"></i></a>') : '') . '</td>
                             <td>' . (!is_bool(array_search('all_granted', $item['permission'])) ? '<span class="badge bg-warning">Pełne uprawnienia</span>' : $permission) . '</td>
                         </tr>';
                         }

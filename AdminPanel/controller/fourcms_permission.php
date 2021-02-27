@@ -2,10 +2,8 @@
 return new class(){
 	public function __construct(){
 		if(isset($_GET['editID'])){
-			if(!core::$module['account']->checkPermission('option_users'))
-				header('location: index.php?page=404');
-			if(!core::$module['account']->checkPermission('option_permissionEdit'))
-				header('location: index.php?page=404');
+			if(!core::$module['account']->checkPermission('option_users') or !core::$module['account']->checkPermission('option_permissionEdit'))
+				header('location: 404.html');
 			if(isset($_POST) and isset($_POST['savePermission'])){
 				if($_GET['editID'] == 1){
 					core::$model['gui']->alert('Nie można edytować uprawnień Administratora', 'danger');

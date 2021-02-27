@@ -1,27 +1,27 @@
 <?php
 if (!isset($_GET['id']))
-	header('location: index.php?p=404');
+	header('location: 404.html');
 $id = htmlspecialchars($_GET['id']);
 $addPost = $id == 'dodaj' ? true : false;
 if (!$addPost) {
 	$post = core::$library->database->conn->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
 	if ($post['count'] == 0)
-		header('location: index.php?page=404');
+		header('location: 404.html');
 }
 if (isset($_POST['text'])) {
-	if(strlen($_POST['title']) >= 3){
+	if (strlen($_POST['title']) >= 3) {
 		$type = isset($_POST['type_default']) ? 'post' : $_POST['type'];
 		$hidden = isset($_POST['hidden']) ? 1 : 0;
 		$showMetadata = isset($_POST['showMetadata']) ? 1 : 0;
 		if ($addPost) {
 			$id = core::$model['post']->create($_POST['title'], $_POST['text'], core::$module['account']->userData['id'], $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
-			header('location: index.php?page=post&id=' . $id);
+			header('location: postEdit-' . $id . '.html');
 		} else {
 			core::$model['post']->update((int)$id, $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
 			$post = core::$library->database->conn->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
 			core::$model['gui']->alert('Poprawnie zamodyfikowano post', 'success'); //show info
 		}
-	}else
+	} else
 		core::$model['gui']->alert('Tytuł posta musi posiadać przynajmniej 3 znaki');
 }
 ?>

@@ -23,8 +23,8 @@
 							$fname = str_replace('.log', '', $fname);
 							echo '<tr>
 								<td>
-									<a href="'.core::$model['link']->generate(['page', 'file' => $fname]).'">'.$fname.'</a> 
-									<a href="'.core::$model['link']->generate(['page', 'delete' => $fname]).'" class="text-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten plik?\nTego nie da się cofnąć.\');"><i class="fas fa-trash"></i></a>
+									<a href="logFile-'.$fname.'.html">'.$fname.'</a> 
+									<a href="logDelete-'.$fname.'.html" class="text-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten plik?\nTego nie da się cofnąć.\');"><i class="fas fa-trash"></i></a>
 								</td>
 								<td>
 									'.date("Y-m-d H:i:s", filemtime($path)).'

@@ -5,7 +5,7 @@ return new class(){
         $userAcc = (int)$userID === (int)core::$module['account']->userData['id'];
         $userData = core::$module['account']->getData($userID);
         if(!$userData)
-            header('location: index.php?page=404');
+            header('location: 404.html');
         //jezeli jest tutaj aktualny uzytkownik
         if($userAcc){
             if(isset($_POST['save_name'])){

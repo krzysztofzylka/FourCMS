@@ -2,7 +2,7 @@
 $file = htmlspecialchars(basename($_GET['file']));
 $path = core::$path['log'] . $file . '.log';
 if (!file_exists($path))
-	header('location: index.php?page=404');
+	header('location: 404.html');
 ?>
 <div class="content-header">
 	<div class="container-fluid">

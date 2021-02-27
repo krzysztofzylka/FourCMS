@@ -7,7 +7,7 @@ return new class(){
             if(isset($item['type'])){
                 switch($item['type']){
                     case 'container-fluid':
-                        $this->addData('<div class="content"><div class="container-fluid">');
+                        $this->addData('<div class="content mt-3"><div class="container-fluid">');
                         if(isset($item['data'])) $this->generateOption($item['data']);
                         $this->addData('</div></div>');
                         break;

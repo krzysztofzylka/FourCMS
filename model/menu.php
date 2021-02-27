@@ -38,7 +38,9 @@ return new class(){
 		core::setError();
 		$id = core::$model['protect']->protectID($id);
 		$item = $this->topMenu_read($id);
-		core::$library->database->exec('DELETE FROM menu WHERE id='.$id);
+		$exec = core::$library->database->exec('DELETE FROM menu WHERE id='.$id);
+		if(!$exec)
+			return false;
 		core::$library->database->exec('UPDATE menu SET position = position-1 WHERE position>'.$item['position']);
 		return true;
 	}
@@ -52,6 +54,7 @@ return new class(){
 		$prep->bindParam(':link', $link, PDO::PARAM_STR);
 		$prep->bindParam(':id', $id, PDO::PARAM_INT);
 		$prep->execute();
+		return true;
 	}
 	public function topMenu_create(string $name, string $link){
 		core::setError();

@@ -1,10 +1,8 @@
 <?php
 return new class(){
 	public function __construct(){
-		if(!core::$module['account']->checkPermission('service'))
-			header('location: index.php?page=404');
-		if(!core::$module['account']->checkPermission('service_phpinfo'))
-			header('location: index.php?page=404');
+		if(!core::$module['account']->checkPermission('service') or !core::$module['account']->checkPermission('service_phpinfo'))
+			header('location: 404.html');
 		core::loadView('fourframework_PHPInfo');
 	}
 }

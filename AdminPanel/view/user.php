@@ -98,7 +98,7 @@ $userData = core::$module['account']->getData($userID);
                             </div>
                             <!-- setting -->
                             <div class="tab-pane" id="settings">
-                                <?php echo $userAcc ? '<a href="index.php?page=user_changePassword" class="btn btn-secondary"><i class="nav-icon fas fa-key"></i> Zmiana hasła</a>' : ''; ?>
+                                <?php echo $userAcc ? '<a href="userChangePassword.html" class="btn btn-secondary"><i class="nav-icon fas fa-key"></i> Zmiana hasła</a>' : ''; ?>
                             </div>
                         </div>
                     </div>

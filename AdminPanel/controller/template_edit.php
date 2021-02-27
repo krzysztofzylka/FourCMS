@@ -2,7 +2,7 @@
 return new class(){
 	public function __construct(){
         if(!core::$module['account']->checkPermission('option_editTemplate'))
-			header('location: index.php?page=404');
+			header('location: 404.html');
         if(isset($_POST['createFile'])){
             $file = basename($_POST['createFile']);
             file_put_contents('../'.core::$model['template']->templateDir.$file, '');

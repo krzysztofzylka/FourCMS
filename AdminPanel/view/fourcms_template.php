@@ -18,7 +18,7 @@
                             if($template['templateName'] == core::$model['config']->read('template_name'))
                                 echo '<a href="#" class="btn btn-success btn-block disabled">AKTYWNY</a>';
                             else
-                                echo '<a href="'.core::$model['link']->generate(['page' => 'fourcms_template', 'template' => $template['templateName']]).'" class="btn btn-primary btn-block">Aktywuj</a>';
+                                echo '<a href="siteTemplateActive-'.$template['templateName'].'.html" class="btn btn-primary btn-block">Aktywuj</a>';
                         echo '</div>
                     </div>';
                 }

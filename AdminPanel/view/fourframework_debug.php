@@ -2,7 +2,7 @@
 $name = htmlspecialchars($_GET['name']);
 $path = core::$path['module'] . $name . '/';
 if (!file_exists($path . 'config.php'))
-	header('location: index.php?page=404');
+	header('location: 404.html');
 ?>
 <div class='content p-3'>
 	<div class="container-fluid">

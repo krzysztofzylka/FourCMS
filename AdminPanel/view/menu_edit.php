@@ -26,7 +26,7 @@ $menuLink = $add ? '' : $getMenu['link'];
 				<button class="btn btn-primary"><?php echo $add ? 'Dodaj' : 'Zapisz' ?></button>
 				<?php
 				if (!$add) {
-					echo '<a href="' . core::$model['link']->generate(['page', 'id', 'type' => 'delete']) . '" class="btn btn-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten element?\nTego nie da się cofnąć.\');">Usuń</a>';
+					echo '<a href="menuDelete-'.$_GET['id'].'.html" class="btn btn-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten element?\nTego nie da się cofnąć.\');">Usuń</a>';
 				}
 				?>
 			</form>

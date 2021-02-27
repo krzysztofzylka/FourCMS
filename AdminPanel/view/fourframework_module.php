@@ -18,15 +18,15 @@
 						<?php
 						$scandir = scandir('../module/');
 						$scandir = array_diff($scandir, ['.', '..', '.htaccess']);
-						foreach($scandir as $fname){
-							$config = include('../module/'.$fname.'/config.php');
+						foreach ($scandir as $fname) {
+							$config = include('../module/' . $fname . '/config.php');
 							echo '<tr>
 								<td>
-								'.(isset($config['adminPanel'])?'<A href="?page=fourframework_module&type=adminpanel&modul='.$fname.'"><i class="fas fa-window-maximize" data-toggle="tooltip" data-placement="left" title="Panel administracyjny"></i></a>':'').'
+								' . (isset($config['adminPanel']) ? '<a href="FrameworkModuleAP-' . $fname . '.html"><i class="fas fa-window-maximize" data-toggle="tooltip" data-placement="left" title="Panel administracyjny"></i></a>' : '') . '
 								</td>
-								<td><a href="index.php?page=fourframework_module&type=info&name='.$fname.'">'.$fname.'</a></td>
-								<td>'.(isset($config['uniqueID'])?$config['uniqueID']:'').'</td>
-								<td>'.(isset($config['version'])?$config['version']:'').'</td>
+								<td><a href="FrameworkModuleInfo-' . $fname . '.html">' . $fname . '</a></td>
+								<td>' . (isset($config['uniqueID']) ? $config['uniqueID'] : '') . '</td>
+								<td>' . (isset($config['version']) ? $config['version'] : '') . '</td>
 							</tr>';
 						}
 						?>

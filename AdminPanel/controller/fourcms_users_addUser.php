@@ -1,10 +1,8 @@
 <?php
 return new class(){
 	public function __construct(){
-        if(!core::$module['account']->checkPermission('option_users'))
-			header('location: index.php?page=404');
-		if(!core::$module['account']->checkPermission('option_usersAdd'))
-			header('location: index.php?page=404');
+        if(!core::$module['account']->checkPermission('option_users') or !core::$module['account']->checkPermission('option_usersAdd'))
+			header('location: 404.html');
 		if(isset($_POST['addUser'])){
 			if($_POST['password'] <> $_POST['password2'])
 				core::$model['gui']->alert('Podane hasła się nie zgadzają', 'danger');
