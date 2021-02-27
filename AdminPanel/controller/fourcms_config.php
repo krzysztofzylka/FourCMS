@@ -7,6 +7,7 @@ return new class(){
             unset($_POST['config_save']);
             foreach($_POST as $name => $value)
                 core::$model['config']->write($name, $value);
+            core::$model['gui']->alert('Poprawnie zmodyfikowano ustawienia', 'success');
         }
         core::loadView('fourcms_configList');
     }
