@@ -44,6 +44,7 @@ $userData = core::$module['account']->getData($userID);
                         <ul class="list-group list-group-unbordered mb-3">
                             <!-- permission -->
                             <li class="list-group-item"><b>Uprawnienia <?php echo core::$module['account']->checkPermission('permissionUserEdit') ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangePermission" href="#collapseChangePermission">Zmień</a>' : ''; ?></b> <a class="float-right"><?php echo core::$module['account']->getPermissionName((int)$userData['permission']); ?></a>
+                                <div class="clearfix"></div>
                                 <div class="collapse mt-2" id="collapseChangePermission">
                                     <div class="card card-body">
                                         <form method="POST">
@@ -64,6 +65,7 @@ $userData = core::$module['account']->getData($userID);
                             <!-- email -->
                             <li class="list-group-item">
                                 <b>Adres E-Mail <?php echo $userAcc ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangeEmail" href="#collapseChangeEmail">Zmień</a>' : ''; ?></b> <a class="float-right"><?php echo $userData['email'] ?></a>
+                                <div class="clearfix"></div>
                                 <div class="collapse mt-2" id="collapseChangeEmail">
                                     <div class="card card-body">
                                         <form method="POST">
