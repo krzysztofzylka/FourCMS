@@ -4,10 +4,6 @@ foreach (core::$module['account']->getPermissionList() as $item)
     $permissionData[$item['id']] = $item['name'];
 core::$model['option']->generateOption([
     [
-        'type' => 'text',
-        'value' => '<br />'
-    ],
-    [
         'type' => 'container-fluid',
         'data' => [
             [
