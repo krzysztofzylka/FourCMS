@@ -120,7 +120,7 @@ return [
 				'htmlPage' => [
 					'FrameworkModule.html',
 					'FrameworkModuleInfo-*.html',
-					'FrameworkModuleAP-*.html',
+					// 'FrameworkModuleAP-*.html',
 					'FrameworkModuleDebug-*.html'
 				]
 			],
