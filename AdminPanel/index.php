@@ -2,7 +2,6 @@
 ob_start();
 session_start();
 $GLOBALS['FourCMS'] = 'admin';
-include('../file/globalVariable.php');
 
 //load and init core
 include('../core/core.php');
@@ -12,11 +11,6 @@ core::$option['saveCoreError'] = false; //save core error to file
 core::$option['localIgnored'][] = 'model';
 core::$option['localIgnored'][] = 'log';
 core::init(['localPath' => true]);
-
-//for main panel
-core::$library->global->write('mainPanel', [
-    'panelData/adminPanelVersion.php'
-]);
 
 //for permission
 core::$library->global->createArray('permissionConfig');
@@ -37,7 +31,8 @@ core::loadModel([
     'menu', 
     'template', 
     'interpreter',
-    'permission'
+    'permission',
+    'widget'
 ]);
 
 //load module

@@ -14,6 +14,7 @@
                 <table class="table table-sm text-nowrap dataTable">
                     <thead>
                         <tr>
+                            <th style="width: 1px">#</th>
                             <th style="width: 200px">Login</th>
                             <th style="width: 200px">Nazwa</th>
                             <th style="width: 250px">E-Mail</th>
@@ -24,8 +25,9 @@
                         <?php
                         foreach (core::$module['account']->userList() as $item) {
                             echo '<tr>
-                                <td>' . $item['login'] . '</td>
-                                <td><a href="user-'.$item['id'].'.html">' . $item['name'] . '</a></td>
+                                <td>' . $item['id'] . '</td>
+                                <td><a href="user-'.$item['id'].'.html">' . $item['login'] . '</a></td>
+                                <td>' . $item['name'] . '</td>
                                 <td>' . $item['email'] . '</td>
                                 <td></td>
                             </tr>';

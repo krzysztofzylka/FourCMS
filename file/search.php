@@ -108,6 +108,12 @@ return [
         'description' => 'Informacje o PHP',
         'tags' => 'phpinfo|php|info|fourframework|service|serwis'
     ],
+    [
+        'link' => 'widget.html',
+        'name' => 'Widget',
+        'description' => 'Zarządzanie widgetami',
+        'tags' => 'widget|dodatki|widgety|główny panel|mainpanel|main panel'
+    ],
     // [
     //     'link' => core::$model['link']->generate(['page' => '']),
     //     'name' => '',

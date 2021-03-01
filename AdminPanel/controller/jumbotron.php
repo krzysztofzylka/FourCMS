@@ -1,6 +1,7 @@
 <?php
 return new class(){
 	public function __construct(){
+		core::setError();
 		if(!core::$module['account']->checkPermission('jumbotron'))
 			header('location: 404.html');
 		core::loadModel('jumbotron');

@@ -27,7 +27,7 @@ return new class(){
 	public function topMenu_positionDown(int $id){
 		core::setError();
 		$item = $this->topMenu_read($id);
-		$count = core::$library->database->conn->query('SELECT count(*) as count FROM menu')->fetch(PDO::FETCH_ASSOC);
+		$count = core::$library->database->query('SELECT count(*) as count FROM menu')->fetch(PDO::FETCH_ASSOC);
 		if((int)$item['position']+1 > (int)$count['count'])
 			return false;
 		core::$library->database->exec('UPDATE menu SET position = position+1 WHERE id='.$id);

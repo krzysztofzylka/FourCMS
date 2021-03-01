@@ -4,7 +4,7 @@ if (!isset($_GET['id']))
 $id = htmlspecialchars($_GET['id']);
 $addPost = $id == 'dodaj' ? true : false;
 if (!$addPost) {
-	$post = core::$library->database->conn->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
+	$post = core::$library->database->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
 	if ($post['count'] == 0)
 		header('location: 404.html');
 }
@@ -18,7 +18,7 @@ if (isset($_POST['text'])) {
 			header('location: postEdit-' . $id . '.html');
 		} else {
 			core::$model['post']->update((int)$id, $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
-			$post = core::$library->database->conn->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
+			$post = core::$library->database->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
 			core::$model['gui']->alert('Poprawnie zamodyfikowano post', 'success'); //show info
 		}
 	} else

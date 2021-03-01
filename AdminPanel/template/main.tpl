@@ -32,7 +32,7 @@
                     <input name="searchMenu" class="form-control form-control-navbar" type="search"
                         placeholder="Wyszukiwarka" aria-label="Wyszukiwarka">
                     <div class="input-group-append">
-                        <button class="btn btn-navbar" name="page" value="searchMenu" type="submit">
+                        <button class="btn btn-navbar" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>

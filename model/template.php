@@ -15,6 +15,7 @@ return new class() {
         core::$module['smarty']->setTemplateDir($this->templateDir);
     }
     public function templateList(){
+        core::setError();
         $return = [];
         foreach(scandir('../template/') as $dir){
             $path = core::$library->file->repairPath('../template/'.$dir.'/');

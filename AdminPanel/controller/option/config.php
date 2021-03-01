@@ -1,6 +1,7 @@
 <?php
 return new class(){
 	public function __construct(){
+        core::setError();
         if(!core::$module['account']->checkPermission('option_editConfig'))
 			header('location: 404.html');
         if(isset($_POST['config_save'])){
@@ -9,7 +10,7 @@ return new class(){
                 core::$model['config']->write($name, $value);
             core::$model['gui']->alert('Poprawnie zmodyfikowano ustawienia', 'success');
         }
-        core::loadView('fourcms_configList');
+        core::loadView('option.config');
     }
 }
 ?>

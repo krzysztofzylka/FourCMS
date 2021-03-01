@@ -12,7 +12,6 @@ if (isset($_POST['updateFourCMS'])) {
             'user' => $_POST['db_username'],
             'password' => $_POST['db_password']
         ]);
-        file_put_contents('../file/db_config.php', '<?php return [\'type\' => \'mysql\', \'host\' => \''.$_POST['db_host'].'\', \'name\' => \''.$_POST['db_name'].'\', \'user\' => \''.$_POST['db_username'].'\', \'password\' => \''.$_POST['db_password'].'\']; ?>');
     }
     core::loadModel('config');
     switch (true) {
@@ -20,6 +19,10 @@ if (isset($_POST['updateFourCMS'])) {
             core::$model['config']->write('version', '0.2.3 Beta');
             core::$library->database->exec(file_get_contents('sql/update022bto023b.sql'));
             echo '<div class="alert alert-secondary">Zaktualizowano do wersji 0.2.3 Beta</div>';
+        case core::$model['config']->read('version', '0.2.2 Beta') == '0.2.3 Beta';
+            core::$model['config']->write('version', '0.2.4 Beta');
+            core::$library->database->exec(file_get_contents('sql/update023bto024b.sql'));
+            echo '<div class="alert alert-secondary">Zaktualizowano do wersji 0.2.4 Beta</div>';
     }
     echo '<div class="alert alert-success">Zakończono aktualizację</div>
     <div class="alert alert-warning">Nie zapomnij usunąć folderu <b>install</b></div>';

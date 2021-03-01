@@ -86,13 +86,16 @@ return new class(){
         }
     }
     public function showOption(){
+        core::setError();
         echo $this->data;
         $this->clearOption();
     }
     public function clearOption(){
+        core::setError();
         $this->data = '';
     }
     private function addData($data=''){
+        core::setError();
         $this->data .= $data;
     }
 }

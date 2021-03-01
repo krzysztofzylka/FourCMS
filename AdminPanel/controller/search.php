@@ -1,7 +1,8 @@
 <?php
 return new class(){
 	public function __construct(){
-        core::loadView('searchMenu');
+        core::setError();
+        core::loadView('search');
     }
 }
 ?>

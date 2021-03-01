@@ -1,6 +1,7 @@
 <?php
 return new class(){
 	public function __construct(){
+		core::setError();
 		if(isset($_GET['editID'])){
 			if(!core::$module['account']->checkPermission('option_users') or !core::$module['account']->checkPermission('option_permissionEdit'))
 				header('location: 404.html');
@@ -27,9 +28,9 @@ return new class(){
 				core::$model['gui']->alert('Poprawnie dodano uprawnienia', 'success');
 				core::loadView('fourcms_permission');
 			}else
-				core::loadView('fourcms_permissionEdit');
+				core::loadView('option.permission.edit');
 		}else
-			core::loadView('fourcms_permission');
+			core::loadView('option.permission.list');
 	}
 }
 ?>

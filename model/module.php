@@ -8,9 +8,8 @@ return new class(){
             $config = $item['config'];
             if(!isset($config['fourCMS']['displayPage']))
                 continue;
-            foreach($config['fourCMS']['displayPage'] as $value => $item2){
+            foreach($config['fourCMS']['displayPage'] as $value => $item2)
                 $return[] = ['name' => $item['name'].'-'.$value, 'title' => $item['name'].' - '.$item2['name']];
-            }
         }
         return $return;
     }

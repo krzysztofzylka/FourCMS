@@ -1,6 +1,7 @@
 <?php
 return new class(){
 	public function __construct(){
+        core::setError();
         if(!core::$module['account']->checkPermission('option_editTemplate'))
 			header('location: 404.html');
         if(isset($_POST['createFile'])){
@@ -14,7 +15,7 @@ return new class(){
             file_put_contents('../'.core::$model['template']->templateDir.$file, $_POST['fileData']);
             core::$model['gui']->alert('Poprawnie zapisano plik', 'success');
         }
-        core::loadView('template_edit');
+        core::loadView('option.templateEdit');
     }
 }
 ?>

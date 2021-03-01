@@ -1,10 +1,12 @@
 <?php
 return new class(){
 	public function __construct(){
+		core::setError();
 		if(!core::$module['account']->checkUser()) $this->login(); //go to login
 		else $this->main(); //go to main page
 	}
 	private function login(){ //login
+		core::setError();
 		if(isset($_POST['login']) and isset($_POST['haslo'])){
 			if(core::$module['account']->loginUser($_POST['login'], $_POST['haslo'])) //success
 				header('location: index.html');
@@ -28,6 +30,7 @@ return new class(){
 		core::$module['smarty']->smarty->display('login.tpl'); //loading login page
 	}
 	private function main(){ //load main panel
+		core::setError();
 		$menu = core::$model['adminPanel/menu']->loadMenu();
 		core::$module['smarty']->smarty->assign('menu', $menu);
 		core::$module['smarty']->smarty->assign('user', core::$module['account']->userData);
@@ -41,8 +44,9 @@ return new class(){
 		core::loadController($page);
 		if(core::$error[0] > -1)
 			core::loadView('404');
-		$data = ob_get_contents(); //pobieranie treści
+		$data = ob_get_contents();
 		ob_end_clean();
+		//show front-end
 		core::$module['smarty']->smarty->assign('data', $data);
 		core::$module['smarty']->smarty->display('main.tpl'); //loading login page
 	}

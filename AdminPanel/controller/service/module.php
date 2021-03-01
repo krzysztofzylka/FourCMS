@@ -1,6 +1,7 @@
 <?php
 return new class(){
 	public function __construct(){
+		core::setError();
 		if(isset($_GET['type']) and $_GET['type'] == 'adminpanel'){
 			if(!core::$module['account']->checkPermission('module'))
 				header('404.html');
@@ -11,26 +12,22 @@ return new class(){
 		if(isset($_GET['type'])){
 			switch(htmlspecialchars($_GET['type'])){
 				case 'info':
-					if(!isset($_GET['name']))
-						header('location: 404.html');
-					core::loadView('fourframework_moduleInfo');
+					core::loadView('service.moduleInfo');
 					break;
 				case 'debug':
-					if(!isset($_GET['name']))
-						header('location: 404.html');
-					core::loadView('fourframework_debug');
+					core::loadView('service.moduleDebug');
 					break;
 				case 'adminpanel':
 					if(!isset($_GET['modul']))
 						header('location: 404.html');
-					core::loadView('fourframework_moduleAdminPanel');
+					core::loadView('service.moduleAdminPanel');
 					break;
 				default:
 					header('location: 404.html');
 					break;
 			}
 		}else
-			core::loadView('fourframework_module');
+			core::loadView('service.module');
 	}
 }
 ?>

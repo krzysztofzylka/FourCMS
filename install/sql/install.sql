@@ -48,7 +48,7 @@ INSERT INTO `config` (`id`, `name`, `value`) VALUES
     (16, 'template_name', 'defaultBlog'),
     (17, 'textarea_filePath', 'images/'),
     (18, 'title', 'Nagłówek'),
-    (19, 'version', '0.2.3 Beta');
+    (19, 'version', '0.2.4 Beta');
 
 /* jumbotron */
 CREATE TABLE `jumbotron` (
@@ -116,3 +116,12 @@ CREATE TABLE `post` (
 );
 INSERT INTO `post` (`id`, `title`, `date`, `text`, `user`, `url`, `type`, `hidden`) VALUES
     (1, 'Strona główna', '0000-00-00 00-00-00', 'Witaj w pierwszym poście twojego CMSa', 1, 'auto', 'post', 0);
+
+/* widget */
+CREATE TABLE `widget` (
+  `id` int(24) NOT NULL,
+  `userID` int(24) NOT NULL,
+  `uniqueIDWidget` varchar(32) NOT NULL,
+  `position` int(24) NOT NULL
+    PRIMARY KEY (`id`)
+);

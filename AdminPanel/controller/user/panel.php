@@ -1,6 +1,7 @@
 <?php
 return new class(){
 	public function __construct(){
+        core::setError();
         $userID = isset($_GET['userID'])?(int)$_GET['userID']:(int)core::$module['account']->userData['id'];
         $userAcc = (int)$userID === (int)core::$module['account']->userData['id'];
         $userData = core::$module['account']->getData($userID);
@@ -35,7 +36,7 @@ return new class(){
                 core::$model['gui']->alert('Poprawnie zmieniono grupę uprawnień użytkownika', 'success');
             }
         }
-        core::loadView('user');
+        core::loadView('user.panel');
     }
 }
 ?>
