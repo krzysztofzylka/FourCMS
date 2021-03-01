@@ -17,17 +17,19 @@ return new class() {
     public function templateList(){
         core::setError();
         $return = [];
-        foreach(scandir('../template/') as $dir){
-            $path = core::$library->file->repairPath('../template/'.$dir.'/');
-            if(file_exists($path.'template.php')){
-                $include = include($path.'template.php');
-                if(is_array($include)){
-                    $return[] = [
-                        'name' => isset($include['name'])?$include['name']:$dir,
-                        'description' => isset($include['description'])?$include['description']:'',
-                        'image' => isset($include['image'])?$path.$include['image']:'',
-                        'templateName' => $dir
-                    ];
+        foreach(array_diff(scandir('../template/'), ['.', '..']) as $dir){
+            if(is_dir('../template/'.$dir)){
+                $path = core::$library->file->repairPath('../template/'.$dir.'/');
+                if(file_exists($path.'template.php')){
+                    $include = include($path.'template.php');
+                    if(is_array($include)){
+                        $return[] = [
+                            'name' => isset($include['name'])?$include['name']:$dir,
+                            'description' => isset($include['description'])?$include['description']:'',
+                            'image' => isset($include['image'])?$path.$include['image']:'',
+                            'templateName' => $dir
+                        ];
+                    }
                 }
             }
         }
