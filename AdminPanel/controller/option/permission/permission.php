@@ -17,7 +17,7 @@ return new class(){
 					core::$model['permission']->editPerm($_GET['editID'], $permissionName, $permission);
 					core::$model['gui']->alert('Poprawnie zapisano uprawnienia', 'success');
 				}
-				core::loadView('fourcms_permissionEdit');
+				core::loadView('option.permission.edit');
 			}elseif(isset($_POST) and isset($_POST['addPermission'])){
 				$permissionName = $_POST['permissionName'];
 				unset($_POST['permissionName'], $_POST['addPermission']);
