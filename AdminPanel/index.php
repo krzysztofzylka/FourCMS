@@ -49,10 +49,11 @@ core::loadModel([
     core::loadModule('summernote');
     //account
     core::loadModule('account');
+    core::$module['account']->sessionName = '3656fa29eb585561c83099a844c995f6';
     core::$module['account']->setTablePrefix('AP');
     core::$module['account']->defaultPermissionGroup = (int)core::$model['config']->read('defaultUserPermissionGroup', 2);
-    if(core::$module['account']->checkUser()) //if user is login
-        core::$module['account']->userGetData(); //get user data
+    if(core::$module['account']->checkUser())
+        core::$module['account']->userGetData();
 
 core::loadModel([
     'adminPanel/menu'

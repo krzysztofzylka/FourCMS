@@ -2,6 +2,8 @@
 return new class(){ //create main class
 	public $hashAlghoritm = 'pbkdf2'; //hash alghoritm
 	public $sessionName = 'userID'; //user session name
+	public $sessionIPName = 'userIP'; //ip user session name
+	public $sessionUserHash = 'userHash'; //user hash
 	public $userData = null; //user data
 	public $DBTablePrefix = ''; //prefix for table in database
 	public $defaultPermissionGroup = 1; //default permission
@@ -24,7 +26,8 @@ return new class(){ //create main class
 			login VARCHAR(30) NOT NULL,
 			password VARCHAR(50) NOT NULL,
 			email VARCHAR(50),
-			permission int(11)
+			permission int(11),
+			userSessionHash VARCHAR(32) DEFAULT NULL
 		);
 		CREATE TABLE `".$this->dbTable['groupPermission']."` (
 			`id` INT(24) NOT NULL AUTO_INCREMENT, 
@@ -68,6 +71,8 @@ return new class(){ //create main class
 		if(!core::$library->crypt->hashCheck(htmlspecialchars($password), $user['password']))
 			return core::setError(2, 'password incorrect');
 		$_SESSION[$this->sessionName] = (int)$user['id'];
+		$_SESSION[$this->sessionIPName] = core::$library->network->getClientIP();
+		$this->_userSetHash(core::$library->string->generateString(), (int)$user['id']);
 		return true;
 	}
 	public function changePassword(string $login, string $password, string $newPassword){
@@ -89,15 +94,22 @@ return new class(){ //create main class
 	}
 	public function checkUser() : bool {
 		core::setError();
-		if(!isset($_SESSION[$this->sessionName]) or !is_int($_SESSION[$this->sessionName]))
-			return false; //return false
+		if(!isset($_SESSION[$this->sessionName]) or !is_int($_SESSION[$this->sessionName]) or !isset($_SESSION[$this->sessionIPName]) or !isset($_SESSION[$this->sessionUserHash])){
+			session_unset();
+			return false;
+		}
+		if(!$this->userIPCheck()){
+			session_unset();
+			return false;
+		}
 		return true; //return success
 	}
 	public function logoutUser() : bool{ //logout
 		core::setError();
 		if($this->checkUser() === false) //check user
 			return core::setError(1, 'The user is not logged in'); //return error 1
-		unset($_SESSION[$this->sessionName]); //delete session
+		$this->_userUnsetHash();
+		session_unset(); //delete session
 		$this->userData = null; //delete userData
 		return true;
 	}
@@ -108,6 +120,10 @@ return new class(){ //create main class
 		$user->bindParam(':userID', $userID, PDO::PARAM_INT);
 		$user->execute();
 		$user = $user->fetch(PDO::FETCH_ASSOC);
+		if(!$this->_userCheckHash($user['userSessionHash'])){
+			session_unset();
+			return false;
+		}
 		$this->userData = $user;
 		$this->getPermission();
 		return $user;
@@ -194,6 +210,26 @@ return new class(){ //create main class
 		$getData->execute();
 		return $getData->fetchAll(PDO::FETCH_ASSOC);
 	}
+	public function userIPCheck(){
+		if(!isset($_SESSION[$this->sessionIPName]))
+			return false;
+		return $_SESSION[$this->sessionIPName]==core::$library->network->getClientIP();
+	}
+	private function _userSetHash(string $hash, int $userID){
+		$hash = md5($hash);
+		$_SESSION[$this->sessionUserHash] = $hash;
+		$prepare = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET userSessionHash=:hash WHERE id=:userID');
+		$prepare->bindParam(':hash', $hash, PDO::PARAM_STR);
+		$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);
+		$prepare->execute();
+		return true;
+	}
+	public function _userUnsetHash(){
+		$prepare = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET userSessionHash=null WHERE id=:userID');
+		$prepare->bindParam(':userID', $this->_userID(), PDO::PARAM_INT);
+		$prepare->execute();
+		return true;
+	}
 	private function _userExists(string $login){
 		core::setError();
 		$prepare = core::$library->database->prepare('SELECT count(*) as count FROM '.$this->dbTable['user'].' WHERE login=:login LIMIT 1');
@@ -203,6 +239,11 @@ return new class(){ //create main class
 	private function _userID(){
 		core::setError();
 		return (int)htmlspecialchars($_SESSION[$this->sessionName]);
+	}
+	private function _userCheckHash($userHash){
+		if($userHash <> $_SESSION[$this->sessionUserHash])
+			return false;
+		return true;
 	}
 }
 ?>

@@ -15,14 +15,21 @@ if (isset($_POST['updateFourCMS'])) {
     }
     core::loadModel('config');
     switch (true) {
+        //0.2.3 Beta
         case core::$model['config']->read('version', '0.2.2 Beta') == '0.2.2 Beta';
             core::$model['config']->write('version', '0.2.3 Beta');
             core::$library->database->exec(file_get_contents('sql/update022bto023b.sql'));
             echo '<div class="alert alert-secondary">Zaktualizowano do wersji 0.2.3 Beta</div>';
+        //0.2.4 Beta
         case core::$model['config']->read('version', '0.2.2 Beta') == '0.2.3 Beta';
             core::$model['config']->write('version', '0.2.4 Beta');
             core::$library->database->exec(file_get_contents('sql/update023bto024b.sql'));
             echo '<div class="alert alert-secondary">Zaktualizowano do wersji 0.2.4 Beta</div>';
+        //0.2.5 Beta
+        case core::$model['config']->read('version', '0.2.2 Beta') == '0.2.4 Beta';
+            core::$model['config']->write('version', '0.2.5 Beta');
+            core::$library->database->exec(file_get_contents('sql/update024bto025b.sql'));
+            echo '<div class="alert alert-secondary">Zaktualizowano do wersji 0.2.5 Beta</div>';
     }
     echo '<div class="alert alert-success">Zakończono aktualizację</div>
     <div class="alert alert-warning">Nie zapomnij usunąć folderu <b>install</b></div>';

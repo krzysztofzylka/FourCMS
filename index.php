@@ -3,18 +3,17 @@ ob_start();
 session_start();
 include('core/core.php');
 $GLOBALS['FourCMS'] = 'user';
+
 core::init(); //init core
 core::$option['showCoreError'] = false; //ukrywanie błędów rdzenia
 core::$option['saveCoreError'] = false; //zapisywanie błędów rdzenia
-
-if(!file_exists('file/db_config.php'))
-    die('CMS has not been installed');
 
 //load database and config
 core::$library->database->connect(include('file/db_config.php'));
 
 //loadModule
 core::loadModule('account');
+core::$module['account']->sessionName = '3656fa29eb585561c83099a844c995f6';
 core::$module['account']->setTablePrefix('AP');
 if(core::$module['account']->checkUser())
     core::$module['account']->userGetData();

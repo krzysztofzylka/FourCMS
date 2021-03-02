@@ -1,3 +1,7 @@
+1.6
+- Dodano sesje sprawdzającą IP użytkownika (sprawdzanie czy sesja nie została ukradziona po adresie IP)
+- Dodano zabezpieczenie przed ukradnięciem sesji w postacji kontroli hashu użytkownika
+
 1.5
 - Przebudowa modułu
 
