@@ -46,8 +46,6 @@ return new class(){
 	}
 	public function topMenu_write(int $id, string $name, string $link){
 		core::setError();
-		$name = htmlspecialchars($name);
-		$link = htmlspecialchars($link);
 		$id = core::$model['protect']->protectID($_GET['id']);
 		$prep = core::$library->database->prepare('UPDATE menu SET `name`=:name, `link`=:link where `id`=:id');
 		$prep->bindParam(':name', $name, PDO::PARAM_STR);
@@ -58,8 +56,6 @@ return new class(){
 	}
 	public function topMenu_create(string $name, string $link){
 		core::setError();
-		$name = htmlspecialchars($name);
-		$link = htmlspecialchars($link);
 		$position = (int)core::$library->database->query('SELECT count(*) as count FROM menu')->fetch(PDO::FETCH_ASSOC)['count'];
 		$prep = core::$library->database->prepare('INSERT INTO menu (`name`, `link`, `position`) VALUES (:name, :link, :position)');
 		$prep->bindParam(':name', $name, PDO::PARAM_STR);
