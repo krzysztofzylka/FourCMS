@@ -18,13 +18,5 @@ return new class(){
 		$prep->bindParam(':name', $name);
 		$prep->execute();
 	}
-	public function tableDataShow($name, $desc=null, $default=null){
-		core::setError();
-        echo '<tr>
-            <td>'.$name.'</td>
-            <td><input type="text" placeholder="Puste" name="'.$name.'" value="'.core::$model['config']->read($name, $default).'" /></td>
-            <td>'.$desc.'</td>
-        </tr>';
-    }
 }
 ?>
