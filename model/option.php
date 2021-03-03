@@ -29,9 +29,9 @@ return new class(){
                         $this->addData('</div>');
                         break;
                     case 'card-configTable':
-                        $this->addData('<div class="card-body p-0 table-responsive"><form method="POST"><table class="table table-sm"><thead><tr><th style="min-width: 200px; width: 200px">Nazwa</th><th style="min-width: 200px; width: 200px">Dane</th><th style="min-width: 500px;">Opis</th></tr></thead><tbody>');
+                        $this->addData('<form method="POST"><div class="card-body p-0 table-responsive"><table class="table table-sm"><thead><tr><th style="min-width: 200px; width: 200px">Nazwa</th><th style="min-width: 200px; width: 200px">Dane</th><th style="min-width: 500px;">Opis</th></tr></thead><tbody>');
                         if(isset($item['data'])) $this->generateOption($item['data']);
-                        $this->addData("</tbody></table><input type='submit' class='btn btn-primary w-100' name='config_save' value='Zapisz konfigurację' /></form></div>");
+                        $this->addData("</tbody></table></div><div class='card-footer'><input type='submit' class='btn btn-primary w-100' name='config_save' value='Zapisz konfigurację' /></div></form>");
                         break;
                     case 'tableDataInput':
                         $data = core::$model['config']->read($item['configName'], isset($item['default'])?$item['default']:'');
