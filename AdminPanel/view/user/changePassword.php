@@ -11,7 +11,7 @@
 	<div class="container-fluid">
 		<?php
 		if(isset($_POST['haslo']))
-			core::$model['adminPanel/user']->zmienHaslo();
+			core::$model['adminPanel/user']->changePassword();
 		?>
 		<form method="post">
 			<div class="card">

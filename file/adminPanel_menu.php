@@ -95,6 +95,15 @@ return [
 					'permissionAdd.html'
 				]
 			],
+			[
+				'href' => 'module.html',
+				'icon' => 'fas fa-plug',
+				'name' => 'Moduły',
+				'permission' => 'option_module',
+				'htmlPage' => [
+					'module.html'
+				]
+			]
 		]
 	],
 	'service' => [

@@ -1,6 +1,6 @@
 <?php
 return $this->file = new class(){ 
-	public $version = '1.6'; 
+	public $version = '1.7'; 
 	public function fileCount(string $path){ 
 		core::setError();
 		if(!file_exists($path))
@@ -111,6 +111,40 @@ return $this->file = new class(){
 		   	}
 		}
 		return $result;
-	 }
+	}
+	public function rmdir($path){
+		if (!file_exists($path)) return true;
+		if (!is_dir($path)) return unlink($path);
+		foreach (scandir($path) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			if (!$this->rmdir($path . DIRECTORY_SEPARATOR . $item)) return false;
+		}
+		return rmdir($path);
+	}
+	public function recurseCopy($src, $dst, $childFolder='') { 
+		$dir = opendir($src);
+		mkdir($dst);
+		if($childFolder!='') {
+			mkdir($dst.'/'.$childFolder);
+			while(false !== ( $file = readdir($dir)) ) {
+				if(( $file != '.' ) && ( $file != '..' )){
+					if ( is_dir($src . '/' . $file) )
+						$this->recurseCopy($src . '/' . $file,$dst.'/'.$childFolder . '/' . $file);
+					else
+						copy($src . '/' . $file, $dst.'/'.$childFolder . '/' . $file);
+				}
+			}
+		}else{
+			while(false !== ($file = readdir($dir))){
+				if (($file != '.') && ($file != '..')){
+					if (is_dir($src . '/' . $file))
+						$this->recurseCopy($src . '/' . $file,$dst . '/' . $file);
+					else
+						copy($src . '/' . $file, $dst . '/' . $file);
+				}
+			}
+		}
+		closedir($dir); 
+	}
 }
 ?>

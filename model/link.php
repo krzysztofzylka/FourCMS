@@ -73,7 +73,7 @@ return new class(){
                 echo '["post-'.$item['id'].'.html", "'.$item['title'].'"],';
         echo '];
         var module_list = [';
-        	foreach(core::$model['module']->moduleList() as $item)
+        	foreach(core::$model['module']->moduleDisplayPageList() as $item)
                 echo '["module-'.$item['name'].'.html", "'.$item['title'].'"],';
         echo '];
 		</script>';

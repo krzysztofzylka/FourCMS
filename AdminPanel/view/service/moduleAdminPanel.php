@@ -2,13 +2,6 @@
 $module = htmlspecialchars($_GET['modul']);
 $config = core::$library->module->getConfig($module, true);
 ?>
-<div class="content-header">
-	<div class="container-fluid">
-		
-		<?php echo isset($config['adminPanel']['title'])?($config['adminPanel']['title']==false?'':"<h1 class='m-0 text-dark'>".$config['adminPanel']['title'].'</h1>'):"<h1 class='m-0 text-dark'>Panel administracyjny modułu ".$module."</h1>" ?>
-		</h1>
-	</div>
-</div>
 <div class="content">
 	<div class="container-fluid">
 		<?php

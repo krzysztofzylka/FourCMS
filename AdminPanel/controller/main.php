@@ -37,7 +37,7 @@ return new class(){
 		core::$module['smarty']->smarty->assign('userAvatar', core::$model['adminPanel/user']->getAvatar(-1));
 		//set default page
 		$page = isset($_GET['page'])?$_GET['page']:'main_panel';
-		foreach(core::$model['module']->moduleIncConfigList() as $modulePath)
+		foreach(core::$model['module']->moduleConfiguratorList() as $modulePath)
 			include($modulePath);
 		//load data
 		ob_start();

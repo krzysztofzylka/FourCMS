@@ -19,6 +19,7 @@ CREATE TABLE `AP_user` (
     `avatar` varchar(256) DEFAULT NULL,
     `permission` int(24) NOT NULL DEFAULT '1',
     `blocked` int(1) NOT NULL DEFAULT '0',
+    `userSessionHash` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
 
@@ -99,7 +100,8 @@ INSERT INTO `permissionList` (`permName`, `name`, `description`) VALUES
     ('service_phpinfo', 'PHPInfo', 'Dostęp do informacji o PHP'),
     ('module', 'Moduły', 'Dostęp do Panelów Administracyjnych zainstalowanych modułów'),
     ('otherUser', 'Przeglądanie użytkowników', 'Przeglądanie profili innych użytkowników'),
-    ('option_template', 'Zmiana szablonu', 'Zmiana szablonu strony');
+    ('option_template', 'Zmiana szablonu', 'Zmiana szablonu strony'),
+    ('option_module', 'Moduły', 'Dostęp do modułów (w ustawieniach)');
 
 /* post */
 CREATE TABLE `post` (
@@ -119,9 +121,9 @@ INSERT INTO `post` (`id`, `title`, `date`, `text`, `user`, `url`, `type`, `hidde
 
 /* widget */
 CREATE TABLE `widget` (
-  `id` int(24) NOT NULL,
-  `userID` int(24) NOT NULL,
-  `uniqueIDWidget` varchar(32) NOT NULL,
-  `position` int(24) NOT NULL
+    `id` int(24) NOT NULL AUTO_INCREMENT,
+    `userID` int(24) NOT NULL,
+    `uniqueIDWidget` varchar(32) NOT NULL,
+    `position` int(24) NOT NULL,
     PRIMARY KEY (`id`)
 );

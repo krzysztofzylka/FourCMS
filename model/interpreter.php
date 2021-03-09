@@ -54,9 +54,10 @@ return new class(){
         if(count($data) == 1) $data = explode('-', $data[0], 2);
         switch($data[0]){
             case 'post':
+                $data[1] = str_replace('.html', '', $data[1]);
                 $post = core::$model['post']->read((int)$data[1]);
                 if($post == false){
-                    $data[1] = '-- Nie znaleziono postu --';
+                    return '-- Nie znaleziono postu --';
                     break;
                 }
                 $data[1] = $post['title'];

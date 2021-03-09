@@ -1,7 +1,7 @@
 <?php
 return new class(){
 	public $defaultAvatar = 'images/userImage/defaultUser.png';
-	public function zmienHaslo(){
+	public function changePassword(){
 		core::setError();
 		$haslo = htmlspecialchars($_POST['haslo']);
 		$haslo2 = htmlspecialchars($_POST['haslo2']);
@@ -46,18 +46,18 @@ return new class(){
 			return file_exists('../'.$userAvatar)?'../'.$userAvatar:$userAvatar;
 		}
 	}
-	public function changeName(int $userID=-1, string $name){
+	public function changeName(int $userID=-1, string $name) : bool{
 		$userID = $userID==-1?core::$module['account']->userData['id']:$userID;
 		$prepare = core::$library->database->prepare('UPDATE AP_user SET name=:name WHERE id='.$userID);
 		$prepare->bindParam(':name', $name, PDO::PARAM_STR);
-		$prepare->execute();
+		if(!$prepare->execute()) return false;
 		return true;
 	}
-	public function changeEMail(int $userID=-1, string $email){
+	public function changeEMail(int $userID=-1, string $email) : bool{
 		$userID = $userID==-1?core::$module['account']->userData['id']:$userID;
 		$prepare = core::$library->database->prepare('UPDATE AP_user SET email=:email WHERE id='.$userID);
 		$prepare->bindParam(':email', $email, PDO::PARAM_STR);
-		$prepare->execute();
+		if(!$prepare->execute()) return false;
 		return true;
 	}
 }

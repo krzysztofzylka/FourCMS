@@ -26,5 +26,14 @@ return new class(){
 			$this->headerData['dataTablesMultipleTableJS'] = '<script> $(document).ready(function() { $(\'table.dataTable\').DataTable({ "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Polish.json" }, stateSave: true }); }); </script>';
 		$this->generateHTMLData();
 	}
+	public function loadSelect2(){
+		$this->headerData['select2CSS'] = '<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />';
+		$this->headerData['select2JS'] = '<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>';
+		$this->generateHTMLData();
+	}
+	public function loadCustomFileInput(){
+		$this->headerData['customFileInputJS'] = '<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>';
+		$this->generateHTMLData();
+	}
 }
 ?>

@@ -3,7 +3,7 @@ return new class(){
 	public function read(int $id){
 		core::setError();
         $post = core::$library->database->query('SELECT * FROM post WHERE id='.$id)->fetch(PDO::FETCH_ASSOC);
-        if(is_null($post['id']) or boolval($post['hidden']) == true)
+        if((is_null($post['id']) or boolval($post['hidden']) == true) and $GLOBALS['FourCMS'] <> 'admin')
             return false;
         $post['text'] = $this->__imageDirProtect($post['text']);
         $post['userName'] = core::$module['account']->getData((int)$post['user'])['name'];
