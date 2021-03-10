@@ -8,7 +8,7 @@ return new class(){
             $this->alert($falseValue, $alertOption['false']);
         return;
     }
-    public function alert(string $value, string $alertType='secondary'){
+    public function alert(string $value, string $alertType='secondary') : void{
 		core::setError();
         echo '<div class="content-header"><div class="alert alert-'.$alertType.'" role="alert">'.$value.'</div></div>';
         return;
