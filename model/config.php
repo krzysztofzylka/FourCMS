@@ -7,7 +7,7 @@ return new class(){
 			return $default;
 		return $query['value'];
 	}
-	public function write(string $name, $value){
+	public function write(string $name, $value) : bool{
 		core::setError();
 		$sql = 'UPDATE config SET value=:value WHERE name=:name';
 		$query = core::$library->database->query('SELECT count(*) as count FROM config WHERE name="'.$name.'"')->fetch(PDO::FETCH_ASSOC);
@@ -16,7 +16,9 @@ return new class(){
 		$prep = core::$library->database->prepare($sql);
 		$prep->bindParam(':value', $value);
 		$prep->bindParam(':name', $name);
-		$prep->execute();
+		if(!$prep->execute())
+			return false;
+		return true;
 	}
 }
 ?>
