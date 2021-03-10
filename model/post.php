@@ -25,7 +25,7 @@ return new class(){
         }
         return $post;
     }
-    public function create(string $title, string $text, int $user, $url='auto', string $type='post', $hidden=false, $showMetadata = false){
+    public function create(string $title, string $text, int $user, $url='auto', string $type='post', $hidden=false, $showMetadata=false){
 		core::setError();
         $prep = core::$library->database->prepare('INSERT INTO post (`text`, `title`, `user`, `url`, `type`, `hidden`, `showMetaData`) VALUES (:text, :title, :user, :url, :type, :hidden, :showMetaData)');
         $prep->bindValue(':text', $text, PDO::PARAM_STR);
@@ -35,7 +35,8 @@ return new class(){
         $prep->bindValue(':type', $type, PDO::PARAM_STR);
         $prep->bindValue(':hidden', $hidden, PDO::PARAM_INT);
         $prep->bindValue(':showMetaData', $showMetadata, PDO::PARAM_INT);
-        $prep->execute();
+        if(!$prep->execute())
+            return false;
         return core::$library->database->conn->lastInsertId();
     }
     public function update(int $id, string $title, string $text, int $user, $url='auto', string $type='post', $hidden=false, $showMetadata = false){
@@ -48,7 +49,8 @@ return new class(){
         $prep->bindValue(':type', $type, PDO::PARAM_STR);
         $prep->bindValue(':hidden', $hidden, PDO::PARAM_INT);
         $prep->bindValue(':showMetaData', $showMetadata, PDO::PARAM_INT);
-        $prep->execute();
+        if(!$prep->execute())
+            return false;
         return true;
     }
     public function delete(int $id){

@@ -15,11 +15,17 @@ if (isset($_POST['text'])) {
 		$showMetadata = isset($_POST['showMetadata']) ? 1 : 0;
 		if ($addPost) {
 			$id = core::$model['post']->create($_POST['title'], $_POST['text'], core::$module['account']->userData['id'], $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
-			header('location: postEdit-' . $id . '.html');
+			if(!$id)
+				core::$model['gui']->alert('Błąd dodawania posta', 'danger');
+			else
+				header('location: postEdit-' . $id . '.html');
 		} else {
-			core::$model['post']->update((int)$id, $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
+			$edit =core::$model['post']->update((int)$id, $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
 			$post = core::$library->database->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
-			core::$model['gui']->alert('Poprawnie zamodyfikowano post', 'success'); //show info
+			if(!$edit)
+				core::$model['gui']->alert('Błąd modyfikowania posta', 'danger');
+			else
+				core::$model['gui']->alert('Poprawnie zamodyfikowano post', 'success');
 		}
 	} else
 		core::$model['gui']->alert('Tytuł posta musi posiadać przynajmniej 3 znaki');
