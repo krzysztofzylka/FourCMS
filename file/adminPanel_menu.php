@@ -101,7 +101,8 @@ return [
 				'name' => 'Moduły',
 				'permission' => 'option_module',
 				'htmlPage' => [
-					'module.html'
+					'module.html',
+					'module-clearCache.html'
 				]
 			]
 		]
