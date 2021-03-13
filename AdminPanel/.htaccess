@@ -40,7 +40,7 @@ RewriteRule ^module-clearCache.html$ index.php?page=option.module&clearInstaller
 RewriteRule ^templateEdit.html$ index.php?page=option.templateEdit
 
 #userAdmin and permission
-RewriteRule ^userAdmin.html$ index.php?page=option.user.list
+RewriteRule ^userAdmin.html$ index.php?page=option.user.list [QSA,L]
 RewriteRule ^createNewUser.html$ index.php?page=option.user.addUser
 RewriteRule ^permission.html$ index.php?page=option.permission.permission
 RewriteRule ^permissionEdit-(.*).html$ index.php?page=option.permission.permission&editID=$1

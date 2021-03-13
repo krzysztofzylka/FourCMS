@@ -26,7 +26,7 @@ $userData = core::$module['account']->getData($userID);
                             <img class="profile-user-img img-fluid img-circle" src="<?php echo core::$model['adminPanel/user']->getAvatar($userID) ?>" alt="Avatar użytkownika">
                         </div>
                         <!-- name -->
-                        <h3 class="profile-username text-center"><?php echo $userData['name'] ?></h3>
+                        <h3 class="profile-username text-center"><?php echo ($userData['blocked']?'<s>':'').$userData['name'].($userData['blocked']?'</s>':'') ?></h3>
                         <p class="text-center"><?php echo $userAcc ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangeName" href="#collapseChangeName">Zmień nazwę użytkownika</a>' : ''; ?></p>
                         <div class="collapse mt-1" id="collapseChangeName">
                             <div class="card card-body">
@@ -40,7 +40,7 @@ $userData = core::$module['account']->getData($userID);
                             </div>
                         </div>
                         <!-- login -->
-                        <p class="text-muted text-center"><?php echo $userData['login'] ?></p>
+                        <p class="text-muted text-center"><?php echo ($userData['blocked']?'<s>':'').$userData['login'].($userData['blocked']?'</s>':'') ?></p>
                         <ul class="list-group list-group-unbordered mb-3">
                             <!-- permission -->
                             <li class="list-group-item"><b>Uprawnienia <?php echo core::$module['account']->checkPermission('permissionUserEdit') ? '<a class="badge badge-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseChangePermission" href="#collapseChangePermission">Zmień</a>' : ''; ?></b> <a class="float-right"><?php echo core::$module['account']->getPermissionName((int)$userData['permission']); ?></a>

@@ -19,7 +19,6 @@ CREATE TABLE `AP_user` (
     `avatar` varchar(256) DEFAULT NULL,
     `permission` int(24) NOT NULL DEFAULT '1',
     `blocked` int(1) NOT NULL DEFAULT '0',
-    `userSessionHash` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
 
@@ -49,7 +48,7 @@ INSERT INTO `config` (`id`, `name`, `value`) VALUES
     (16, 'template_name', 'defaultBlog'),
     (17, 'textarea_filePath', 'images/'),
     (18, 'title', 'Nagłówek'),
-    (19, 'version', '0.2.4 Beta');
+    (19, 'version', '0.2.7 Beta');
 
 /* jumbotron */
 CREATE TABLE `jumbotron` (
@@ -101,7 +100,9 @@ INSERT INTO `permissionList` (`permName`, `name`, `description`) VALUES
     ('module', 'Moduły', 'Dostęp do Panelów Administracyjnych zainstalowanych modułów'),
     ('otherUser', 'Przeglądanie użytkowników', 'Przeglądanie profili innych użytkowników'),
     ('option_template', 'Zmiana szablonu', 'Zmiana szablonu strony'),
-    ('option_module', 'Moduły', 'Dostęp do modułów (w ustawieniach)');
+    ('option_module', 'Moduły (Ustawienia)', 'Dostęp do modułów (w ustawieniach)'),
+    ('moduleInstall', 'Instalacja modułów', 'Uprawnienie pozwala na instalację modułów z plików ZIP'),
+    ('blockUser', 'Zablokowanie/Odblokowanie użytkowników', 'Pozwolenie na zablokowanie/odblokowanie użytkownika');
 
 /* post */
 CREATE TABLE `post` (
@@ -121,9 +122,9 @@ INSERT INTO `post` (`id`, `title`, `date`, `text`, `user`, `url`, `type`, `hidde
 
 /* widget */
 CREATE TABLE `widget` (
-    `id` int(24) NOT NULL AUTO_INCREMENT,
-    `userID` int(24) NOT NULL,
-    `uniqueIDWidget` varchar(32) NOT NULL,
-    `position` int(24) NOT NULL,
+  `id` int(24) NOT NULL AUTO_INCREMENT,
+  `userID` int(24) NOT NULL,
+  `uniqueIDWidget` varchar(32) NOT NULL,
+  `position` int(24) NOT NULL
     PRIMARY KEY (`id`)
 );

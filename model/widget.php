@@ -9,6 +9,8 @@ return new class(){
     }
 	public function addWidget(string $uniqueID, string $name, string $description, string $widgetPath, string $moduleName = null){
 		core::setError();
+        if(isset($this->widgetList[$uniqueID]))
+            return false;
         $this->widgetList[$uniqueID] = [
             'uniqueID' => $uniqueID,
             'name' => $name,
@@ -16,9 +18,12 @@ return new class(){
             'widgetPath' => $widgetPath,
             'moduleName' => $moduleName
         ];
+        return true;
     }
     public function getWidgetData(string $uniqueID){
         core::setError();
+        if(!isset($this->widgetList[$uniqueID]))
+            return false;
         return $this->widgetList[$uniqueID];
     }
     public function userAddWidget(int $userID, string $uniqueID){

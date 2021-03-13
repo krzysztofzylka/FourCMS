@@ -55,10 +55,13 @@ function permissionPregReplace($matches){
                         <?php echo core::$model['permission']->showHTMLItem('option_editConfig', !is_bool(array_search('option_editConfig', $permission))) ?>
                         <?php echo core::$model['permission']->showHTMLItem('option_users', !is_bool(array_search('option_users', $permission))) ?>
                         <div class="ml-3">
+                            <?php echo core::$model['permission']->showHTMLItem('blockUser', !is_bool(array_search('blockUser', $permission))) ?>
                             <?php echo core::$model['permission']->showHTMLItem('option_usersAdd', !is_bool(array_search('option_usersAdd', $permission))) ?>
                             <?php echo core::$model['permission']->showHTMLItem('option_permissionEdit', !is_bool(array_search('option_permissionEdit', $permission))) ?>
                         </div>
+                        <?php echo core::$model['permission']->showHTMLItem('option_module', !is_bool(array_search('option_module', $permission))) ?>
                         <!-- Serwis -->
+                        <b>Serwis</b>
                         <?php echo core::$model['permission']->showHTMLItem('service', !is_bool(array_search('service', $permission))) ?>
                         <div class="ml-3">
                             <?php echo core::$model['permission']->showHTMLItem('service_library', !is_bool(array_search('service_library', $permission))) ?>
@@ -68,6 +71,8 @@ function permissionPregReplace($matches){
                         </div>
                         <b>Moduły</b>
                         <?php echo core::$model['permission']->showHTMLItem('module', !is_bool(array_search('module', $permission))) ?>
+                        <?php echo core::$model['permission']->showHTMLItem('moduleInstall', !is_bool(array_search('moduleInstall', $permission))) ?>
+
                         <?php
                         foreach(core::$library->global->read('permissionConfig') as $permData){
                             echo preg_replace_callback('~\[permission\](.*?)\[/permission\]~s', 'permissionPregReplace', $permData);

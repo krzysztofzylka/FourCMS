@@ -12,6 +12,7 @@
                             <label class="custom-file-label">Wybierz moduł</label>
                         </div>
                     </div>
+                    <small class="text-disabled">Maksymalny rozmiar pliku: <?php echo ini_get('upload_max_filesize') ?></small>
                 </div>
                 <div class="card-footer">
                     <input type="submit" value="Wgraj moduł" class="btn btn-primary" name="install" />

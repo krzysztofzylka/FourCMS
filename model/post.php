@@ -57,12 +57,13 @@ return new class(){
 		core::setError();
         $prep = core::$library->database->prepare('DELETE FROM post WHERE `id`=:id');
         $prep->bindValue(':id', $id, PDO::PARAM_INT);
-        $prep->execute();
+        if(!$prep->execute())
+            return core::setError(1);
         if($prep->rowCount() == 0)
-            return false;
+            return core::setError(2);
         return true;
     }
-    public function __imageDirProtect($text){
+    private function __imageDirProtect($text){
 		core::setError();
         $text = str_replace('src="../', '<img src="', $text);
         $text = str_replace("src='../", "<img src='", $text);

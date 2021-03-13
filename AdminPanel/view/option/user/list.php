@@ -26,10 +26,10 @@
                         foreach (core::$module['account']->userList() as $item) {
                             echo '<tr>
                                 <td>' . $item['id'] . '</td>
-                                <td><a href="user-'.$item['id'].'.html">' . $item['login'] . '</a></td>
+                                <td>'.($item['blocked']?'<s>':'').'<a href="user-'.$item['id'].'.html">' . $item['login'] . '</a>'.($item['blocked']?'</s> <i class="fas fa-ban text-danger" data-toggle="tooltip" data-original-title="Konto zablokowane"></i>':'').'</td>
                                 <td>' . $item['name'] . '</td>
                                 <td>' . $item['email'] . '</td>
-                                <td></td>
+                                <td>'.(!$item['blocked']?'<a href="userAdmin.html?blockUser='.$item['id'].'" class="btn btn-warning btn-xs '.(($item['id']=="1" or !core::$module['account']->checkPermission('blockUser') or (int)core::$module['account']->userData['id'] == (int)$item['id'])?'disabled':'').'">Zablokuj</a>':'<a href="userAdmin.html?unblockUser='.$item['id'].'" class="btn btn-info btn-xs  '.(!core::$module['account']->checkPermission('blockUser')?'disabled':'').'">Odblokuj</a>').'</td>
                             </tr>';
                         }
                         ?>

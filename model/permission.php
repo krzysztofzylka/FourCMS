@@ -19,7 +19,8 @@ return new class(){
         core::setError();
         $prep = core::$library->database->prepare('SELECT * FROM permissionList WHERE permName=:permName');
         $prep->bindParam(':permName', $permissionName, PDO::PARAM_STR);
-        $prep->execute();
+        if(!$prep->execute())
+            return false;
         return $prep->fetch(PDO::FETCH_ASSOC);
     }
     public function editPerm(int $permissionID, string $permissionName, array $permission){
@@ -29,7 +30,8 @@ return new class(){
         $prep->bindParam(':permissionID', $permissionID, PDO::PARAM_INT);
         $prep->bindParam(':name', $permissionName, PDO::PARAM_STR);
         $prep->bindParam(':permission', $permission, PDO::PARAM_STR);
-        $prep->execute();
+        if(!$prep->execute())
+            return false;
         return true;
     }
     public function addPerm(string $permissionName, array $permission){

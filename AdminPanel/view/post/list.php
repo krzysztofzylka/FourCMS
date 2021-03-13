@@ -18,12 +18,9 @@
 					</thead>
 					<tbody>
 						<?php
-						$request = core::$library->database->query('SELECT * FROM post ORDER BY date DESC')->fetchAll(PDO::FETCH_ASSOC);
-						foreach ($request as $item) {
-							//zabezpiecznie przed pustą nazwą w tytule która nieumożliwiała edycje
+						foreach(core::$model['post']->list() as $item) {
 							if (strlen($item['title']) < 1)
 								$item['title'] = '- Brak tytułu -';
-							//wyświetlenie posta na liście
 							echo '<tr>
 								<td>
 									<a href="postEdit-' . $item['id'] . '.html">' . $item['title'] . '</a>

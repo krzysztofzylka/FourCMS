@@ -44,7 +44,7 @@ core::loadModel([
     //load front-end module
     core::loadModule('bootstrap');
         core::$module['bootstrap']->loadBootstrapDataTable(true);
-		core::$module['bootstrap']->loadCustomFileInput();
+        core::$module['bootstrap']->loadCustomFileInput();
     core::loadModule('font-awesome');
     core::loadModule('adminlte');
     core::loadModule('summernote');

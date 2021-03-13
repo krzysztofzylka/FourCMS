@@ -21,6 +21,9 @@ return new class(){
 					case 3:
 						core::$module['smarty']->smarty->assign('error', 'Błąd SQL');
 						break;
+					case 4:
+						core::$module['smarty']->smarty->assign('error', 'Konto jest zablokowane');
+						break;
 					default:
 						core::$module['smarty']->smarty->assign('error', 'Błędne dane logowania');
 						break;

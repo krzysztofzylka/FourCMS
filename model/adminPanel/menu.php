@@ -81,12 +81,15 @@ return new class(){
 			if(isset($item['config']['adminPanel']))
 				if(isset($item['config']['adminPanel']['menu'])){
 					$apMenu = $item['config']['adminPanel']['menu'];
-					array_push($this->load[$search]['menu'], [
+					$array = [
 						'href' => 'FrameworkModuleAP-'.$item['name'].'.html',
 						'icon' => 'fas '.$apMenu['icon'],
 						'name' => $apMenu['name'],
 						'htmlPage' => isset($apMenu['htmlPage'])?$apMenu['htmlPage']:[],
-					]);
+					];
+					if(isset($apMenu['permission']))
+						$array['permission'] = $apMenu['permission'];
+					array_push($this->load[$search]['menu'], $array);
 				}
 		if(count($this->load[$search]['menu']) == 0)
 			unset($this->load[$search]);
