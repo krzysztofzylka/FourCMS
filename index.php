@@ -11,6 +11,9 @@ core::$option['saveCoreError'] = false; //zapisywanie błędów rdzenia
 //load database and config
 core::$library->database->connect(include('file/db_config.php'));
 
+//load class extends
+core::loadModel(['extends.module']);
+
 //loadModule
 core::loadModule('account');
 core::$module['account']->sessionName = '3656fa29eb585561c83099a844c995f6';

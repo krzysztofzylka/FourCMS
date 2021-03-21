@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        foreach (core::$module['account']->userList() as $item) {
+                        foreach (core::$module['account']->getUserList() as $item) {
                             echo '<tr>
                                 <td>' . $item['id'] . '</td>
                                 <td>'.($item['blocked']?'<s>':'').'<a href="user-'.$item['id'].'.html">' . $item['login'] . '</a>'.($item['blocked']?'</s> <i class="fas fa-ban text-danger" data-toggle="tooltip" data-original-title="Konto zablokowane"></i>':'').'</td>

@@ -48,7 +48,7 @@ INSERT INTO `config` (`id`, `name`, `value`) VALUES
     (16, 'template_name', 'defaultBlog'),
     (17, 'textarea_filePath', 'images/'),
     (18, 'title', 'Nagłówek'),
-    (19, 'version', '0.2.7 Beta');
+    (19, 'version', '0.2.8 Beta');
 
 /* jumbotron */
 CREATE TABLE `jumbotron` (

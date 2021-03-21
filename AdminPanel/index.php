@@ -35,6 +35,9 @@ core::loadModel([
     'widget'
 ]);
 
+//load class extends
+core::loadModel(['extends.module']);
+
 //load module
     //smarty
     core::loadModule('smarty');
