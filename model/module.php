@@ -94,5 +94,14 @@ return new class(){
         }else
             return core::setError(4);
     }
+    public function API_getData($uniqueID=null){
+        core::setError();
+        $urlToModuleAPI = core::$model['config']->read('api_module');
+        if($urlToModuleAPI == '') return core::setError(1);
+        $urlToModuleAPI .= is_null($uniqueID)?'':'?uniqueID='.$uniqueID;
+        $getDataFromAPI = core::$library->network->get($urlToModuleAPI);
+        if(core::$isError) return core::setError(2);
+        return json_decode($getDataFromAPI, true);
+    }
 }
 ?>

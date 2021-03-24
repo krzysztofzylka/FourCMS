@@ -33,7 +33,7 @@ RewriteRule ^siteTemplateActive-(.*).html$ index.php?page=option.template&templa
 
 #config
 RewriteRule ^config.html$ index.php?page=option.config
-RewriteRule ^module.html$ index.php?page=option.module
+RewriteRule ^module.html$ index.php?page=option.module [QSA,L]
 RewriteRule ^module-clearCache.html$ index.php?page=option.module&clearInstallerCache=true
 
 #templateEdit

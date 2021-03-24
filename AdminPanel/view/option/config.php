@@ -188,6 +188,25 @@ core::$model['option']->generateOption([
                     ]
                 ]
             ],
+            [
+                'type' => 'card',
+                'header' => [
+                    'title' => 'API'
+                ],
+                'data' => [
+                    [
+                        'type' => 'card-configTable',
+                        'data' => [
+                            [
+                                'type' => 'tableDataInput',
+                                'configName' => 'api_module',
+                                'description' => 'Link do API obsługującego pobieranie oraz aktualizację modułów',
+                                'name' => 'API - Moduly'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
         ]
     ]
 ]);
