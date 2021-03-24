@@ -7,6 +7,7 @@ return new class(){ //create main class
 	public $userData = null; //user data
 	public $DBTablePrefix = ''; //prefix for table in database
 	public $defaultPermissionGroup = 1; //default permission
+	private $userPermissionList = null;
 	private $dbConn = null; //PDO Object
 	private $dbTable = [
 		'user' => 'user',
@@ -58,7 +59,7 @@ return new class(){ //create main class
 		$prepare->bindParam(':password', $password, PDO::PARAM_STR);
 		$prepare->bindParam(':email', $email, PDO::PARAM_STR);
 		if(@!$prepare->execute())
-			return core::setError(3, 'SQL ERROR', $prepare->errorInfo());
+			return core::setError(3, 'SQL error', $prepare->errorInfo());
 		return true;
 	}
 	public function loginUser(string $login, string $password) : bool {
@@ -78,7 +79,7 @@ return new class(){ //create main class
 		$this->_userSetHash(core::$library->string->generateString(), (int)$user['id']);
 		return true;
 	}
-	public function changePassword(string $login, string $password, string $newPassword){
+	public function changePassword(string $login, string $password, string $newPassword) : bool{
 		core::setError();
 		$prepare = $this->dbConn->prepare('SELECT id, password FROM '.$this->dbTable['user'].' WHERE login=:login');
 		$prepare->bindParam(':login', $login, PDO::PARAM_STR);
@@ -92,20 +93,21 @@ return new class(){ //create main class
 		$prepare->bindParam(':password', $newPassword, PDO::PARAM_STR);
 		$prepare->bindParam(':id', $user['id'], PDO::PARAM_INT);
 		if(@!$prepare->execute())
-			return core::setError(3, 'SQL ERROR', $prepare->errorInfo());
+			return core::setError(1, 'SQL ERROR', $prepare->errorInfo());
 		return true;
 	}
 	public function checkUser() : bool {
 		core::setError();
-		if(!isset($_SESSION[$this->sessionName]) or !is_int($_SESSION[$this->sessionName]) or !isset($_SESSION[$this->sessionIPName]) or !isset($_SESSION[$this->sessionUserHash])){
+		if(!isset($_SESSION[$this->sessionName]) or 
+			!is_int($_SESSION[$this->sessionName]) or 
+			!isset($_SESSION[$this->sessionIPName]) or 
+			!isset($_SESSION[$this->sessionUserHash]) or 
+			!$this->userIPCheck())
+		{
 			session_unset();
 			return false;
 		}
-		if(!$this->userIPCheck()){
-			session_unset();
-			return false;
-		}
-		return true; //return success
+		return true;
 	}
 	public function logoutUser() : bool{ //logout
 		core::setError();
@@ -121,15 +123,12 @@ return new class(){ //create main class
 		$userID = $this->_userID();
 		$user = $this->dbConn->prepare('SELECT * FROM '.$this->dbTable['user'].' WHERE id=:userID');
 		$user->bindParam(':userID', $userID, PDO::PARAM_INT);
-		$user->execute();
+		if(!$user->execute())
+			return core::setError(1, 'SQL error');
 		$user = $user->fetch(PDO::FETCH_ASSOC);
-		if(!$this->_userCheckHash($user['userSessionHash'])){
+		if(!$this->_userCheckHash($user['userSessionHash']) or boolval($user['blocked'])){
 			session_unset();
-			return false;
-		}
-		if(boolval($user['blocked'])){
-			session_unset();
-			return false;
+			return core::setError(2, 'user error');
 		}
 		$this->userData = $user;
 		$this->getPermission();
@@ -138,23 +137,29 @@ return new class(){ //create main class
 	public function getData(int $userID = -1){
 		core::setError();
 		$userID = $userID<>-1?(int)$userID:$this->_userID();
-		$user = $this->dbConn->prepare('SELECT * FROM '.$this->dbTable['user'].' WHERE id=:userID');
+		$user = $this->dbConn->prepare('SELECT id,login,email,name,avatar,permission,blocked FROM '.$this->dbTable['user'].' WHERE id=:userID');
 		$user->bindParam(':userID', $userID, PDO::PARAM_INT);
-		$user->execute();
+		if(!$user->execute())
+			return core::setError(1, 'SQL error');
 		return $user->fetch(PDO::FETCH_ASSOC);
 	}
 	public function getPermission(){ //get user permission
 		core::setError();
-		if($this->checkUser() === false) //check user
-			return core::setError(1, 'The user is not logged in'); //return error 1
+		if($this->userPermissionList <> null)
+			return $this->userPermissionList;
+		if($this->checkUser() === false)
+			return core::setError(1, 'The user is not logged in');
 		if($this->userData === null)
 			$this->userGetData();
 		if(isset($this->userData['userPermissionArray']) and is_array($this->userData['userPermissionArray']))
 			return $this->userData['userPermissionArray'];
 		$prepare = $this->dbConn->prepare('SELECT permission FROM '.$this->dbTable['groupPermission'].' WHERE id=:permissionID');
 		$prepare->bindParam(':permissionID', $this->userData['permission'], PDO::PARAM_INT);
-		$prepare->execute();
-		return json_decode($prepare->fetch(PDO::FETCH_ASSOC)['permission']);
+		if(!$prepare->execute())
+			return core::setError(2, 'SQL error');
+		$permissionList = json_decode($prepare->fetch(PDO::FETCH_ASSOC)['permission']);
+		$this->userPermissionList = $permissionList;
+		return $permissionList;
 	}
 	public function checkPermission(string $name) : bool{ //check permission
 		core::setError();
@@ -179,10 +184,6 @@ return new class(){ //create main class
 		$this->DBTablePrefix = $prefix.'_';
 		return true;
 	}
-	public function userList(){
-		core::setError();
-		return core::$library->database->query('SELECT * FROM '.$this->dbTable['user'])->fetchAll();
-	}
 	public function getUserID(string $login){
 		core::setError();
 		$getData = core::$library->database->prepare('SELECT id FROM '.$this->dbTable['user'].' WHERE login=:login');
@@ -195,13 +196,15 @@ return new class(){ //create main class
 		core::setError();
 		$permission = core::$library->database->prepare('SELECT * FROM '.$this->dbTable['groupPermission'].' WHERE id=:id');
 		$permission->bindParam(':id', $permissionID, PDO::PARAM_INT);
-		$permission->execute();
+		if(!$permission->execute())
+			return core::setError(1);
 		return $permission->fetch(PDO::FETCH_ASSOC)['name'];
 	}
 	public function getPermissionList(){
 		core::setError();
 		$permission = core::$library->database->prepare('SELECT * FROM '.$this->dbTable['groupPermission']);
-		$permission->execute();
+		if(!$permission->execute())
+			return core::setError(1);
 		return $permission->fetchAll(PDO::FETCH_ASSOC);
 	}
 	public function setUserPermission(int $userID, int $permissionGroupID) : bool{
@@ -209,14 +212,17 @@ return new class(){ //create main class
 		$permission = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET permission=:permission WHERE id=:id');
 		$permission->bindParam(':permission', $permissionGroupID, PDO::PARAM_INT);
 		$permission->bindParam(':id', $userID, PDO::PARAM_INT);
-		$permission->execute();
+		if(!$permission->execute())
+			return core::setError(1);
 		return true;
 	}
 	public function getUserList(){
 		core::setError();
-		$getData = core::$library->database->prepare('SELECT * FROM '.$this->dbTable['user']);
-		$getData->execute();
-		return $getData->fetchAll(PDO::FETCH_ASSOC);
+		$getData = core::$library->database->prepare('SELECT id,login,email,name,avatar,permission,blocked FROM '.$this->dbTable['user']);
+		if(!$getData->execute())
+			return core::setError(1, 'SQL error');
+		$userList = $getData->fetchAll(PDO::FETCH_ASSOC);
+		return $userList;
 	}
 	public function userIPCheck(){
 		if(!isset($_SESSION[$this->sessionIPName]))
@@ -229,25 +235,27 @@ return new class(){ //create main class
 		$prepare = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET userSessionHash=:hash WHERE id=:userID');
 		$prepare->bindParam(':hash', $hash, PDO::PARAM_STR);
 		$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);
-		$prepare->execute();
+		if(!$prepare->execute())
+			return core::setError(1);
 		return true;
 	}
-	private function _userUnsetHash(){
+	private function _userUnsetHash() : bool{
 		$userID = $this->_userID();
 		$prepare = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET userSessionHash=null WHERE id=:userID');
 		$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);
-		$prepare->execute();
+		if(!$prepare->execute())
+			return core::setError(1);
 		return true;
 	}
-	public function blockUser(int $userID){
+	public function blockUser(int $userID) : bool{
 		core::setError();
 		$prepare = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET blocked=1 WHERE id=:userID');
 		$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);
 		if(!$prepare->execute())
-			return false;
+			return core::setError(1);
 		return true;
 	}
-	public function unblockUser(int $userID){
+	public function unblockUser(int $userID) : bool{
 		core::setError();
 		$prepare = core::$library->database->prepare('UPDATE '.$this->dbTable['user'].' SET blocked=0 WHERE id=:userID');
 		$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);
@@ -255,10 +263,11 @@ return new class(){ //create main class
 			return false;
 		return true;
 	}
-	private function _userExists(string $login){
+	private function _userExists(string $login) : bool {
 		core::setError();
 		$prepare = core::$library->database->prepare('SELECT count(*) as count FROM '.$this->dbTable['user'].' WHERE login=:login LIMIT 1');
-		$prepare->execute([':login' => $login]);
+		if(!$prepare->execute([':login' => $login]))
+			return core::setError(1);
 		return (int)$prepare->fetch(PDO::FETCH_ASSOC)['count'];
 	}
 	private function _userID(){

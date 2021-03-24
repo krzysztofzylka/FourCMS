@@ -1,3 +1,11 @@
+1.9
+- Zoptymalizowano pobieranie uprawnień, od teraz uprawnienia pobierają są tylko raz
+
+1.8
+- Zoptymalizowano niektóre funkcje oraz dodano obsługę błędów
+- Usunięto funkcję userList
+- Poprawiono funkcję getUserList oraz getData które taraz pobierają ograniczone dane z bazy
+
 1.7
 - Funkcja blokowania użytkownika (banowanie)
 
