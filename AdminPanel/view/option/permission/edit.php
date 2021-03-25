@@ -72,6 +72,7 @@ function permissionPregReplace($matches){
                         <b>Moduły</b>
                         <?php echo core::$model['permission']->showHTMLItem('module', !is_bool(array_search('module', $permission))) ?>
                         <?php echo core::$model['permission']->showHTMLItem('moduleInstall', !is_bool(array_search('moduleInstall', $permission))) ?>
+                        <?php echo core::$model['permission']->showHTMLItem('moduleAdd', !is_bool(array_search('moduleAdd', $permission))) ?>
 
                         <?php
                         foreach(core::$library->global->read('permissionConfig') as $permData){

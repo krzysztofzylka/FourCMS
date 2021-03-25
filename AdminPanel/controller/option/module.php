@@ -7,7 +7,12 @@ return new class(){
 		$this->installFromPOSTData();
 		$this->clearInstallerCacheFromGETData();
 		$this->downloadAndinstallModuleFromGETData();
-		core::loadView('option.module');
+		$this->saveModuleKeyFromGETData();
+		if(isset($_GET['page2']) and $_GET['page2'] == 'moduleAdd'){
+			core::loadView('option.moduleAdd');
+		}else
+			core::loadView('option.module');
+	}
 	}
 	public function installFromPOSTData(){
 		if(isset($_POST['install'])){

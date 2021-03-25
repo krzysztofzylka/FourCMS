@@ -104,6 +104,15 @@ return [
 					'module.html',
 					'module-clearCache.html'
 				]
+			],
+			[
+				'href' => 'module-add.html',
+				'icon' => 'fas fa-plug',
+				'name' => 'Moduły - Instalacja',
+				'permission' => 'option_moduleAdd',
+				'htmlPage' => [
+					'module-add.html'
+				]
 			]
 		]
 	],

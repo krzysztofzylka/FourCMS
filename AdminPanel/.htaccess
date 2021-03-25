@@ -35,6 +35,7 @@ RewriteRule ^siteTemplateActive-(.*).html$ index.php?page=option.template&templa
 RewriteRule ^config.html$ index.php?page=option.config
 RewriteRule ^module.html$ index.php?page=option.module [QSA,L]
 RewriteRule ^module-clearCache.html$ index.php?page=option.module&clearInstallerCache=true
+RewriteRule ^module-add.html$ index.php?page=option.module&page2=moduleAdd [QSA,L]
 
 #templateEdit
 RewriteRule ^templateEdit.html$ index.php?page=option.templateEdit
