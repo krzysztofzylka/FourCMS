@@ -13,6 +13,11 @@ return new class(){
 		}else
 			core::loadView('option.module');
 	}
+	public function saveModuleKeyFromGETData(){
+		if(isset($_POST['keySave'])){
+			core::$model['config']->write('moduleKey_'.$_POST['keyUniqueID'], $_POST['key']);
+			core::$model['gui']->alert('Poprawnie zapisano klucz dla modułu', 'success');
+		}
 	}
 	public function installFromPOSTData(){
 		if(isset($_POST['install'])){

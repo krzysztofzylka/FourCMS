@@ -102,7 +102,8 @@ INSERT INTO `permissionList` (`permName`, `name`, `description`) VALUES
     ('option_template', 'Zmiana szablonu', 'Zmiana szablonu strony'),
     ('option_module', 'Moduły (Ustawienia)', 'Dostęp do modułów (w ustawieniach)'),
     ('moduleInstall', 'Instalacja modułów', 'Uprawnienie pozwala na instalację modułów z plików ZIP'),
-    ('blockUser', 'Zablokowanie/Odblokowanie użytkowników', 'Pozwolenie na zablokowanie/odblokowanie użytkownika');
+    ('blockUser', 'Zablokowanie/Odblokowanie użytkowników', 'Pozwolenie na zablokowanie/odblokowanie użytkownika'),
+    ('moduleAdd', 'Strona instalacyjna modułów', 'Uprawnienie pozwala na dostęp do strony instalacyjnej modułów z serwera');
 
 /* post */
 CREATE TABLE `post` (

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <?php if(isset($_GET['searchUpdate'])){
             $uniqueID = $_GET['searchUpdate'];
-            $APIData = core::$model['module']->API_getData($uniqueID);
+            $APIData = core::$model['module']->API_getData($uniqueID, core::$model['config']->read('moduleKey_'.$uniqueID, null));
             ?>
             <div class="card card-info card-outline">
             <div class="card-header">
@@ -15,6 +15,7 @@
                     elseif($APIData['status'] == 'error')
                         core::$model['gui']->alert('Nie znaleziono takiego modułu w API', 'danger');
                     else{
+                        $key = core::$model['config']->read('moduleKey_'.$uniqueID, null);
                         echo '<div class="alert alert-warning" role="alert">
                             <h4 class="alert-heading">UWAGA!</h4>
                             <p>Przed instalacja/aktualizacją modułu upewnij się, że pobierasz go z pewnego źródła!<br />
@@ -24,7 +25,7 @@
                         Znaleziono moduł <b>'.$APIData['data']['name'].'</b><br />
                         Wersja znalezionego modułu: <b>'.$APIData['data']['version'].'</b><br />
                         '.(is_null($APIData['data']['file'])?'':'Opis wersji:<br />'.nl2br(base64_decode($APIData['data']['file']['description']))).'<br /><br />
-                        <a href="module.html?installFromServer='.$APIData['data']['file']['filePath'].'" class="btn btn-primary btn-sm '.(is_null($APIData['data']['file'])?'disabled':'').'">Zainstaluj/Zaktualizuj moduł</a>';
+                        <a href="module.html?installFromServer='.$APIData['data']['file']['filePath'].''.(is_null($key)?'':'?downloadKey='.$key).'" class="btn btn-primary btn-sm '.(is_null($APIData['data']['file'])?'disabled':'').'">Zainstaluj/Zaktualizuj moduł</a>';
                     }
                 ?>
             </div>
@@ -68,6 +69,15 @@
                                 <div class="collapse" id="collapseModule' . $list['name'] . '">
                                     <span class="text-primary font-weight-bold">Dodatkowe informacje</span><br />
                                     UniqueID: <span class="text-info">' . $list['config']['uniqueID'] . '</span><br />
+                                    <form method="POST" class="w-50">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-control-sm" placeholder="Klucz" value="'.core::$model['config']->read('moduleKey_'.$list['config']['uniqueID'], '').'" name="key">
+                                            <input type="hidden" class="form-control form-control-sm" value="'.$list['config']['uniqueID'].'" name="keyUniqueID">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary btn-sm" name="keySave">Zapisz klucz</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                     <a href="module.html?searchUpdate='.$list['config']['uniqueID'].'" class="btn btn-xs btn-secondary">Sprawdź dostępność aktualizacji</a>
                                 </div>
                             </td>
