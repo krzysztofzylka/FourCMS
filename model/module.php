@@ -18,6 +18,8 @@ return new class(){
         core::loadModule($moduleName);
         $config = core::$library->module->getConfig($moduleName);
         $configFCMS = $config['fourCMS']['displayPage'];
+        if(isset($configFCMS[$displayName]['parameters']))
+            $GLOBALS['parameters'] = $configFCMS[$displayName]['parameters'];
         if(!isset($configFCMS[$displayName]))
             header('location: index.php?page=404');
         $path = $config['path'].$configFCMS[$displayName]['path'];
