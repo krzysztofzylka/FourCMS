@@ -5,6 +5,7 @@ include('core/core.php');
 $GLOBALS['FourCMS'] = 'user';
 
 core::init(); //init core
+core::loadModel('config');
 core::$option['showCoreError'] = false; //ukrywanie błędów rdzenia
 core::$option['saveCoreError'] = false; //zapisywanie błędów rdzenia
 
