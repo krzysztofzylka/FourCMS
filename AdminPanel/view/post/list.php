@@ -7,13 +7,13 @@
 					<a href="postAdd.html"><button type="button" class="btn btn-tool" data-toggle="tooltip" data-placement="left" title="Dodaj posta"><i class="fas fa-plus"></i></button></a>
 				</div>
 			</div>
-			<div class="card-body p-0">
-				<table class="dataTable table table-hover table-sm text-nowrap table-responsive">
+			<div class="card-body p-0 table-responsive">
+				<table class="dataTable table table-hover table-sm text-nowrap">
 					<thead>
 						<tr>
-							<th>Tytuł</th>
-							<th width="200px">Data utworzenia</th>
-							<th width="200px">Utworzone przez</th>
+							<th style="min-width: 300px;">Tytuł</th>
+							<th style="width: 300px">Data utworzenia</th>
+							<th style="width: 200px">Utworzone przez</th>
 						</tr>
 					</thead>
 					<tbody>
