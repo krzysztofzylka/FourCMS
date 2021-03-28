@@ -1,5 +1,5 @@
 <div class="content p-3">
-	<div class="container-fluid">
+	<div class="container-fluid table-responsive">
 		<?php
 		ob_start();
         phpinfo();

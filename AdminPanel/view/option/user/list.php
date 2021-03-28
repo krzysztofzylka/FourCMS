@@ -21,8 +21,8 @@ foreach (core::$model['permission']->list() as $item) {
                     <a href="createNewUser.html" type="button" class="btn btn-tool <?php echo !core::$module['account']->checkPermission('option_usersAdd') ? 'disabled' : '' ?>" data-toggle="tooltip" title="Dodanie nowego użytkownika"><i class="fas fa-user-plus"></i></a>
                 </div>
             </div>
-            <div class="card-body p-0 table-responsive">
-                <table class="table table-sm text-nowrap dataTable">
+            <div class="card-body p-0">
+                <table class="table table-sm text-nowrap dataTable table-responsive">
                     <thead>
                         <tr>
                             <th style="width: 1px">#</th>

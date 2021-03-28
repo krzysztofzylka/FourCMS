@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class='card-body p-0'>
-                <table class="table table-sm text-nowrap dataTable">
+                <table class="table table-sm text-nowrap dataTable table-responsive">
                     <thead>
                         <tr>
                             <th style="width: 250px">Nazwa</th>

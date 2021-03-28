@@ -7,8 +7,8 @@
 					<a href="postAdd.html"><button type="button" class="btn btn-tool" data-toggle="tooltip" data-placement="left" title="Dodaj posta"><i class="fas fa-plus"></i></button></a>
 				</div>
 			</div>
-			<div class="card-body table-responsive p-0">
-				<table class="dataTable table table-hover table-sm text-nowrap">
+			<div class="card-body p-0">
+				<table class="dataTable table table-hover table-sm text-nowrap table-responsive">
 					<thead>
 						<tr>
 							<th>Tytuł</th>
