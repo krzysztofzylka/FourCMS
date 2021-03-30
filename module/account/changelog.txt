@@ -1,3 +1,7 @@
+2.0
+- Poprawiono sesje, są generowane losowo podczas uruchomienia modułu
+- Zmiana nazwy sesji z sessionName na sessionID
+
 1.9
 - Zoptymalizowano pobieranie uprawnień, od teraz uprawnienia pobierają są tylko raz
 

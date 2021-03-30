@@ -1,9 +1,9 @@
 <?php
 return new class(){ //create main class
 	public $hashAlghoritm = 'pbkdf2'; //hash alghoritm
-	public $sessionName = 'userID'; //user session name
-	public $sessionIPName = 'userIP'; //ip user session name
-	public $sessionUserHash = 'userHash'; //user hash
+	public $sessionID; //user session name
+	public $sessionIPName; //ip user session name
+	public $sessionUserHash; //user hash
 	public $userData = null; //user data
 	public $DBTablePrefix = ''; //prefix for table in database
 	public $defaultPermissionGroup = 1; //default permission
@@ -17,6 +17,7 @@ return new class(){ //create main class
 		core::setError();
 		if(core::$library->database->isConnect === false)
 			return core::setError(1, 'Connect error');
+		$this->_generateSessionName();
 		$this->dbConn = core::$library->database->conn;
 	}
 	//install module
@@ -74,7 +75,7 @@ return new class(){ //create main class
 			return core::setError(2, 'password incorrect');
 		if(boolval($user['blocked']))
 			return core::setError(4, 'user blocked');
-		$_SESSION[$this->sessionName] = (int)$user['id'];
+		$_SESSION[$this->sessionID] = (int)$user['id'];
 		$_SESSION[$this->sessionIPName] = core::$library->network->getClientIP();
 		$this->_userSetHash(core::$library->string->generateString(), (int)$user['id']);
 		return true;
@@ -98,13 +99,12 @@ return new class(){ //create main class
 	}
 	public function checkUser() : bool {
 		core::setError();
-		if(!isset($_SESSION[$this->sessionName]) or 
-			!is_int($_SESSION[$this->sessionName]) or 
+		if(!isset($_SESSION[$this->sessionID]) or 
 			!isset($_SESSION[$this->sessionIPName]) or 
 			!isset($_SESSION[$this->sessionUserHash]) or 
 			!$this->userIPCheck())
 		{
-			session_unset();
+			$this->_deleteSession();
 			return false;
 		}
 		return true;
@@ -114,7 +114,7 @@ return new class(){ //create main class
 		if($this->checkUser() === false) //check user
 			return core::setError(1, 'The user is not logged in'); //return error 1
 		$this->_userUnsetHash();
-		session_unset(); //delete session
+		$this->_deleteSession(); //delete session
 		$this->userData = null; //delete userData
 		return true;
 	}
@@ -127,7 +127,7 @@ return new class(){ //create main class
 			return core::setError(1, 'SQL error');
 		$user = $user->fetch(PDO::FETCH_ASSOC);
 		if(!$this->_userCheckHash($user['userSessionHash']) or boolval($user['blocked'])){
-			session_unset();
+			$this->_deleteSession();
 			return core::setError(2, 'user error');
 		}
 		$this->userData = $user;
@@ -272,12 +272,35 @@ return new class(){ //create main class
 	}
 	private function _userID(){
 		core::setError();
-		return (int)htmlspecialchars($_SESSION[$this->sessionName]);
+		return (int)htmlspecialchars($_SESSION[$this->sessionID]);
 	}
 	private function _userCheckHash($userHash){
 		if($userHash <> $_SESSION[$this->sessionUserHash])
 			return false;
 		return true;
+	}
+	private function _generateSessionName(){
+		$this->sessionID = core::$model['config']->read('module_account_sessionID', null);
+		if(is_null($this->sessionID)){
+			$generateString = md5(rand(1000, 9999).date('Ymdhisv').rand(1000, 9999));
+			core::$model['config']->write('module_account_sessionID', $generateString);
+			$this->sessionID = $generateString;
+		}
+		$this->sessionIPName = core::$model['config']->read('module_account_sessionIPName', null);
+		if(is_null($this->sessionIPName)){
+			$generateString = md5(rand(1000, 9999).date('Ymdhisv').rand(1000, 9999));
+			core::$model['config']->write('module_account_sessionIPName', $generateString);
+			$this->sessionIPName = $generateString;
+		}
+		$this->sessionUserHash = core::$model['config']->read('module_account_sessionUserHash', null);
+		if(is_null($this->sessionUserHash)){
+			$generateString = md5(rand(1000, 9999).date('Ymdhisv').rand(1000, 9999));
+			core::$model['config']->write('module_account_sessionUserHash', $generateString);
+			$this->sessionUserHash = $generateString;
+		}
+	}
+	private function _deleteSession(){
+		unset($_SESSION[$this->sessionID], $_SESSION[$this->sessionIPName], $_SESSION[$this->sessionUserHash]);
 	}
 }
 ?>
