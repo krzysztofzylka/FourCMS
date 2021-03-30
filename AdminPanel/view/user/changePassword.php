@@ -9,10 +9,6 @@
 </div>
 <div class="content">
 	<div class="container-fluid">
-		<?php
-		if(isset($_POST['haslo']))
-			core::$model['adminPanel/user']->changePassword();
-		?>
 		<form method="post">
 			<div class="card">
 				<div class="card-body">

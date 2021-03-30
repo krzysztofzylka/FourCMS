@@ -7,29 +7,28 @@ return new class(){
 		$haslo2 = htmlspecialchars($_POST['haslo2']);
 		$haslo2_re = htmlspecialchars($_POST['haslo2_re']);
 		if(strlen($haslo2) < 6)
-			echo '<div class="alert alert-danger" role="alert">Hasło musi posiadać minimum 6 znaków</div>';
+			core::$model['gui']->alert('Hasło musi posiadać minimum 6 znaków', 'danger');
 		elseif($haslo2 <> $haslo2_re)
-			echo '<div class="alert alert-danger" role="alert">Podane hasła się nie zgadzają</div>';
+			core::$model['gui']->alert('Podane hasła się nie zgadzają', 'danger');
 		else{
 			$changePassword = core::$module['account']->changePassword(core::$module['account']->userData['login'], $haslo, $haslo2);
 			if(core::$error[0] > -1 or !$changePassword){
 				switch(core::$error[0]){
 					case 1:
-						echo '<div class="alert alert-danger" role="alert">Nie znaleziono takiego użytkownika</div>';
+						core::$model['gui']->alert('Nie znaleziono takiego użytkownika', 'danger');
 						break;
 					case 2:
-						echo '<div class="alert alert-danger" role="alert">Podane hasło się nie zgadza</div>';
+						core::$model['gui']->alert('Podane hasła się nie zgadzają', 'danger');
 						break;
 					case 3:
-						echo '<div class="alert alert-danger" role="alert">Błąd SQL</div>';
-						core::$library->debug->print_r(core::$error[2]);
+						core::$model['gui']->alert('Błąd SQL', 'danger');
 						break;
 					default:
-						echo '<div class="alert alert-danger" role="alert">Błąd zmiany hasła</div>';
+						core::$model['gui']->alert('Błąd zmiany hasła', 'danger');
 						break;
 				}
 			}else
-				echo '<div class="alert alert-success" role="alert">Poprawnie zmieniono hasło</div>';
+				core::$model['gui']->alert('Poprawnie zmieniono hasło', 'success');
 		}
 		core::setError();
 	}
