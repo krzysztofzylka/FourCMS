@@ -52,4 +52,7 @@ foreach(['header_google_site_verification', 'header_keywords', 'header_descripti
 
 //loading post controller
 core::loadController('main');
+
+if(boolval(core::$model['config']->read('debugBarForUser', false)))
+    core::loadView('debug');
 ?>

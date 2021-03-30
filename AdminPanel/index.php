@@ -1,8 +1,9 @@
 <?php
 ob_start();
 session_start();
+include('../object/debug.php');
+$GLOBALS['_debugSiteLoadMicroTime'] = microtime(true);
 $GLOBALS['FourCMS'] = 'admin';
-
 //load and init core
 include('../core/core.php');
 core::$option['protectModelName'] = false;
@@ -69,7 +70,8 @@ foreach(['adminPanel_title', 'adminPanel_loginMessage'] as $configName)
 
 //load main controller
 core::loadController('main');
-
+if(boolval(core::$model['config']->read('debugBar', false)))
+    core::loadView('debug');
 //clean page
 ob_end_flush();
 ?>

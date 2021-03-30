@@ -207,7 +207,41 @@ core::$model['option']->generateOption([
                     ]
                 ]
             ],
-        ]
+            [
+                'type' => 'card',
+                'header' => [
+                    'title' => 'Panel debugowania'
+                ],
+                'data' => [
+                    [
+                        'type' => 'card-configTable',
+                        'data' => [
+                            [
+                                'type' => 'tableDataCheckBootstrap',
+                                'configName' => 'debugBar',
+                                'description' => 'Opcja włącza panel debugowania dostępny pod przyciskiem <span class="badge badge-primary">`</span>',
+                                'name' => 'Panel debugowania',
+                                'default' => false
+                            ],
+                            [
+                                'type' => 'tableDataCheckBootstrap',
+                                'configName' => 'debugBarForUser',
+                                'description' => 'Funkcja pozwala włączyć panel debudowania dla CMS\'a (Nie należy włączać opcji na produkcji)',
+                                'name' => 'Panel debugowania',
+                                'default' => false
+                            ],
+                            [
+                                'type' => 'tableDataCheckBootstrap',
+                                'configName' => 'debugBarDefaultExpandData',
+                                'description' => 'Czy tabele mają być domyślnie rozwinięte',
+                                'name' => 'Rozwinięcie danych',
+                                'default' => false
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ],
     ]
 ]);
 core::$model['option']->showOption();
