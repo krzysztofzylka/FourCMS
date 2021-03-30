@@ -1,11 +1,13 @@
 <?php
 return $this->module = new class(){ 
-	public $version = '1.2';
+	public $version = '1.3';
 	public function getConfig(string $name, bool $loadFile = false){
 		core::setError();
         if (!isset(core::$module_add[$name])) {
 			if($loadFile == true)
-				return include(core::$path['module'].$name.'/config.php');
+				if(file_exists(core::$path['module'].$name.'/config.php'))
+					return include(core::$path['module'].$name.'/config.php');
+				else return core::setError(2, 'module not found');
 			return core::setError(1, 'module not found');
         }
 		return core::$module_add[$name]['config'];
