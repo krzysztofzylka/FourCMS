@@ -43,5 +43,13 @@ return new class(){
         $prep->execute();
         return true;
     }
+    public function getFullPermissionArray(){
+        $permArray = [];
+        $prep = core::$library->database->prepare('SELECT permName FROM permissionList');
+        if(!$prep->execute()) return core::setError(1);
+        foreach($prep->fetchAll(PDO::FETCH_ASSOC) as $data)
+            $permArray[$data['permName']] = core::$module['account']->checkPermission($data['permName']);
+        return $permArray;
+    }
 }
 ?>
