@@ -1,6 +1,6 @@
 <?php
 return $this->global = new class(){ 
-	public $version = '1.2'; 
+	public $version = '1.3'; 
 	public $__globalVar = []; 
 	public $__globalList = []; 
 	public function read(string $name){ 
@@ -12,7 +12,7 @@ return $this->global = new class(){
 	public function write(string $name, $data) : void{ 
 		core::setError(); 
 		$this->__globalVar[$name] = $data; 
-		array_push($this->__globalList, $name); 
+		$this->_addDataToGlobalList($name);
 		return;
 	}
 	public function unset(string $name) : void{ 
@@ -24,7 +24,7 @@ return $this->global = new class(){
 	public function createArray(string $name) : void{
 		core::setError();
 		$this->__globalVar[$name] = []; 
-		array_push($this->__globalList, $name); 
+		$this->_addDataToGlobalList($name);
 		return;
 	}
 	public function writeArray(string $name, string $arrayName, $data) : void{
@@ -33,8 +33,12 @@ return $this->global = new class(){
 		$this->__globalVar[$name][] = $data; 
 		else
 			$this->__globalVar[$name][$arrayName] = $data; 
-		array_push($this->__globalList, $name); 
+		$this->_addDataToGlobalList($name);
 		return;
+	}
+	private function _addDataToGlobalList($name){
+		if(is_bool(array_search($name, $this->__globalList)) == true)
+			array_push($this->__globalList, $name); 
 	}
 }
 ?>
