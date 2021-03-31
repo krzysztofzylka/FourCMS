@@ -101,7 +101,8 @@ $krumoDefaultExpand = boolval(core::$model['config']->read('debugBarDefaultExpan
                     </div>
                     <!-- info -->
                     <div class="tab-pane fade show table-responsive" id="debugBar_info" role="tabpanel">
-                        <b>Czas ładowania strony</b> <?php echo isset($GLOBALS['_debugSiteLoadMicroTime']) ? round(microtime(true) - $GLOBALS['_debugSiteLoadMicroTime'], 3) . 's' : 'Brak danych' ?>
+                        <b>Czas ładowania strony:</b> <?php echo isset($GLOBALS['_debugSiteLoadMicroTime']) ? round(microtime(true) - $GLOBALS['_debugSiteLoadMicroTime'], 3) . 's' : 'Brak danych' ?><br />
+                        <b>Załadowany kontroler:</b> <?php echo isset($_GET['page'])?str_replace('.', ' -> ', $_GET['page']):'Brrak informacji' ?> <span class="badge badge-info float-right">Dane pobrane ze zmiennej $_GET['page']</span>
                     </div>
                 </div>
             </div>
