@@ -57,24 +57,30 @@
                     </div>
                     <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview"
                         role="menu" data-accordion="false">
-                        {if isset($menu)}
-                            {$menu}
-                        {/if}
+                        {block name=menu}
+                            {if isset($menu)}
+                                {$menu}
+                            {/if}
+                        {/block}
                     </ul>
                 </nav>
             </div>
         </aside>
         <div class="content-wrapper">
-            {if isset($data)}
-                {$data}
-            {/if}
+            {block name=data}
+                {if isset($data)}
+                    {$data}
+                {/if}
+            {/block}
         </div>
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-inline">
-                Panel administracyjny dla <a href='https://krzysztofzylka.pl/'>FourCMS</a>
-            </div>
-            <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
-            reserved.
+            {block name=footer}
+                <div class="float-right d-none d-sm-inline">
+                    Panel administracyjny dla <a href='https://krzysztofzylka.pl/'>FourCMS</a>
+                </div>
+                <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
+                reserved.
+            {/block}
         </footer>
     </div>
 </body>

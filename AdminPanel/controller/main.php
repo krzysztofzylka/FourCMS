@@ -30,7 +30,7 @@ return new class(){
 				}
 			}
 		}
-		core::$module['smarty']->smarty->display('login.tpl'); //loading login page
+		core::$module['smarty']->smarty->display('main/login.tpl'); //loading login page
 	}
 	private function main(){ //load main panel
 		core::setError();
@@ -38,6 +38,7 @@ return new class(){
 		core::$module['smarty']->smarty->assign('menu', $menu);
 		core::$module['smarty']->smarty->assign('user', core::$module['account']->userData);
 		core::$module['smarty']->smarty->assign('userAvatar', core::$model['adminPanel/user']->getAvatar(-1));
+		core::$module['smarty']->smarty->assign('userPermission', core::$model['permission']->getFullPermissionArray());
 		//set default page
 		$page = isset($_GET['page'])?$_GET['page']:'main_panel';
 		foreach(core::$model['module']->moduleConfiguratorList() as $modulePath)
@@ -51,7 +52,7 @@ return new class(){
 		ob_end_clean();
 		//show front-end
 		core::$module['smarty']->smarty->assign('data', $data);
-		core::$module['smarty']->smarty->display('main.tpl'); //loading login page
+		core::$module['smarty']->smarty->display('main/main.tpl'); //loading login page
 	}
 }
 ?>
