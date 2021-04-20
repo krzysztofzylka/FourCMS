@@ -1,33 +1,99 @@
 <?php
-return new class(){
+return new class() extends core_controller {
 	public function __construct(){
 		core::setError();
-		if(isset($_GET['type']) and $_GET['type'] == 'adminpanel'){
-			if(!core::$module['account']->checkPermission('module'))
+
+		if (isset($_GET['type']) and $_GET['type'] == 'adminpanel') {
+			if (!core::$module->account->checkPermission('module')) {
 				header('404.html');
-		}else{
-			if(!core::$module['account']->checkPermission('service') or !core::$module['account']->checkPermission('service_module'))
+			}
+		} else {
+			if (!core::$module->account->checkPermission('service')
+				|| !core::$module->account->checkPermission('service_module')
+			) {
 				header('location: 404.html');
+			}
 		}
-		if(isset($_GET['type'])){
+
+		$this->loadModel('Module');
+		$this->view();
+	}
+	public function view() {
+		core::setError();
+
+		if (isset($_GET['type'])) {
 			switch(htmlspecialchars($_GET['type'])){
 				case 'info':
-					core::loadView('service.moduleInfo');
+					$this->view_moduleInfo();
 					break;
 				case 'debug':
-					core::loadView('service.moduleDebug');
+					$this->view_moduleDebug();
 					break;
 				case 'adminpanel':
-					if(!isset($_GET['modul']))
-						header('location: 404.html');
-					core::loadView('service.moduleAdminPanel');
+					$this->view_moduleAdminPanel();
 					break;
 				default:
 					header('location: 404.html');
 					break;
 			}
-		}else
-			core::loadView('service.module');
+		} else {
+			$this->view_moduleList();
+		}
+	}
+	public function view_moduleAdminPanel(){
+		core::setError();
+
+		if (!isset($_GET['modul'])) {
+			header('location: 404.html');
+			return;
+		}
+
+		$moduleName = htmlspecialchars($_GET['modul']);
+
+		ob_start();
+		core::$library->module->loadAdminPanel($moduleName);
+		$moduleContent = ob_get_contents();
+		ob_end_clean();
+
+		$this->viewSetVariable('moduleContent', $moduleContent);
+		$this->loadView('service.moduleAdminPanel');
+	}
+	public function view_moduleDebug(){
+		core::setError();
+
+
+		$moduleName = htmlspecialchars($_GET['name']);
+		$modulePath = core::$path['module'] . $moduleName . '/';
+		if (!file_exists($modulePath . 'config.php')) {
+			header('location: 404.html');
+		}
+
+		$this->viewSetVariable('name', $moduleName);
+		$this->viewSetVariable('path', $modulePath);
+		$this->loadView('service.moduleDebug');
+	}
+	public function view_moduleInfo(){
+		core::setError();
+
+		$moduleName = htmlspecialchars($_GET['name']);
+		$modulePath = core::$path['module'] . $moduleName . '/';
+
+		if (!file_exists($modulePath . 'config.php')) {
+			header('location: 404.html');
+		}
+
+		$moduleConfig = include($modulePath . 'config.php');
+
+		$this->viewSetVariable('name', $moduleName);
+		$this->viewSetVariable('path', $modulePath);
+		$this->viewSetVariable('config', $moduleConfig);
+		$this->loadView('service.moduleInfo');
+	}
+	public function view_moduleList(){
+		core::setError();
+
+		$this->viewSetVariable('moduleList', $this->Module->fullModuleList());
+		$this->loadView('service.module');
 	}
 }
 ?>

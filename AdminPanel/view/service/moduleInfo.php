@@ -1,10 +1,3 @@
-<?php
-$name = htmlspecialchars($_GET['name']);
-$path = core::$path['module'] . $name . '/';
-if (!file_exists($path . 'config.php'))
-	header('location: 404.html');
-$config = include($path . 'config.php');
-?>
 <div class="content-header">
 	<div class="container-fluid">
 		<h1 class="m-0 text-dark">Informacje o module <?php echo $name ?></h1>

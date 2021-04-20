@@ -1,8 +1,3 @@
-<?php
-$APIData = core::$model['module']->API_getData();
-if(core::$isError)
-    core::$model['gui']->alert('Nie udało się połączyć z serwerem', 'danger');
-?>
 <div class='content pt-3'>
     <div class="container-fluid">
         <div class="card card-info card-outline">
@@ -13,10 +8,9 @@ if(core::$isError)
                 <table class="table">
                     <?php
                     if(is_array($APIData)){
-                        unset($APIData['status']);
                         foreach($APIData as $uniqueID => $data) {
-                            $moduleLocalData = core::$library->module->getConfig($data['name'], true);
-                            $checkVersion = $moduleLocalData['version'] == $data['version'];
+                            $moduleLocalData = $data['moduleLocalData'];
+                            $checkVersion = $data['checkVersion'];
                             echo '<tr>
                                 <td>
                                     ' . $data['name'] . ' <a data-toggle="collapse" href="#collapseModule' . $data['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $data['name'] . '"><i class="fas fa-info-circle"></i></a> <br />

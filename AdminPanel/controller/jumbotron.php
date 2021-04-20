@@ -1,15 +1,33 @@
 <?php
-return new class(){
+return new class() extends core_controller {
 	public function __construct(){
 		core::setError();
-		if(!core::$module['account']->checkPermission('jumbotron'))
+
+		if(!core::$module->account->checkPermission('jumbotron')) {
 			header('location: 404.html');
-		core::loadModel('jumbotron');
-		if(isset($_POST['jumbotronSave'])){
-			core::$model['jumbotron']->write($_POST['header'], (isset($_POST['show'])?1:0), $_POST['text'], $_POST['url']);
-			core::$model['gui']->alert('Poprawnie zapisano dane', 'success');
 		}
-		core::loadView('jumbotron');
+
+		$this->loadModel('Jumbotron');
+		$this->loadModel('GuiHelper');
+
+		$this->saveForm();
+
+		$this->view();
+	}
+	public function view(){
+		core::setError();
+
+		$this->viewSetVariable('jumbotron', $this->Jumbotron->read(true));
+
+		$this->loadView('jumbotron');
+	}
+	public function saveForm(){
+		core::setError();
+
+		if(isset($_POST['jumbotronSave'])){
+			$this->Jumbotron->write($_POST['header'], (isset($_POST['show'])?1:0), $_POST['text'], $_POST['url']);
+			$this->GuiHelper->contentAlert('Poprawnie zapisano telebim', 'success');
+		}
 	}
 }
 ?>

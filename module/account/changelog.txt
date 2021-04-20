@@ -1,3 +1,7 @@
+2.1
+- Poprawiono moduł aby działał z frameworkiem w wersji 0.4.0
+- Przebudowano moduł wg. najnowszych standardów
+
 2.0
 - Poprawiono sesje, są generowane losowo podczas uruchomienia modułu
 - Zmiana nazwy sesji z sessionName na sessionID

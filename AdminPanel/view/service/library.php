@@ -14,13 +14,9 @@
 					</thead>
 					<tbody>
 						<?php
-						$scandir = scandir('../core/library/'); //scan library dir
-						foreach($scandir as $fname){ //file loop
-							if(core::$library->string->strpos($fname, '.php') == -1) //if file
-								continue;
-							$fname = str_replace('.php', '', $fname); //change name
+						foreach($libraryList as $library){ //file loop
 							echo '<tr>
-								<td>'.$fname.'</td><td>'.core::$library->$fname->version.'</td>
+								<td>'.$library['name'].'</td><td>'.$library['version'].'</td>
 							</tr>';
 						}
 						?>
@@ -42,14 +38,9 @@
 					</thead>
 					<tbody>
 						<?php
-						$scandir = scandir(core::$path['library_api']); //scan library dir
-						foreach($scandir as $fname){ //file loop
-							if(core::$library->string->strpos($fname, '.php') == -1) //if file
-								continue;
-							$fname = str_replace('.php', '', $fname); //change name
-							$api = core::$library->api->start($fname);
+						foreach($apiList as $api){
 							echo '<tr>
-								<td>'.$fname.'</td><td>'.$api->version.'</td>
+								<td>'.$api['name'].'</td><td>'.$api['version'].'</td>
 							</tr>';
 						}
 						?>

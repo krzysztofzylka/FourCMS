@@ -1,7 +1,3 @@
-<?php
-$search = isset($_GET['searchMenu']) ? ($_GET['searchMenu']==''?' ':$_GET['searchMenu']) : ' ';
-$searchArray = include('../file/search.php');
-?>
 <div class='content pt-3'>
     <div class="container-fluid">
         <div class="card">

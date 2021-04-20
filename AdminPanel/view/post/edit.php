@@ -1,36 +1,3 @@
-<?php
-if (!isset($_GET['id']))
-	header('location: 404.html');
-$id = htmlspecialchars($_GET['id']);
-$addPost = $id == 'dodaj' ? true : false;
-if (!$addPost) {
-	$post = core::$library->database->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
-	if ($post['count'] == 0)
-		header('location: 404.html');
-}
-if (isset($_POST['text'])) {
-	if (strlen($_POST['title']) >= 3) {
-		$type = isset($_POST['type_default']) ? 'post' : $_POST['type'];
-		$hidden = isset($_POST['hidden']) ? 1 : 0;
-		$showMetadata = isset($_POST['showMetadata']) ? 1 : 0;
-		if ($addPost) {
-			$id = core::$model['post']->create($_POST['title'], $_POST['text'], core::$module['account']->userData['id'], $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
-			if(!$id)
-				core::$model['gui']->alert('Błąd dodawania posta', 'danger');
-			else
-				header('location: postEdit-' . $id . '.html');
-		} else {
-			$edit =core::$model['post']->update((int)$id, $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
-			$post = core::$library->database->query('SELECT *, count(*) as count FROM post WHERE `id`=' . $id . ' LIMIT 1')->fetch(PDO::FETCH_ASSOC);
-			if(!$edit)
-				core::$model['gui']->alert('Błąd modyfikowania posta', 'danger');
-			else
-				core::$model['gui']->alert('Poprawnie zamodyfikowano post', 'success');
-		}
-	} else
-		core::$model['gui']->alert('Tytuł posta musi posiadać przynajmniej 3 znaki');
-}
-?>
 <div class='content pt-3'>
 	<div class="container-fluid">
 		<form method="POST">
@@ -43,7 +10,7 @@ if (isset($_POST['text'])) {
 						<div class='card-body'>
 							<textarea id="textarea" name="text" placeholder="Tutaj umieść tekst" style="width: 100%; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $addPost ? '' : $post['text'] ?></textarea>
 							<button class="btn btn-primary"><?php echo $addPost ? 'Dodaj' : 'Zapisz' ?></button>
-							<?php if (!$addPost) echo '<a href="' . core::$model['link']->generate(['page', 'id', 'type' => 'delete']) . '" class="btn btn-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten element?\nTego nie da się cofnąć.\');">Usuń</a>'; ?>
+							<?php if (!$addPost) echo '<a href="postDelete-' . $post['id'] . '.html" class="btn btn-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten element?\nTego nie da się cofnąć.\');">Usuń</a>'; ?>
 						</div>
 					</div>
 				</div>
@@ -92,7 +59,7 @@ if (isset($_POST['text'])) {
 									<label class="custom-control-label" for="postTypeCheckbox">Wyświetlaj jako treść</label>
 								</div>
 								<div id='postTypeForm' style="<?php echo ($addPost or $post['type'] == 'post') ? 'display: none;' : '' ?>">
-									<?php echo core::$model['link']->bootstrapLinkGenerator($addPost ? '' : $post['type'], ['module'], 'type', 'post') ?>
+									<?php echo $this->GuiHelper->bootstrapFormLinkGenerator($addPost ? '' : $post['type'], ['module'], 'type', 'post') ?>
 								</div>
 								<small class="form-text text-muted">Ta opcja pozwala zmienić rodzaju posta z tekstu na treść z wybranego modułu</small>
 							</div>
@@ -103,5 +70,4 @@ if (isset($_POST['text'])) {
 		</form>
 	</div>
 </div>
-
 <script src='script/editPost.js'></script>

@@ -1,0 +1,1 @@
+Panel administracyjny dla nowego moduł

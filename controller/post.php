@@ -1,22 +1,35 @@
 <?php
-return new class(){
+return new class() extends core_controller{
 	public function __construct(){
-        if(isset($_GET['post'])) { //read post
-            $id = core::$model['protect']->protectID($_GET['post']);
-            $post = core::$model['post']->read($id);
-            if ($post === false) {
-                core::$module['smarty']->smarty->display('404.tpl');
-                return;
-            }elseif ($post['type'] == "post") {
-                core::$module['smarty']->smarty->assign('post', $post);
-                core::$module['smarty']->smarty->display('post.tpl');
-            }else
-                core::$model['interpreter']->loadScript($post['type']);
-        }else{ //read post list
-            $posts = core::$model['post']->list();
-            core::$module['smarty']->smarty->assign('blog_post', $posts);
-            core::$module['smarty']->smarty->display('postList.tpl');
-        }
+        $this->loadModel('Post');
+        $this->loadModel('Protect');
+        $this->loadModel('Interpreter');
+        $this->view();
+    }
+    public function view(){
+        if (isset($_GET['post'])) {
+                $id = $this->Protect->protectID($_GET['post']);
+                $post = $this->Post->read($id);
+
+                if(!$post){
+                    return core::loadController('404');
+                } elseif ($post['type'] == "post") {
+                    $this->viewSetVariable('post', $post);
+                    $this->loadView('post');
+                } else {
+                    $interpreter = $this->Interpreter->loadScript($post['type']);
+                    switch($interpreter[0]){
+                        case 'module':
+                            $GLOBALS['interpreter'] = $interpreter;
+                            core::loadController('module');
+                            break;
+                    }
+                }
+            } else {
+                $posts = $this->Post->list();
+                $this->viewSetVariable('posts', $posts);
+                $this->loadView('posts');
+            }
     }
 }
 ?>

@@ -1,10 +1,21 @@
 <?php
-return new class(){
+return new class() extends core_controller {
 	public function __construct(){
         core::setError();
-        if(isset($_POST['haslo']))
-			core::$model['adminPanel/user']->changePassword();
-        core::loadView('user.changePassword');
+
+		$this->loadModel('AdminPanel.User');
+
+		$this->formSubmit();
+
+        $this->view();
+    }
+    public function view(){
+		$this->loadView('user.changePassword');
+    }
+    public function formSubmit(){
+		if (isset($_POST['haslo'])) {
+			$this->AdminPanel_User->changePassword();
+		}
     }
 }
 ?>

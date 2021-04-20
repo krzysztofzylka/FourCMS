@@ -15,10 +15,10 @@
                 Inforamcje
             </div>
             <div class="card-body">
-                Nazwa szablonu: <?php echo core::$model['template']->templateName ?><br />
-                Folder szablonu: <?php echo core::$model['template']->templateDir ?><br />
-                Rozmiar szablonu: <?php echo core::$library->memory->formatBytes(core::$library->file->dirSize('../' . core::$model['template']->templateDir)) ?><br />
-                Plików: <?php echo core::$library->file->fileCount('../' . core::$model['template']->templateDir) ?>
+                Nazwa szablonu: <?php echo $templateName ?><br />
+                Folder szablonu: <?php echo $templateDir ?><br />
+                Rozmiar szablonu: <?php echo $templateDirSize ?><br />
+                Plików: <?php echo $templateDirFileCount ?>
             </div>
         </div>
 
@@ -32,7 +32,7 @@
                         <label>Wybór pliku</label>
                         <select class="custom-select mb-3" name="file">
                             <?php
-                            foreach (array_diff(scandir('../' . core::$model['template']->templateDir), ['.', '..']) as $item) {
+                            foreach ($templateDirFileList as $item) {
                                 echo '<option value="' . $item . '">' . $item . '</option>';
                             }
                             ?>
@@ -58,16 +58,16 @@
             </div>
         </div>
 
-        <?php if (isset($_POST['file'])) { $file = basename($_POST['file']); ?>
+        <?php if (isset($fileEditName)) { ?>
             <div class='card'>
                 <div class='card-header'>
-                    Edycja pliku <b><?php echo $file ?></b>
+                    Edycja pliku <b><?php echo $fileEditName ?></b>
                 </div>
                 <div class="card-body">
                     <form method="POST">
-                        <input style="display: none;" type="text" class="form-control" name="file" value="<?php echo $file ?>">
+                        <input style="display: none;" type="text" class="form-control" name="file" value="<?php echo $fileEditName ?>">
                         <div class="form-group">
-                            <textarea class="form-control" rows="25" name="fileData"><?php echo file_get_contents('../' . core::$model['template']->templateDir . $file); ?></textarea>
+                            <textarea class="form-control" rows="25" name="fileData"><?php echo $fileEditContent; ?></textarea>
                         </div>
                         <button class="btn btn-primary">Zapis pliku</button>
                     </form>

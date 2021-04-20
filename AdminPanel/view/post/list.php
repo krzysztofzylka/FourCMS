@@ -18,20 +18,20 @@
 					</thead>
 					<tbody>
 						<?php
-						foreach(core::$model['post']->list() as $item) {
-							if (strlen($item['title']) < 1)
+						foreach($postList as $post) {
+							if (strlen($post['title']) < 1)
 								$item['title'] = '- Brak tytułu -';
 							echo '<tr>
 								<td>
-									<a href="postEdit-' . $item['id'] . '.html">' . $item['title'] . '</a>
-									' . (boolval($item['hidden']) ? '<i class="far fa-eye-slash" data-toggle="tooltip" data-original-title="Post posiada status ukryty"></i>' : '') . ' 
-									' . ($item['type'] <> 'post' ? '<i class="fas fa-cubes" data-toggle="tooltip" data-original-title="Post posiada inny typ"></i>' : '') . '
+									<a href="postEdit-' . $post['id'] . '.html">' . $post['title'] . '</a>
+									' . (boolval($post['hidden']) ? '<i class="far fa-eye-slash" data-toggle="tooltip" data-original-title="Post posiada status ukryty"></i>' : '') . ' 
+									' . ($post['type'] <> 'post' ? '<i class="fas fa-cubes" data-toggle="tooltip" data-original-title="Post posiada inny typ"></i>' : '') . '
 								</td>
 								<td>
-									' . $item['date'] . '
+									' . $post['date'] . '
 								</td>
 								<td>
-									<a href="user-' . $item['user'] . '.html">' . core::$module['account']->getData($item['user'])['name'] . '</a>
+									<a href="user-' . $post['user'] . '.html">' . $post['userName'] . '</a>
 								</td>
 							</tr>';
 						}

@@ -1,9 +1,6 @@
 <div class='content pt-3'>
     <div class="container-fluid">
-        <?php if(isset($_GET['searchUpdate'])){
-            $uniqueID = $_GET['searchUpdate'];
-            $APIData = core::$model['module']->API_getData($uniqueID, core::$model['config']->read('moduleKey_'.$uniqueID, null));
-            ?>
+        <?php if(isset($_GET['searchUpdate'])){ ?>
             <div class="card card-info card-outline">
             <div class="card-header">
                 Wyszukiwanie modułu o identyfikatorze <?php echo $uniqueID ?>
@@ -11,11 +8,10 @@
             <div class="card-body">
                 <?php
                     if(core::$isError)
-                        core::$model['gui']->alert('Błąd pobierania danych z serwera', 'danger');
+                        $this->GuiHelper->alert('Błąd pobierania danych z serwera', 'danger');
                     elseif($APIData['status'] == 'error')
-                        core::$model['gui']->alert('Nie znaleziono takiego modułu w API', 'danger');
+						$this->GuiHelper->alert('Nie znaleziono takiego modułu w API', 'danger');
                     else{
-                        $key = core::$model['config']->read('moduleKey_'.$uniqueID, null);
                         echo '<div class="alert alert-warning" role="alert">
                             <h4 class="alert-heading">UWAGA!</h4>
                             <p>Przed instalacja/aktualizacją modułu upewnij się, że pobierasz go z pewnego źródła!<br />
@@ -48,7 +44,7 @@
                 </div>
                 <div class="card-footer">
                     <input type="submit" value="Wgraj moduł" class="btn btn-primary" name="install" />
-                    <a href="module-clearCache.html" class="btn btn-danger float-right">Wyczyść pliki tymczasowe</a>
+                    <a href="../../../index.php" class="btn btn-danger float-right">Wyczyść pliki tymczasowe</a>
                 </div>
             </form>
         </div>
@@ -60,8 +56,11 @@
             <div class="card-body p-0">
                 <table class="table">
                     <?php
-                    foreach (core::$library->module->moduleList(true) as $list) {
-                        if (!isset($list['config']['fourCMS'])) continue;
+                    foreach ($moduleList as $list) {
+                        if (!isset($list['config']['fourCMS'])) {
+                            continue;
+						}
+
                         echo '<tr>
                             <td>
                                 ' . (isset($list['config']['name']) ? $list['config']['name'] : $list['name']) . ' <a data-toggle="collapse" href="#collapseModule' . $list['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $list['name'] . '"><i class="fas fa-info-circle"></i></a> <br />
@@ -71,14 +70,14 @@
                                     UniqueID: <span class="text-info">' . $list['config']['uniqueID'] . '</span><br />
                                     <form method="POST" class="w-50">
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-control-sm" placeholder="Klucz" value="'.core::$model['config']->read('moduleKey_'.$list['config']['uniqueID'], '').'" name="key">
-                                            <input type="hidden" class="form-control form-control-sm" value="'.$list['config']['uniqueID'].'" name="keyUniqueID">
+                                            <input type="text" class="form-control form-control-sm" placeholder="Klucz" value="' . $list['apiKey'] . '" name="key">
+                                            <input type="hidden" class="form-control form-control-sm" value="' . $list['config']['uniqueID'] . '" name="keyUniqueID">
                                             <div class="input-group-append">
                                                 <button class="btn btn-primary btn-sm" name="keySave">Zapisz klucz</button>
                                             </div>
                                         </div>
                                     </form>
-                                    <a href="module.html?searchUpdate='.$list['config']['uniqueID'].'" class="btn btn-xs btn-secondary">Sprawdź dostępność aktualizacji</a>
+                                    <a href="module.html?searchUpdate=' . $list['config']['uniqueID'] . '" class="btn btn-xs btn-secondary">Sprawdź dostępność aktualizacji</a>
                                 </div>
                             </td>
                             <td style="width: 150px">
@@ -98,8 +97,11 @@
             <div class="card-body p-0">
                 <table class="table table-sm">
                     <?php
-                    foreach (core::$library->module->moduleList(true) as $list) {
-                        if (isset($list['config']['fourCMS'])) continue;
+                    foreach ($moduleList as $list) {
+                        if (isset($list['config']['fourCMS'])) {
+                            continue;
+						}
+
                         echo '<tr>
                             <td>
                                 ' . (isset($list['config']['name']) ? $list['config']['name'] : $list['name']) . ' <a data-toggle="collapse" href="#collapseModule' . $list['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $list['name'] . '"><i class="fas fa-info-circle"></i></a> <br />
@@ -107,7 +109,7 @@
                                 <div class="collapse" id="collapseModule' . $list['name'] . '">
                                     <span class="text-primary font-weight-bold">Dodatkowe informacje</span><br />
                                     UniqueID: <span class="text-info">' . $list['config']['uniqueID'] . '</span><br />
-                                    <a href="module.html?searchUpdate='.$list['config']['uniqueID'].'" class="btn btn-xs btn-secondary">Sprawdź dostępność aktualizacji</a>
+                                    <a href="module.html?searchUpdate=' . $list['config']['uniqueID'] . '" class="btn btn-xs btn-secondary">Sprawdź dostępność aktualizacji</a>
                                 </div>
                             </td>
                             <td style="width: 150px">

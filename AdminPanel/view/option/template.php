@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <?php
-                foreach(core::$model['template']->templateList() as $template){
+                foreach($templateList as $template) {
                     echo '<div class="card float-left mr-3" style="width: 300px;">
                         <img class="card-img-top" src="'.$template['image'].'" alt="Card image cap">
                         <div class="card-body">
@@ -15,10 +15,13 @@
                             <p class="card-text">'.$template['description'].'</p>
                         </div>
                         <div class="card-footer">';
-                            if($template['templateName'] == core::$model['config']->read('template_name'))
-                                echo '<a href="#" class="btn btn-success btn-block disabled">AKTYWNY</a>';
-                            else
-                                echo '<a href="siteTemplateActive-'.$template['templateName'].'.html" class="btn btn-primary btn-block">Aktywuj</a>';
+
+                            if ($template['templateName'] == $activeTemplate) {
+								echo '<a href="#" class="btn btn-success btn-block disabled">AKTYWNY</a>';
+							} else {
+								echo '<a href="siteTemplateActive-' . $template['templateName'] . '.html" class="btn btn-primary btn-block">Aktywuj</a>';
+							}
+
                         echo '</div>
                     </div>';
                 }

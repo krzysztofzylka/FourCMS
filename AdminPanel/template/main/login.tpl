@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>{$title}</title>
+	<title>{$config['title']}</title>
 	{$fontawesome}
 	{$bootstrap}
 	{$adminlte}
@@ -13,14 +13,14 @@
 <body class="hold-transition login-page">
 	<div class="login-box">
 		<div class="login-logo">
-			<a href="index.php">{$adminPanel_title}</a>
+			<a href="index.php">{$config['adminPanel_title']}</a>
 		</div>
 		<div class="card">
 			<div class="card-body login-card-body">
 				{if isset($error)}
 					<div class="alert alert-danger" role="alert">{$error}</div>
 				{/if}
-				<p class="login-box-msg">{$adminPanel_loginMessage}</p>
+				<p class="login-box-msg">{$config['adminPanel_loginMessage']}</p>
 				<form method="post">
 					<div class="input-group mb-3">
 						<input type="text" name="login" class="form-control" placeholder="Login">

@@ -1,9 +1,3 @@
-<?php
-$file = htmlspecialchars(basename($_GET['file']));
-$path = core::$path['log'] . $file . '.log';
-if (!file_exists($path))
-	header('location: 404.html');
-?>
 <div class="content-header">
 	<div class="container-fluid">
 		<h1 class="m-0 text-dark">Podgląd pliku <?php echo $file ?></h1>
@@ -15,7 +9,6 @@ if (!file_exists($path))
 		<div class="card">
 			<?php
 			if (core::$library->string->strpos($file, 'core_error_') === 0) {
-				$data = explode(PHP_EOL, file_get_contents($path));
 				echo '<div class="card-body p-0" style="overflow: auto;">
 				<table class="table table-sm">
 					<thead>
@@ -28,16 +21,15 @@ if (!file_exists($path))
 						</tr>
 					</thead>
 					<tbody>';
-				foreach ($data as $id => $item) {
+				foreach ($coreErrorList as $id => $item) {
 					$date = core::$library->string->between($item, '[', ']');
 					if ($date === null)
 						continue;
 					$numer = core::$library->string->between($item, '[', ']', 1);
 					$nazwa = core::$library->string->between($item, '[', ']', 2);
 					$opis = core::$library->string->between($item, '[', ']', 3);
-					$debug = core::$library->string->between($item, '[', ']', 4);
 					echo '<tr>
-							<td><a href="' . core::$model['link']->generate(['page', 'debug' => $debug]) . '">' . $id . '</a></td>
+							<td><a href="' . $coreErrorListUrl[$id] . '">' . $id . '</a></td>
 							<td>' . $date . '</td>
 							<td>' . $numer . '</td>
 							<td>' . $nazwa . '</td>

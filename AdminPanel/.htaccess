@@ -1,5 +1,7 @@
 RewriteEngine On
 
+ErrorDocument 404 /index.php
+
 #global
 RewriteRule ^index.html$ index.php
 RewriteRule ^404.html$ index.php?page=404
@@ -15,6 +17,7 @@ RewriteRule ^userChangePassword.html$ index.php?page=user.changePassword
 RewriteRule ^post.html$ index.php?page=post
 RewriteRule ^postEdit-(.*).html$ index.php?page=post&id=$1
 RewriteRule ^postAdd.html$ index.php?page=post&id=dodaj
+RewriteRule ^postDelete-(.*).html$ index.php?page=post&id=$1&type=delete
 
 #menu
 RewriteRule ^menu.html$ index.php?page=menu
@@ -67,3 +70,6 @@ RewriteRule ^search.html$ index.php?page=search [QSA,L]
 
 #widget
 RewriteRule ^widget.html$ index.php?page=widget [QSA,L]
+
+#ajax
+RewriteRule ^link-(.*)$ index.php?ajaxControllerLoader=true&page=$1 [QSA,L]

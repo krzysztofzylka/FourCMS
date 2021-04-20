@@ -4,16 +4,22 @@ return new class() {
     public $templateName = null;
     public $defaultTemplateDir = 'defaultBlog';
     private $extendsListAdminPanel = null;
-	public function __construct(){
+
+	public function __construct() {
 		core::setError();
-        $this->templateName = core::$model['config']->read('template_name');
-        if(!file_exists('template/'.$this->templateDir))
+
+        $this->templateName = core::$model->Config->read('template_name');
+
+        if (!file_exists('template/'.$this->templateDir)) {
             $this->templateName = $this->defaultTemplateDir;
+        }
+
         $this->templateDir = core::$library->file->repairPath('template/'.$this->templateName.'/');
     }
-    public function setSmartyDir(){
+    public function setSmartyDir() {
         core::setError();
-        core::$module['smarty']->setTemplateDir($this->templateDir);
+
+        core::$module->smarty->setTemplateDir($this->templateDir);
     }
     public function templateList(){
         core::setError();

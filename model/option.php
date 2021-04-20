@@ -34,7 +34,7 @@ return new class(){
                         $this->addData("</tbody></table></div><div class='card-footer'><input type='submit' class='btn btn-primary w-100' name='config_save' value='Zapisz konfigurację' /></div></form>");
                         break;
                     case 'tableDataInput':
-                        $data = core::$model['config']->read($item['configName'], isset($item['default'])?$item['default']:'');
+                        $data = core::$model->Config->read($item['configName'], isset($item['default'])?$item['default']:'');
                         $this->addData('<tr>
                             <td>'.(isset($item['name'])?$item['name']:$item['configName']).'</td>
                             <td><input type="text" class="form-control" style="min-width: 200px;" placeholder="Puste" name="'.$item['configName'].'" value="'.htmlspecialchars($data).'" /></td>
@@ -42,7 +42,7 @@ return new class(){
                         </tr>');
                         break;
                     case 'tableDataCheckBootstrap':
-                        $data = core::$model['config']->read($item['configName'], isset($item['default'])?$item['default']:'');
+                        $data = core::$model->Config->read($item['configName'], isset($item['default'])?$item['default']:'');
                         $idElement = 'form'.$item['configName'].'_switch';
                         $this->addData('<tr>
                             <td>'.(isset($item['name'])?$item['name']:$item['configName']).'</td>
@@ -64,7 +64,7 @@ return new class(){
                         </tr>');
                         break;
                     case 'tableDataSelectBootstrap':
-                        $data = core::$model['config']->read($item['configName'], isset($item['default'])?$item['default']:'');
+                        $data = core::$model->Config->read($item['configName'], isset($item['default'])?$item['default']:'');
                         $this->addData('<tr>
                             <td>'.(isset($item['name'])?$item['name']:$item['configName']).'</td>
                             <td class="form-group">
@@ -89,6 +89,11 @@ return new class(){
         core::setError();
         echo $this->data;
         $this->clearOption();
+    }
+    public function returnOption(){
+		core::setError();
+		return $this->data;
+		$this->clearOption();
     }
     public function clearOption(){
         core::setError();

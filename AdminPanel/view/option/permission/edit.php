@@ -1,7 +1,7 @@
 <?php
 if ($_GET['editID'] <> 'addNew') {
     $edit = false;
-    $group = core::$model['permission']->list((int)htmlspecialchars($_GET['editID']))[0];
+    $group = core::$model->Permission->list((int)htmlspecialchars($_GET['editID']))[0];
     $permission = $group['permission'];
     $GLOBALS['permission'] = $permission;
 } else {
@@ -10,7 +10,7 @@ if ($_GET['editID'] <> 'addNew') {
     $permission = [];
 }
 function permissionPregReplace($matches){
-    return core::$model['permission']->showHTMLItem($matches[1], !is_bool(array_search($matches[1], $GLOBALS['permission'])));
+    return core::$model->Permission->showHTMLItem($matches[1], !is_bool(array_search($matches[1], $GLOBALS['permission'])));
 }
 ?>
 <div class='content pt-3'>
@@ -33,46 +33,46 @@ function permissionPregReplace($matches){
                     </div>
                     <div class="form-group">
                         <label>Uprawnienia</label>
-                        <?php echo core::$model['permission']->showHTMLItem('all_granted', !is_bool(array_search('all_granted', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('all_granted', !is_bool(array_search('all_granted', $permission))) ?>
                         <!-- Posty -->
                         <b>Posty</b>
-                        <?php echo core::$model['permission']->showHTMLItem('post', !is_bool(array_search('post', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('post', !is_bool(array_search('post', $permission))) ?>
                         <!-- Telebim -->
                         <b>Telebim</b>
-                        <?php echo core::$model['permission']->showHTMLItem('jumbotron', !is_bool(array_search('jumbotron', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('jumbotron', !is_bool(array_search('jumbotron', $permission))) ?>
                         <!-- Menu -->
                         <b>Menu</b>
-                        <?php echo core::$model['permission']->showHTMLItem('menu', !is_bool(array_search('menu', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('menu', !is_bool(array_search('menu', $permission))) ?>
                         <b>Użytkownik</b>
-                        <?php echo core::$model['permission']->showHTMLItem('otherUser', !is_bool(array_search('otherUser', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('otherUser', !is_bool(array_search('otherUser', $permission))) ?>
                         <!-- Uprawnienia -->
                         <b>Uprawnienia</b>
-                        <?php echo core::$model['permission']->showHTMLItem('permissionUserEdit', !is_bool(array_search('permissionUserEdit', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('permissionUserEdit', !is_bool(array_search('permissionUserEdit', $permission))) ?>
                         <!-- Ustawienia -->
                         <b>Ustawienia</b>
-                        <?php echo core::$model['permission']->showHTMLItem('option_template', !is_bool(array_search('option_template', $permission))) ?>
-                        <?php echo core::$model['permission']->showHTMLItem('option_editTemplate', !is_bool(array_search('option_editTemplate', $permission))) ?>
-                        <?php echo core::$model['permission']->showHTMLItem('option_editConfig', !is_bool(array_search('option_editConfig', $permission))) ?>
-                        <?php echo core::$model['permission']->showHTMLItem('option_users', !is_bool(array_search('option_users', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('option_template', !is_bool(array_search('option_template', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('option_editTemplate', !is_bool(array_search('option_editTemplate', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('option_editConfig', !is_bool(array_search('option_editConfig', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('option_users', !is_bool(array_search('option_users', $permission))) ?>
                         <div class="ml-3">
-                            <?php echo core::$model['permission']->showHTMLItem('blockUser', !is_bool(array_search('blockUser', $permission))) ?>
-                            <?php echo core::$model['permission']->showHTMLItem('option_usersAdd', !is_bool(array_search('option_usersAdd', $permission))) ?>
-                            <?php echo core::$model['permission']->showHTMLItem('option_permissionEdit', !is_bool(array_search('option_permissionEdit', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('blockUser', !is_bool(array_search('blockUser', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('option_usersAdd', !is_bool(array_search('option_usersAdd', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('option_permissionEdit', !is_bool(array_search('option_permissionEdit', $permission))) ?>
                         </div>
-                        <?php echo core::$model['permission']->showHTMLItem('option_module', !is_bool(array_search('option_module', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('option_module', !is_bool(array_search('option_module', $permission))) ?>
                         <!-- Serwis -->
                         <b>Serwis</b>
-                        <?php echo core::$model['permission']->showHTMLItem('service', !is_bool(array_search('service', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('service', !is_bool(array_search('service', $permission))) ?>
                         <div class="ml-3">
-                            <?php echo core::$model['permission']->showHTMLItem('service_library', !is_bool(array_search('service_library', $permission))) ?>
-                            <?php echo core::$model['permission']->showHTMLItem('service_module', !is_bool(array_search('service_module', $permission))) ?>
-                            <?php echo core::$model['permission']->showHTMLItem('service_logs', !is_bool(array_search('service_logs', $permission))) ?>
-                            <?php echo core::$model['permission']->showHTMLItem('service_phpinfo', !is_bool(array_search('service_phpinfo', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('service_library', !is_bool(array_search('service_library', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('service_module', !is_bool(array_search('service_module', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('service_logs', !is_bool(array_search('service_logs', $permission))) ?>
+                            <?php echo core::$model->Permission->showHTMLItem('service_phpinfo', !is_bool(array_search('service_phpinfo', $permission))) ?>
                         </div>
                         <b>Moduły</b>
-                        <?php echo core::$model['permission']->showHTMLItem('module', !is_bool(array_search('module', $permission))) ?>
-                        <?php echo core::$model['permission']->showHTMLItem('moduleInstall', !is_bool(array_search('moduleInstall', $permission))) ?>
-                        <?php echo core::$model['permission']->showHTMLItem('moduleAdd', !is_bool(array_search('moduleAdd', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('module', !is_bool(array_search('module', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('moduleInstall', !is_bool(array_search('moduleInstall', $permission))) ?>
+                        <?php echo core::$model->Permission->showHTMLItem('moduleAdd', !is_bool(array_search('moduleAdd', $permission))) ?>
 
                         <?php
                         foreach(core::$library->global->read('permissionConfig') as $permData){

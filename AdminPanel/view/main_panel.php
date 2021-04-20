@@ -14,14 +14,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<?php
-			foreach (core::$model['widget']->getUserWidget(core::$module['account']->userData['id']) as $widget) {
-				if (isset(core::$model['widget']->widgetList[$widget['uniqueIDWidget']])) {
-					$widgetData = core::$model['widget']->widgetList[$widget['uniqueIDWidget']];
-					if(file_exists($widgetData['widgetPath']))
-						include($widgetData['widgetPath']);
-				} else {
-					//delete widget (old)
-				}
+			foreach($userWidgetsArray as $widgetHtml) { 
+				echo $widgetHtml;
 			}
 			?>
 		</div>

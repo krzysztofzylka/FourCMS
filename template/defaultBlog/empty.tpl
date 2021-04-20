@@ -27,7 +27,7 @@
 			</div>
 			{/if}
 			<main role="main" class="container">
-				{$conteinerData}
+				{$dataContainer}
 			</main>
 			<footer class="blog-footer">
 				<p>FourCMS Stworzony przez <a href='https://krzysztofzylka.pl/'>krzysztofzylka.pl</a></p>

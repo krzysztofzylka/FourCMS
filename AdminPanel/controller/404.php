@@ -1,8 +1,14 @@
 <?php
-return new class(){
+return new class() extends core_controller {
 	public function __construct(){
 		core::setError();
-		core::loadView('404');
+
+		$this->view();
+	}
+	public function view() {
+		core::setError();
+
+		$this->loadView('404');
 	}
 }
 ?>

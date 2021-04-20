@@ -1,0 +1,4 @@
+1.2
+- Poprawiono moduł aby działał z frameworkiem w wersji 0.4.0
+- Przebudowano moduł wg. najnowszych standardów
+- Dodano obsługe JQueryUI
