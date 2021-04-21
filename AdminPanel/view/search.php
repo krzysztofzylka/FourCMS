@@ -5,6 +5,16 @@
                 <div class="card-title">Wyszukiwanie frazy "<?php echo $search ?>"</div>
             </div>
             <div class="card-body">
+                <form method="GET">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Wyszukiwarka" value="<?php echo $search ?>" name="searchMenu">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
                 <?php
                 foreach($searchArray as $data){
                     if(strpos(' '.$data['tags'], $search) != false){
