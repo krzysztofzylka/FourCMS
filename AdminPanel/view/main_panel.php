@@ -5,7 +5,16 @@
 				<h1 class="m-0 text-dark">Panel główny</h1>
 			</div>
 			<div class="col-sm-6 text-right">
-				<a href="widget.html" class="btn btn-primary btn-sm">Zarządzaj widgetami</a>
+                <?php
+                echo $this->GuiHelper->ajaxLink(
+					'widget/view',
+                    'Zarządzaj widgetami',
+                    null,
+                    '#',
+                    'link',
+                    'btn btn-primary btn-sm'
+                );
+                ?>
 			</div>
 		</div>
 	</div>

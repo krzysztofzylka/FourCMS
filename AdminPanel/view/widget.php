@@ -21,9 +21,22 @@
                     <td>' . $widget['widgetData']['moduleName'] . '</td>
                     <td>' . $widget['widgetData']['description'] . '</td>
                     <td>
-                        <a href="widget.html?posUp=' . $widget['id'] . '"><i class="nav-icon fas fa-arrow-up"></i></a>
-                        <a href="widget.html?posDown=' . $widget['id'] . '"><i class="nav-icon fas fa-arrow-down"></i></a>
-                        <a class="text-danger" href="widget.html?delete=' . $widget['id'] . '"><i class="fas fa-trash"></i></a>
+                        ' . $this->GuiHelper->ajaxLink(
+                            'widget/posUp',
+                            '<i class="nav-icon fas fa-arrow-up"></i>',
+                            'posUp=' . $widget['id'],
+                        )
+                        . $this->GuiHelper->ajaxLink(
+                            'widget/posDown',
+                            '<i class="nav-icon fas fa-arrow-down"></i>',
+                            'posDown=' . $widget['id'],
+                        )
+                        . $this->GuiHelper->ajaxLink(
+                            'widget/delete',
+                            '<i class="fas fa-trash text-danger"></i>',
+                            'delete=' . $widget['id'],
+                        )
+                        . '
                     </td>
                 </tr>';
 			}
@@ -55,7 +68,12 @@
                     <td>' . $widget['name'] . '</td>
                     <td>' . $widget['moduleName'] . '</td>
                     <td>' . $widget['description'] . '</td>
-                    <td><a href="widget.html?add=' . $widget['uniqueID'] . '"><i class="fas fa-plus"></i></a></td>
+                    <td>' . $this->GuiHelper->ajaxLink(
+                            'widget/add',
+                            '<i class="fas fa-plus"></i>',
+                            'add=' . $widget['uniqueID'],
+                        )
+                    . '</td>
                 </tr>';
 			}
 			?>

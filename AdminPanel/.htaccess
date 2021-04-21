@@ -68,8 +68,5 @@ RewriteRule ^FrameworkModuleDebug-(.*).html$ index.php?page=service.module&type=
 #search
 RewriteRule ^search.html$ index.php?page=search [QSA,L]
 
-#widget
-RewriteRule ^widget.html$ index.php?page=widget [QSA,L]
-
 #ajax
 RewriteRule ^link-(.*)$ index.php?ajaxControllerLoader=true&page=$1 [QSA,L]

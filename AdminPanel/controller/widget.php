@@ -5,41 +5,12 @@ return new class() extends core_controller{
 
         $this->loadModel('Widget');
         $this->loadModel('GuiHelper');
-
-        $this->view();
     }
     public function view() {
         core::setError();
         
         $this->viewSetType('page');
         $this->viewSetVariable('pageTitle', 'Zarządzanie  widgetami');
-
-		if (isset($_GET['posDown'])) {
-			$this->Widget->positionDown((int)$_GET['posDown'], (int)core::$module['account']->userData['id']);
-		}
-
-		if (isset($_GET['posUp'])) {
-			$this->Widget->positionUp((int)$_GET['posUp'], (int)core::$module['account']->userData['id']);
-		}
-
-		if (isset($_GET['delete'])){
-			$delete = $this->Widget->deleteUserWidget((int)$_GET['delete'], (int)core::$module->account->userData['id']);
-
-			if ($delete) {
-				$this->GuiHelper->contentAlert('Poprawnie usunięto widget');
-			} else {
-				$this->GuiHelper->contentAlert('Błąd usuwania widgetu', 'danger');
-			}
-		}
-
-        if (isset($_GET['add']))  {
-            $add = $this->Widget->userAddWidget(core::$module->account->userData['id'], $_GET['add']);
-            if ($add) {
-                $this->GuiHelper->contentAlert('Poprawnie dodano widget');
-            } else {
-                $this->GuiHelper->contentAlert('Błąd dodania widgetu', 'danger');
-            }
-        }
 
         $userWidget = $this->Widget->getUserWidget(core::$module->account->userData['id']);
         foreach ($userWidget as $key => $data) {
@@ -54,6 +25,53 @@ return new class() extends core_controller{
 		$this->viewSetVariable('widgetList', $this->Widget->widgetList);
 
         $this->loadView('widget');
+    }
+	public function posDown(){
+		core::setError();
+
+		if (isset($_GET['posDown'])) {
+			$this->Widget->positionDown((int)$_GET['posDown'], (int)core::$module->account->userData['id']);
+		}
+
+		$this->view();
+	}
+    public function posUp(){
+		core::setError();
+
+		if (isset($_GET['posUp'])) {
+			$this->Widget->positionUp((int)$_GET['posUp'], (int)core::$module->account->userData['id']);
+		}
+
+		$this->view();
+	}
+	public function delete(){
+		core::setError();
+
+		if (isset($_GET['delete'])){
+			$delete = $this->Widget->deleteUserWidget((int)$_GET['delete'], (int)core::$module->account->userData['id']);
+
+			if ($delete) {
+				$this->GuiHelper->toast('Poprawnie usunięto widget', 'success');
+			} else {
+				$this->GuiHelper->toast('Błąd usuwania widgetu', 'danger');
+			}
+		}
+
+		$this->view();
+	}
+    public function add(){
+		core::setError();
+
+		if (isset($_GET['add']))  {
+			$add = $this->Widget->userAddWidget(core::$module->account->userData['id'], $_GET['add']);
+			if ($add) {
+				$this->GuiHelper->toast('Poprawnie dodano widget', 'success');
+			} else {
+				$this->GuiHelper->toast('Błąd dodania widgetu', 'danger');
+			}
+		}
+
+		$this->view();
     }
 }
 ?>
