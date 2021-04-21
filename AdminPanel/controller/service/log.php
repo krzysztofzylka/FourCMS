@@ -43,7 +43,7 @@ return new class() extends core_controller {
 		$coreErrorListUrl = [];
 		foreach ($coreErrorList as $key => $data) {
 			$debug = core::$library->string->between($data, '[', ']', 4);
-			$coreErrorListUrl[$key] = $this->Link->generate(['page', 'debug' => $debug]);
+			$coreErrorListUrl[$key] = 'logs.html?debug='.$debug;//$this->Link->generate(['page', 'debug' => $debug]);
 		}
 
 		$this->viewSetVariable('coreErrorListUrl', $coreErrorListUrl);

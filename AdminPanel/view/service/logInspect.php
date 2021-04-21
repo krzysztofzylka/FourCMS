@@ -23,8 +23,11 @@
 					<tbody>';
 				foreach ($coreErrorList as $id => $item) {
 					$date = core::$library->string->between($item, '[', ']');
-					if ($date === null)
-						continue;
+
+					if ($date === null) {
+                        continue;
+                    }
+
 					$numer = core::$library->string->between($item, '[', ']', 1);
 					$nazwa = core::$library->string->between($item, '[', ']', 2);
 					$opis = core::$library->string->between($item, '[', ']', 3);
@@ -56,14 +59,19 @@
 				$data = '';
 				for ($i = 0; $i <= count($explode) - 1; $i++) {
 					$line = $explode[$i];
-					if ($data === '')
-						$data = core::$library->string->between($line, '[', ']');
+
+					if ($data === '') {
+                        $data = core::$library->string->between($line, '[', ']');
+                    }
+
 					$string .= str_replace('[' . $data . ']', '', $line);
 					$line_check = isset($explode[$i + 1]) ? (core::$library->string->between($explode[$i + 1], '[', ']') === null ? true : false) : false;
+
 					if ($line_check === true) {
 						$string .= '<br />';
 						continue;
 					}
+
 					$data = explode(' ', $data);
 					$data2 = count($data) >= 2 ? $data[0] . ' ' . $data[1] : implode(' ', $data);
 					echo '<tr>

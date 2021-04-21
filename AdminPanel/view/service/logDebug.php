@@ -13,8 +13,9 @@ $string = htmlspecialchars($_GET['debug']);
 			<?php
 			if (is_null(json_decode(base64_decode($string)))) {
 				echo "Błąd odczytu danych - dane uszkodzone";
-			} else
-				core::$library->debug->print_r(json_decode(base64_decode($string), true));
+			} else {
+				krumo(json_decode(base64_decode($string), true), KRUMO_EXPAND_ALL);
+			}
 			?>
 		</div>
 	</div>

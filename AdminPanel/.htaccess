@@ -55,7 +55,7 @@ RewriteRule ^FrameworkLibrary.html$ index.php?page=service.library
 RewriteRule ^phpInfo.html$ index.php?page=service.phpinfo
 
 #service logs
-RewriteRule ^logs.html$ index.php?page=service.log
+RewriteRule ^logs.html$ index.php?page=service.log [QSA,L]
 RewriteRule ^logFile-(.*).html$ index.php?page=service.log&file=$1
 RewriteRule ^logDelete-(.*).html$ index.php?page=service.log&delete=$1
 
