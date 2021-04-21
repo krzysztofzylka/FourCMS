@@ -5,15 +5,19 @@ include('../core/core.php');
 core::init();
 core::$library->database->connect(include('../file/db_config.php'));
 
-//protect
 core::loadModule('account');
-core::$module['account']->setTablePrefix('AP');
-if(!core::$module['account']->checkUser())
-    exit;
+core::$module->account->setTablePrefix('AP');
+
+if(!core::$module->account->checkUser()) {
+	exit;
+}
 
 $config = core::loadModel('config');
-if(!file_exists('../'.$config->read('textarea_filePath')))
-  mkdir('../'.$config->read('textarea_filePath'));
+
+if (!file_exists('../'.$config->read('textarea_filePath'))) {
+	mkdir('../' . $config->read('textarea_filePath'));
+}
+
 if ($_FILES['file']['name']) {
     if (!$_FILES['file']['error']) {
         $name = md5(rand(100, 200));
@@ -22,8 +26,9 @@ if ($_FILES['file']['name']) {
         $destination = '../images/' . $filename; //change this directory
         $location = $_FILES["file"]["tmp_name"];
         move_uploaded_file($location, $destination);
-        echo '../images/' . $filename;//change this URL
-    } else
-        echo  $message = 'Ooops!  Your upload triggered the following error:  '.$_FILES['file']['error'];
+        echo '../images/' . $filename;
+    } else {
+		echo $message = 'Ooops! Your upload triggered the following error:  ' . $_FILES['file']['error'];
+	}
 }
 ?>
