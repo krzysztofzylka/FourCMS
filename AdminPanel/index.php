@@ -70,7 +70,14 @@ if (!core::$module->account->checkUser()) {
 
 function loadController($page){
 	ob_start();
-	core::loadController($page);
+	$page = explode('/', $page);
+	if (isset($page[1])) {
+		$controller = core::loadController($page[0]);
+		$controller->{$page[1]}();
+	} else {
+		core::loadController($page[0]);
+	}
+
 	if(core::$isError && !isset($_GET['ajaxControllerLoader'])){
 		echo '<div class="content pt-2">
             <div class="alert alert-danger">
