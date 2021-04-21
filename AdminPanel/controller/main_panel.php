@@ -14,10 +14,12 @@ return new class() extends core_controller{
 		foreach ($userWidgets as $widget) {
 			if (isset($this->Widget->widgetList[$widget['uniqueIDWidget']])) {
 				$widgetData = $this->Widget->widgetList[$widget['uniqueIDWidget']];
-				
+
 				if (file_exists($widgetData['widgetPath'])) {
 					ob_start();
+
 					include($widgetData['widgetPath']);
+
 					$userWidgetsArray[] = ob_get_contents();
 					ob_end_clean();
 				}
