@@ -54,18 +54,25 @@ return new class() extends core_model{
 		
 		return true;
 	}
-	public function delete(int $id) {
+	public function delete(int $menuId) {
 		core::setError();
 
-		$menu = $this->read($id);
-		$exec = core::$library->database->exec('DELETE FROM menu WHERE id='.$id);
+		$menu = $this->read($menuId);
+
+		$prepare = core::$library->database->prepare('DELETE FROM menu WHERE id=:id');
+		$prepare->bindParam(':id', $menuId, PDO::PARAM_INT);
 		
-		if (!$exec) {
+		if (!$prepare->execute()) {
 			return false;
 		}
 
-		core::$library->database->exec('UPDATE menu SET position = position-1 WHERE position>'.$menu['position']);
-		
+		$prepare = core::$library->database->prepare('UPDATE menu SET position = position-1 WHERE position>:menuPosition');
+		$prepare->bindParam(':menuPosition', $menu['position'], PDO::PARAM_INT);
+
+		if (!$prepare->execute()) {
+			return false;
+		}
+
 		return true;
 	}
 	public function write(int $id, string $name, string $link) {
