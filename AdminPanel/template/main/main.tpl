@@ -12,6 +12,7 @@
     {$summernote}
     <script src="script/menu.js"></script>
     <script src="script/ajax.js"></script>
+    <script src="../script/krumo/krumo.min.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">

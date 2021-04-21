@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-echo '<script src="../script/krumo/krumo.min.js"></script>';
 include('../script/krumo/class.krumo.php');
 
 $GLOBALS['FourCMS'] = 'admin';
