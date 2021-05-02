@@ -10,20 +10,20 @@ return [
 		'menu' => [
 			'name' => 'Pusty szablon modułu',
 			'icon' => 'fas fa-circle',
-            'htmlPage' => [
-                'FrameworkModuleAP-emptyModule.html' //neleży podminić na linka na link do modułu np. FrameworkModuleAP-*nazwa modulu*.html
+			'htmlPage' => [
+				'FrameworkModuleAP-emptyModule.html' //neleży podminić na linka na link do modułu np. FrameworkModuleAP-*nazwa modulu*.html
 			]
 		]
 	],
 	'fourCMS' => [ //link w menu głównym
-        'menuItem' => [
-            'name' => 'Pusty szablon modułu',
-            'icon' => 'fas fa-circle',
-            'htmlPage' => [
-                'FrameworkModuleAP-emptyModule.html' //neleży podminić na linka na link do modułu np. FrameworkModuleAP-*nazwa modulu*.html
-            ]
-        ],
-        'includeFile' => null, //url do pliku który jest uruchamiany na początku skryptu index.php panelu administratora
-    ]
+		'menuItem' => [
+			'name' => 'Pusty szablon modułu',
+			'icon' => 'fas fa-circle',
+			'htmlPage' => [
+				'FrameworkModuleAP-emptyModule.html' //neleży podminić na linka na link do modułu np. FrameworkModuleAP-*nazwa modulu*.html
+			]
+		],
+		'includeFile' => null, //url do pliku który jest uruchamiany na początku skryptu index.php panelu administratora
+	]
 ];
 ?>

@@ -11,11 +11,19 @@
     {$adminlte}
     {$summernote}
     <script src="script/menu.js"></script>
-    <script src="script/ajax.js"></script>
+    <script src="script/ajaxLoader.js"></script>
     <script src="../script/krumo/krumo.min.js"></script>
+    <style>
+        .wrapper {
+            width: 100%;
+            min-height: 100%;
+            height: auto !important;
+            position: absolute;
+        }
+    </style>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-dark navbar-gray-dark">
         <ul class="navbar-nav">
@@ -55,14 +63,14 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link user-panel pt-1" data-toggle="dropdown" href="#">
-                        <img src="{$userAvatar}" class="img-circle" alt="User Image">
-                        {$user['name']}
+                    <img src="{$userAvatar}" class="img-circle" alt="User Image">
+                    {$user['name']}
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">
-                        <img src="{$userAvatar}" class="img-circle" alt="User Image"><br />
-                        {$user['name']}
-                    </span>
+                        <span class="dropdown-header">
+                            <img src="{$userAvatar}" class="img-circle" alt="User Image"><br/>
+                            {$user['name']}
+                        </span>
                     <div class="dropdown-divider"></div>
                     <a href="user.html" class="nav-link bg-white text-primary float-left">
                         <i class="fas fa-user"></i>
@@ -116,6 +124,7 @@
             {/if}
         {/block}
     </div>
+    <div class="content-loader" style="position: absolute; left: 0; top: 0; width: 0; height: 0;"></div>
     <footer class="main-footer">
         {block name=footer}
             <div class="float-right d-none d-sm-inline">
@@ -130,7 +139,7 @@
 </body>
 <script>
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip();
     })
 </script>
 

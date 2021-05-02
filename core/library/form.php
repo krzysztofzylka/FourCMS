@@ -1,10 +1,10 @@
 <?php
-return $this->form = new class(){
+return $this->form = new class() {
 	public $version = '1.2';
 	private $jqueryPOSTScript = false;
 
 	//TODO: przerobić tą funkcję
-	public function jqueryPOSTScript() {
+	public function jqueryPOSTScript() : bool {
 		core::setError();
 
 		if ($this->jqueryPOSTScript === true) {
@@ -14,9 +14,9 @@ return $this->form = new class(){
 		echo "<script>
 		function UrlPostData(data){
 			$('body').append('<form id=\"FFModUrlPostDataForm\" method=\"POST\"></form>');
-			var exp = data.split(\"&\");
+			let exp = data.split(\"&\");
 			exp.forEach(function(item) {
-				var exp2 = item.split(\"=\", 2);
+				let exp2 = item.split(\"=\", 2);
 				$('#FFModUrlPostDataForm').append('<input type=\"hidden\" name=\"'+exp2[0]+'\" value=\"'+exp2[1]+'\">');
 			});
 			$('#FFModUrlPostDataForm').submit();
@@ -28,7 +28,7 @@ return $this->form = new class(){
 		return true;
 	}
 
-	public function protectAllData($method) : bool { 
+	public function protectAllData($method) : bool {
 		core::setError();
 
 		$method = strtoupper($method);
@@ -39,12 +39,12 @@ return $this->form = new class(){
 
 		switch ($method) {
 			case 'GET':
-				foreach($_GET as $key => $value){
+				foreach ($_GET as $key => $value) {
 					$_GET[$key] = htmlspecialchars($value);
 				}
 				break;
 			case 'POST':
-				foreach($_POST as $key => $value){
+				foreach ($_POST as $key => $value) {
 					$_POST[$key] = htmlspecialchars($value);
 				}
 				break;
@@ -52,5 +52,4 @@ return $this->form = new class(){
 
 		return true;
 	}
-}; 
-?>
+};

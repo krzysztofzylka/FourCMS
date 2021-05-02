@@ -1,6 +1,6 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
+	public function __construct() {
 		core::setError();
 
 		$this->loadModel('Permission');
@@ -8,6 +8,7 @@ return new class() extends core_controller {
 
 		$this->view();
 	}
+
 	public function view() {
 		if (isset($_GET['editID'])) {
 			if (!core::$module->account->checkPermission('option_users') or !core::$module->account->checkPermission('option_permissionEdit')) {
@@ -25,7 +26,7 @@ return new class() extends core_controller {
 
 					$permission = [];
 
-					foreach($_POST as $name => $value) {
+					foreach ($_POST as $name => $value) {
 						$permission[] = $name;
 					}
 
@@ -33,14 +34,14 @@ return new class() extends core_controller {
 					$this->GuiHelper->contentAlert('Poprawnie zapisano uprawnienia', 'success');
 				}
 				$this->view_edit();
-			} elseif(isset($_POST) and isset($_POST['addPermission'])) {
+			} elseif (isset($_POST) and isset($_POST['addPermission'])) {
 				$permissionName = $_POST['permissionName'];
 
 				unset($_POST['permissionName'], $_POST['addPermission']);
 
 				$permission = [];
 
-				foreach($_POST as $name => $value) {
+				foreach ($_POST as $name => $value) {
 					$permission[] = $name;
 				}
 
@@ -54,6 +55,7 @@ return new class() extends core_controller {
 			$this->view_list();
 		}
 	}
+
 	public function view_edit() {
 		core::setError();
 
@@ -61,7 +63,8 @@ return new class() extends core_controller {
 
 		core::loadView('option.permission.edit');
 	}
-	public function view_list(){
+
+	public function view_list() {
 		core::setError();
 
 		$permissionList = $this->Permission->list();
@@ -70,5 +73,4 @@ return new class() extends core_controller {
 		$this->viewSetVariable('permissionList', $permissionList);
 		$this->loadView('option.permission.list');
 	}
-}
-?>
+};

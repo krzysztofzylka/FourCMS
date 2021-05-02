@@ -22,11 +22,11 @@
 					foreach ($menuList as $item) {
 						$item['name'] = strlen($item['name']) == 0 ? '--- Brak nazwy ---' : $item['name'];
 						echo '<tr>
-								<td><a href="menuEdit-'.$item['id'].'.html">' . $item['name'] . '</a></td>
+								<td><a href="menuEdit-' . $item['id'] . '.html">' . $item['name'] . '</a></td>
 								<td>' . $item['link'] . '</td>
 								<td>
-								<a href="menuPositionUp-'.$item['id'].'.html"><i class="nav-icon fas fa-arrow-up"></i></a>
-								<a href="menuPositionDown-'.$item['id'].'.html"><i class="nav-icon fas fa-arrow-down"></i></a>
+								<a href="menuPositionUp-' . $item['id'] . '.html"><i class="nav-icon fas fa-arrow-up"></i></a>
+								<a href="menuPositionDown-' . $item['id'] . '.html"><i class="nav-icon fas fa-arrow-down"></i></a>
 								</td>
 							</tr>';
 					}

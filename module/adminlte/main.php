@@ -1,9 +1,12 @@
 <?php
-return new class(){
-	public function __construct(){
+return new class() {
+	public function __construct() {
 		$search = array_search('smarty', core::$module->_list);
-		if($search === false) 
+
+		if ($search === false) {
 			return core::setError(1, 'smarty not exists');
+		}
+
 		$adminlte = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/bootstrap-duallistbox.min.css">

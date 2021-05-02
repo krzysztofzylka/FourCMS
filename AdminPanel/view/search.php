@@ -15,16 +15,16 @@
                         </div>
                     </div>
                 </form>
-                <?php
-                foreach($searchArray as $data){
-                    if(strpos(' '.$data['tags'], $search) != false){
-                        echo '<div class="post">
-                            <a href="'.$data['link'].'">'.$data['name'].'</a>
-                            <p>'.$data['description'].'</p>
+				<?php
+				foreach ($searchArray as $data) {
+					if (strpos(' ' . $data['tags'], $search) != false) {
+						echo '<div class="post">
+                            <a href="' . $data['link'] . '">' . $data['name'] . '</a>
+                            <p>' . $data['description'] . '</p>
                         </div>';
-                    }
-                }
-                ?>
+					}
+				}
+				?>
             </div>
         </div>
     </div>

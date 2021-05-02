@@ -1,8 +1,8 @@
-$(function() {
+$(function () {
     // Summernote
     $('#textarea').summernote({
         callbacks: {
-            onImageUpload: function(files) {
+            onImageUpload: function (files) {
                 for (let i = 0; i < files.length; i++) {
                     $.upload(files[i]);
                 }
@@ -11,7 +11,7 @@ $(function() {
         height: 300,
         lang: 'pl-PL',
     });
-    $.upload = function(file) {
+    $.upload = function (file) {
         let out = new FormData();
         out.append('file', file, file.name);
 
@@ -22,17 +22,17 @@ $(function() {
             cache: false,
             processData: false,
             data: out,
-            success: function(img) {
+            success: function (img) {
                 console.log('add image: ' + img);
                 $('#textarea').summernote('insertImage', img);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.error(textStatus + " " + errorThrown);
             }
         });
     };
 
-    $('#postTypeCheckbox').change(function() {
+    $('#postTypeCheckbox').change(function () {
         if ($(this).is(':checked') == true) {
             $('#postTypeForm').hide();
         } else {
@@ -40,7 +40,7 @@ $(function() {
         }
     });
 
-    $('#postURLAutoCheckbox').change(function() {
+    $('#postURLAutoCheckbox').change(function () {
         if ($(this).is(':checked') == true) {
             $('#postURLAutoDiv').hide();
             $('#postURLAutoInput').val('auto');

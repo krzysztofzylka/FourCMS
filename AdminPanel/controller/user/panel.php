@@ -1,25 +1,26 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
-        core::setError();
+	public function __construct() {
+		core::setError();
 
-        $this->loadModel('GuiHelper');
-        $this->loadModel('AdminPanel.User');
+		$this->loadModel('GuiHelper');
+		$this->loadModel('AdminPanel.User');
 
 		$this->formSubmit();
-        $this->view();
-    }
-    public function view(){
+		$this->view();
+	}
+
+	public function view() {
 		core::setError();
 
 		$userID = isset($_GET['userID']) ? (int)$_GET['userID'] : (int)core::$module->account->userData['id'];
 
-		if(!core::$module->account->checkPermission('otherUser') and $userID <> (int)core::$module->account->userData['id']){
+		if (!core::$module->account->checkPermission('otherUser') and $userID <> (int)core::$module->account->userData['id']) {
 			$userID = (int)core::$module->account->userData['id'];
 			$this->GuiHelper->contentAlert('Nie posiadasz uprawnień do przeglądania profili użytkowników, wyświetlony zostanie aktualny profil użytkownika.', 'warning');
 		}
 
-		$userAccount = (int)$userID === (int)core::$module->account->userData['id'];
+		$userAccount = $userID === (int)core::$module->account->userData['id'];
 		$userData = core::$module->account->getData($userID);
 		$userAvatar = $this->AdminPanel_User->getAvatar($userID);
 		$permission = [
@@ -34,16 +35,17 @@ return new class() extends core_controller {
 		$this->viewSetVariable('userAvatar', $userAvatar);
 		$this->viewSetVariable('userAccount', $userAccount);
 		$this->viewSetVariable('user', $userData);
-    	$this->loadView('user.panel');
-    }
-    public function formSubmit(){
+		$this->loadView('user.panel');
+	}
+
+	public function formSubmit() {
 		core::setError();
 
-		$userID = isset($_GET['userID'])?(int)$_GET['userID']:(int)core::$module->account->userData['id'];
-		$userAccount = (int)$userID === (int)core::$module->account->userData['id'];
+		$userID = isset($_GET['userID']) ? (int)$_GET['userID'] : (int)core::$module->account->userData['id'];
+		$userAccount = $userID === (int)core::$module->account->userData['id'];
 		$userData = core::$module->account->getData($userID);
 
-		if($userAccount){
+		if ($userAccount) {
 			if (isset($_POST['save_name'])) {
 				if (strlen(htmlspecialchars($_POST['name'])) < 6) {
 					$this->GuiHelper->contentAlert('Nazwa użytkownika powinna zawierać <b>przynajmniej</b> 6 znaków', 'danger');
@@ -65,14 +67,13 @@ return new class() extends core_controller {
 			}
 		}
 
-		if(isset($_POST['save_permission'])){
-			if(!core::$module->account->checkPermission('permissionUserEdit'))
+		if (isset($_POST['save_permission'])) {
+			if (!core::$module->account->checkPermission('permissionUserEdit'))
 				$this->GuiHelper->contentAlert('Nie posiadasz uprawnień do zmiany tej opcji', 'danger');
 			else {
 				core::$module->account->setUserPermission($userData['id'], (int)$_POST['permission']);
 				$this->GuiHelper->contentAlert('Poprawnie zmieniono grupę uprawnień użytkownika', 'success');
 			}
 		}
-    }
-}
-?>
+	}
+};

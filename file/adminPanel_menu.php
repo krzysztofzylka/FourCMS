@@ -49,7 +49,7 @@ return [
 		'icon' => 'fas fa-wrench',
 		'menu' => []
 	],
-	'option' =>[
+	'option' => [
 		'href' => '#',
 		'icon' => 'fas fa-cogs',
 		'name' => 'Ustawienia',
@@ -164,15 +164,5 @@ return [
 				]
 			]
 		]
-	],
-	[
-		'href' => 'userLogout.html',
-		'icon' => 'fas fa-sign-out-alt',
-		'name' => 'Wyloguj',
-		'class' => 'bg-warning',
-		'htmlPage' => [
-			'userLogout.html'
-		]
 	]
 ];
-?>

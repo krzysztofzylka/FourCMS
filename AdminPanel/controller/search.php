@@ -1,19 +1,19 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
-        core::setError();
+	public function __construct() {
+		core::setError();
 
-        $this->view();
-    }
-    public function view(){
-    	core::setError();
+		$this->view();
+	}
 
-		$search = isset($_GET['searchMenu']) ? ($_GET['searchMenu']==''?' ':$_GET['searchMenu']) : ' ';
+	public function view() {
+		core::setError();
+
+		$search = isset($_GET['searchMenu']) ? ($_GET['searchMenu'] == '' ? ' ' : $_GET['searchMenu']) : ' ';
 		$searchArray = include('../file/search.php');
 
 		$this->viewSetVariable('search', $search);
 		$this->viewSetVariable('searchArray', $searchArray);
-    	$this->loadView('search');
-    }
-}
-?>
+		$this->loadView('search');
+	}
+};

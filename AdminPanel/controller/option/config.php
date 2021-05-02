@@ -13,12 +13,14 @@ return new class() extends core_controller {
 		$this->submitForm();
 		$this->view();
 	}
+
 	public function view() {
 		core::setError();
 
 		$this->viewSetVariable('optionContent', $this->generateOptionContent());
 		$this->loadView('option.config');
 	}
+
 	public function submitForm() {
 		core::setError();
 
@@ -32,6 +34,7 @@ return new class() extends core_controller {
 			$this->GuiHelper->contentAlert('Poprawnie zmodyfikowano ustawienia', 'success');
 		}
 	}
+
 	public function generateOptionContent() {
 		$permissionData = [];
 
@@ -283,5 +286,4 @@ return new class() extends core_controller {
 		]);
 		return $this->Option->returnOption();
 	}
-}
-?>
+};

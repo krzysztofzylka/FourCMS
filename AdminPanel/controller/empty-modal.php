@@ -1,15 +1,22 @@
 <?php
-return new class() extends core_controller {
-	public function __construct(){
+return new class() extends app_controller {
+	public function __construct() {
 		core::setError();
 
-		$this->view();
+		$this->loadModel('GuiHelper');
+
+		$this->view_toast();
 	}
-	public function view(){
+
+	public function view_toast() {
 		core::setError();
 
-		$this->viewSetType('dialogbox');
-		$this->loadView('empty-modal');
+		echo $this->GuiHelper->ajaxLink(
+			'form-modal/toast',
+			'toast',
+			[
+				'text' => 'treść'
+			]
+		);
 	}
-}
-?>
+};

@@ -1,6 +1,6 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
+	public function __construct() {
 		core::setError();
 
 		if (!core::$module->account->checkPermission('option_template')) {
@@ -13,6 +13,7 @@ return new class() extends core_controller {
 		$this->submitForm();
 		$this->view();
 	}
+
 	public function view() {
 		core::setError();
 
@@ -20,6 +21,7 @@ return new class() extends core_controller {
 		$this->viewSetVariable('activeTemplate', $this->Config->read('template_name'));
 		$this->loadView('option.template');
 	}
+
 	public function submitForm() {
 		core::setError();
 
@@ -28,5 +30,4 @@ return new class() extends core_controller {
 			core::$model['gui']->alert('Poprawnie zmieniono szablon', 'success');
 		}
 	}
-}
-?>
+};

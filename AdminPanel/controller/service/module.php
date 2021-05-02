@@ -1,6 +1,6 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
+	public function __construct() {
 		core::setError();
 
 		if (isset($_GET['type']) and $_GET['type'] == 'adminpanel') {
@@ -15,14 +15,16 @@ return new class() extends core_controller {
 			}
 		}
 
+		$this->loadModel('GuiHelper');
 		$this->loadModel('Module');
 		$this->view();
 	}
+
 	public function view() {
 		core::setError();
 
 		if (isset($_GET['type'])) {
-			switch(htmlspecialchars($_GET['type'])){
+			switch (htmlspecialchars($_GET['type'])) {
 				case 'info':
 					$this->view_moduleInfo();
 					break;
@@ -40,7 +42,8 @@ return new class() extends core_controller {
 			$this->view_moduleList();
 		}
 	}
-	public function view_moduleAdminPanel(){
+
+	public function view_moduleAdminPanel() {
 		core::setError();
 
 		if (!isset($_GET['modul'])) {
@@ -52,13 +55,26 @@ return new class() extends core_controller {
 
 		ob_start();
 		core::$library->module->loadAdminPanel($moduleName);
+		if (core::$isError) {
+			$this->viewSetType('blankPage');
+
+			switch (core::$error['number']) {
+				case 1:
+					$this->GuiHelper->alert('Wybrany moduł nie posiada panelu administracyjnego', 'danger');
+					break;
+				default:
+					$this->GuiHelper->alert('Wystąpił błąd (' . core::$error['number'] . ')', 'danger');
+					break;
+			}
+		}
 		$moduleContent = ob_get_contents();
 		ob_end_clean();
 
 		$this->viewSetVariable('moduleContent', $moduleContent);
 		$this->loadView('service.moduleAdminPanel');
 	}
-	public function view_moduleDebug(){
+
+	public function view_moduleDebug() {
 		core::setError();
 
 
@@ -72,7 +88,8 @@ return new class() extends core_controller {
 		$this->viewSetVariable('path', $modulePath);
 		$this->loadView('service.moduleDebug');
 	}
-	public function view_moduleInfo(){
+
+	public function view_moduleInfo() {
 		core::setError();
 
 		$moduleName = htmlspecialchars($_GET['name']);
@@ -89,11 +106,11 @@ return new class() extends core_controller {
 		$this->viewSetVariable('config', $moduleConfig);
 		$this->loadView('service.moduleInfo');
 	}
-	public function view_moduleList(){
+
+	public function view_moduleList() {
 		core::setError();
 
 		$this->viewSetVariable('moduleList', $this->Module->fullModuleList());
 		$this->loadView('service.module');
 	}
-}
-?>
+};

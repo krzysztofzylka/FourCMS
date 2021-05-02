@@ -28,10 +28,10 @@ return new class() extends core_controller {
 		}
 		$this->view();
 	}
-	public function view(){
+
+	public function view() {
 		core::setError();
-		
+
 		core::$module->smarty->smarty->display('main/login.tpl');
 	}
-}
-?>
+};

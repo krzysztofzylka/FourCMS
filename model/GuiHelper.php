@@ -1,39 +1,37 @@
 <?php
-return new class(){
+return new class() {
 	public function contentAlert(
-        string $value,
-        string $alertType = 'success',
-        string $title = null
-    ){
-        core::setError();
-        
-        echo '<div class="content pt-2">
+		string $value,
+		string $alertType = 'success',
+		string $title = null
+	) : void {
+		core::setError();
+
+		echo '<div class="content pt-2">
             <div class="alert alert-' . $alertType . '">
                 ' . (($title <> null) ? '<h4 class="alert-heading">' . $title . '</h4>' : '') . '
                 ' . $value . '
             </div>
         </div>';
-    
-        return;
-    }
+	}
+
 	public function alert(
-        string $value,
-        string $alertType = 'success',
-        string $title = null
-    ){
-        core::setError();
-        
-        echo '<div class="alert alert-' . $alertType . '">
+		string $value,
+		string $alertType = 'success',
+		string $title = null
+	) : void {
+		core::setError();
+
+		echo '<div class="alert alert-' . $alertType . '">
             ' . (is_null($title) ? '' : '<h4 class="alert-heading">' . $title . '</h4>') . $value . '
         </div>';
+	}
 
-        return;
-    }
 	public function bootstrapFormLinkGenerator(
-		$actual='',
-		$showList=['post', 'module', 'link'],
-		$inputName='link'
-	){
+		$actual = '',
+		$showList = ['post', 'module', 'link'],
+		$inputName = 'link'
+	) {
 		core::setError();
 
 		$explode = ($actual == '') ? ['', ''] : (explode('-', $actual, 2));
@@ -61,9 +59,9 @@ return new class(){
 
 		//JavaScript
 		echo '<script>
-		var auto1 = "' . (isset($explode[0]) ? $explode[0] : 'Wybierz') . '";
-        var auto2 = "' . (isset($explode[1]) ? $explode[0] . '-' . $explode[1] : '') . '";
-		var controller_list = [';
+		let auto1 = "' . ($explode[0] ?? 'Wybierz') . '";
+        let auto2 = "' . (isset($explode[1]) ? $explode[0] . '-' . $explode[1] : '') . '";
+		let controller_list = [';
 		foreach (array_diff(scandir('../controller/'), ['.', '..', '.htaccess']) as $item) {
 			echo '"' . str_replace('.php', '', $item) . '", ';
 		}
@@ -83,25 +81,38 @@ return new class(){
 		//load javascript script
 		echo file_exists('script/linkGenerator.js') ? '<script src="script/linkGenerator.js"></script>' : '<script src="../script/linkGenerator.js"></script>';
 	}
-	public function ajaxLink(
-		string $controllerModelName,
-		string $urlName,
-		string $getData = null,
-		string $url = '#',
-		string $type = 'link',
-		string $class = ''
-	) {
-		switch ($type) {
+
+	public function ajaxLink($option) : string {
+		if (!isset($option['type'])) {
+			$option['type'] = 'dialog';
+		}
+
+		if (!isset($option['urlLink'])) {
+			$option['urlLink'] = '#';
+		}
+
+		if (!isset($option['name'])) {
+			$option['name'] = '???';
+		}
+
+		if (!isset($option['title'])) {
+			$option['title'] = 'Dialogbox';
+		}
+
+		if (!isset($option['class'])) {
+			$option['class'] = '';
+		}
+
+		switch ($option['type']) {
 			case 'ajaxLink':
-				return $controllerModelName . ($getData<>null ? '?' . $getData : '');
-				break;
-			case 'link':
+				return '<a href="' . $option['urlLink'] . '" class="' . $option['class'] . '" data-ajax="' . $option['url'] . '">' . $option['name'] . '</a>';
+			case 'dialog':
 			default:
-				return '<a href="' . $url . '" class="' . $class . '" onclick="ajaxLink(\'' . $controllerModelName . ($getData<>null ? '?' . $getData : '') . '\')">' . $urlName . '</a>';
-				break;
+				return '<a href="' . $option['urlLink'] . '" class="' . $option['class'] . '" data-dialog-title="' . $option['title'] . '" data-dialog="' . $option['url'] . '">' . $option['name'] . '</a>';
 		}
 
 	}
+
 	public function toast(
 		string $text,
 		string $type = 'info'
@@ -110,5 +121,4 @@ return new class(){
 			toastr.' . $type . '("' . $text . '");
 		</script>';
 	}
-}
-?>
+};

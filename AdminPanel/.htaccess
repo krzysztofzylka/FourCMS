@@ -1,6 +1,6 @@
 RewriteEngine On
 
-ErrorDocument 404 /index.php
+ErrorDocument 404 /404.html
 
 #global
 RewriteRule ^index.html$ index.php
@@ -44,7 +44,7 @@ RewriteRule ^module-add.html$ index.php?page=option.module&page2=moduleAdd [QSA,
 RewriteRule ^templateEdit.html$ index.php?page=option.templateEdit
 
 #userAdmin and permission
-RewriteRule ^userAdmin.html$ index.php?page=option.user.list [QSA,L]
+RewriteRule ^userAdmin.html$ index.php?page=option.user.list/view [QSA,L]
 RewriteRule ^createNewUser.html$ index.php?page=option.user.addUser
 RewriteRule ^permission.html$ index.php?page=option.permission.permission
 RewriteRule ^permissionEdit-(.*).html$ index.php?page=option.permission.permission&editID=$1

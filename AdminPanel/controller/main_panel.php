@@ -1,5 +1,5 @@
 <?php
-return new class() extends core_controller{
+return new class() extends core_controller {
 	public function __construct() {
 		core::setError();
 
@@ -7,6 +7,7 @@ return new class() extends core_controller{
 
 		$this->view();
 	}
+
 	public function view() {
 		$userWidgetsArray = [];
 		$userWidgets = $this->Widget->getUserWidget(core::$module->account->userData['id']);
@@ -31,5 +32,4 @@ return new class() extends core_controller{
 		$this->viewSetVariable('userWidgetsArray', $userWidgetsArray);
 		$this->loadView('main_panel');
 	}
-}
-?>
+};

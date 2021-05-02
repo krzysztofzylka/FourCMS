@@ -3,7 +3,7 @@ return new class() extends core_controller {
 	public function __construct() {
 		core::setError();
 
-		if(!core::$module->account->checkPermission('menu.list')) {
+		if (!core::$module->account->checkPermission('menu.list')) {
 			header('location: 404.html');
 		}
 
@@ -13,14 +13,15 @@ return new class() extends core_controller {
 
 		$this->view();
 	}
+
 	public function view() {
 		core::setError();
 
-		if(isset($_GET['type'])){
-			switch ($_GET['type']){
+		if (isset($_GET['type'])) {
+			switch ($_GET['type']) {
 				case 'add':
-					if(isset($_POST['name'])){
-						if(strlen($_POST['name']) >= 3){
+					if (isset($_POST['name'])) {
+						if (strlen($_POST['name']) >= 3) {
 							$add = $this->Menu->create($_POST['name'], $_POST['link']);
 
 							if ($add) {
@@ -49,8 +50,8 @@ return new class() extends core_controller {
 					$this->view_list();
 					break;
 				case 'edit':
-					if(isset($_POST['name'])){
-						if(strlen($_POST['name']) >= 3){
+					if (isset($_POST['name'])) {
+						if (strlen($_POST['name']) >= 3) {
 							$this->Menu->write((int)$_GET['id'], $_POST['name'], $_POST['link']);
 
 							if (core::$isError) {
@@ -76,15 +77,16 @@ return new class() extends core_controller {
 					$this->view_list();
 					break;
 			}
-		}else
+		} else
 			$this->view_list();
 	}
+
 	public function view_list() {
 		core::setError();
 
 		$menuList = $this->Menu->list();
 
-		foreach ($menuList as $key => $array){
+		foreach ($menuList as $key => $array) {
 			$menuList[$key]['prettyLink'] = $this->Interpreter->showPrettyText($array['link']);
 
 			if (strlen($array['name']) == 0) {
@@ -95,6 +97,7 @@ return new class() extends core_controller {
 		$this->viewSetVariable('menuList', $menuList);
 		$this->loadView('menu.list');
 	}
+
 	public function view_add() {
 		core::setError();
 
@@ -111,8 +114,8 @@ return new class() extends core_controller {
 		$this->viewSetVariable('add', $add);
 		$this->loadView('menu.edit');
 	}
+
 	public function submitForm() {
 		core::setError();
 	}
-}
-?>
+};

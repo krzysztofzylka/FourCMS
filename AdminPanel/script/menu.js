@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    var nav = $('nav.mt-2');
-    var activeItem = nav.find('a.active');
+$(document).ready(function () {
+    let nav = $('nav.mt-2');
+    let activeItem = nav.find('a.active');
     activeItem.parents('li.has-treeview').addClass('menu-open');
 });

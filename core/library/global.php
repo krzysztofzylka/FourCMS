@@ -1,5 +1,5 @@
 <?php
-return $this->global = new class(){
+return $this->global = new class() {
 	public $version = '1.4';
 	public $__globalVar = [];
 	public $__globalList = [];
@@ -13,30 +13,28 @@ return $this->global = new class(){
 
 		return null;
 	}
-	public function write(string $name, $data) : void { 
+
+	public function write(string $name, $data) : void {
 		core::setError();
 
 		$this->__globalVar[$name] = $data;
 		$this->_addDataToGlobalList($name);
-
-		return;
 	}
+
 	public function unset(string $name) : void {
 		core::setError();
 
 		unset($this->__globalVar[$name]);
 		$this->__globalList = array_diff($this->__globalList, [$name]);
-
-		return;
 	}
+
 	public function createArray(string $name) : void {
 		core::setError();
 
 		$this->__globalVar[$name] = [];
 		$this->_addDataToGlobalList($name);
-
-		return;
 	}
+
 	public function writeArray(string $name, string $arrayName, $data) : void {
 		core::setError();
 
@@ -47,14 +45,11 @@ return $this->global = new class(){
 		}
 
 		$this->_addDataToGlobalList($name);
-
-		return;
 	}
+
 	private function _addDataToGlobalList($name) : void {
 		if (is_bool(array_search($name, $this->__globalList)) == true) {
 			array_push($this->__globalList, $name);
 		}
-		return;
 	}
-}
-?>
+};

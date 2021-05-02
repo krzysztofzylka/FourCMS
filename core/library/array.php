@@ -1,21 +1,22 @@
 <?php
-return $this->array = new class(){ 
+return $this->array = new class() {
 	public $version = '1.2';
 
-	public function trim(&$array){
+	public function trim(&$array) {
 		core::setError();
 
-		if(!is_array($array)){
+		if (!is_array($array)) {
 			return core::setError(1, 'input is not an array');
 		}
 
-		foreach($array as $key => $value){
-			$array[$key] = is_array($value)?$this->trim($value):trim($value);
+		foreach ($array as $key => $value) {
+			$array[$key] = is_array($value) ? $this->trim($value) : trim($value);
 		}
 
 		return $array;
 	}
-	public function searchByKey(array $array, $keyName, $keyValue=-1){
+
+	public function searchByKey(array $array, $keyName, $keyValue = -1) {
 		core::setError();
 
 		if (!is_array($array)) {
@@ -24,10 +25,10 @@ return $this->array = new class(){
 
 		foreach ($array as $id => $value) {
 			if (isset($value[$keyName])) {
-				if($keyValue == -1){
+				if ($keyValue == -1) {
 					return $id;
 				} else {
-					if($value[$keyName] == $keyValue)
+					if ($value[$keyName] == $keyValue)
 						return $id;
 				}
 			}
@@ -35,27 +36,27 @@ return $this->array = new class(){
 
 		return -1;
 	}
-	public function sort2D(array $array, string $name, string $type='ASC') : array{
+
+	public function sort2D(array $array, string $name, string $type = 'ASC') : array {
 		core::setError();
 
 		$GLOBALS['module_sort2D_name'] = $name;
 
-		switch($type){
+		switch ($type) {
 			case 'ASC':
-				usort ($array, function($a, $b) {
+				usort($array, function ($a, $b) {
 					return $a[$GLOBALS['module_sort2D_name']] <=> $b[$GLOBALS['module_sort2D_name']];
 				});
 				break;
 			case 'DESC':
-				usort ($array, function($a, $b) {
+				usort($array, function ($a, $b) {
 					return $a[$GLOBALS['module_sort2D_name']] <= $b[$GLOBALS['module_sort2D_name']];
 				});
 				break;
 		}
 
 		unset($GLOBALS['module_sort2D_name']);
-		
+
 		return $array;
 	}
 };
-?>

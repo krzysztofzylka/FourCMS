@@ -1,12 +1,12 @@
 <?php
-return $this->cache = new class(){ 
-	public $version = '1.2'; 
-	private $dir = ''; 
+return $this->cache = new class() {
+	public $version = '1.2';
+	private $dir;
 
-	public function __construct(){
-		core::setError(); 
+	public function __construct() {
+		core::setError();
 
-		$this->dir = core::$path['base'].'cache/';
+		$this->dir = core::$path['base'] . 'cache/';
 
 		if (!file_exists($this->dir)) {
 			mkdir($this->dir);
@@ -14,12 +14,13 @@ return $this->cache = new class(){
 
 		$this->__checkAllCache();
 	}
-	public function funcCache(string $name, string $function, int $time = 3600){
+
+	public function funcCache(string $name, string $function, int $time = 3600) {
 		core::setError();
 
 		$config = $this->_loadConfig();
 		$check = $this->__checkCache($name, $config);
-		
+
 		if (!isset($config[$name]) or $check == false) {
 			$callData = call_user_func($function);
 			$this->writeCache($name, $callData, $time);
@@ -28,9 +29,8 @@ return $this->cache = new class(){
 		} else {
 			return $this->readCache($name);
 		}
-
-		return false;
 	}
+
 	public function readCache(string $name) {
 		core::setError();
 
@@ -46,19 +46,21 @@ return $this->cache = new class(){
 		}
 
 		$config = $config[$name];
-		$path = $this->dir.$config['file'];
+		$path = $this->dir . $config['file'];
 
 		return unserialize(file_get_contents($path));
 	}
-	public function writeCache(string $name, $data, int $time = 3600) : void{
+
+	public function writeCache(string $name, $data, int $time = 3600) : void {
 		core::setError();
 
 		$config = $this->_loadConfig();
-		$time = time()+$time;
+		$time = time() + $time;
+		$fileName = '';
 
-		for ($i=0; $i<=1000; $i++) {
-			$fileName = $name.'_'.$time.'_'.core::$library->string->generateString(6, [true, true, false, false]).'.cache';
-			if (!file_exists($this->dir.$fileName)) {
+		for ($i = 0; $i <= 1000; $i++) {
+			$fileName = $name . '_' . $time . '_' . core::$library->string->generateString(6, [true, true, false, false]) . '.cache';
+			if (!file_exists($this->dir . $fileName)) {
 				break;
 			}
 		}
@@ -69,30 +71,30 @@ return $this->cache = new class(){
 		];
 
 		$this->_writeConfig($config);
-		$path = $this->dir.$fileName;
+		$path = $this->dir . $fileName;
 		file_put_contents($path, serialize($data));
-
-		return;
 	}
+
 	public function deleteCache(string $name) : bool {
 		core::setError();
 
 		$config = $this->_loadConfig();
 
 		if (isset($config[$name])) {
-			unlink($this->dir.$config[$name]['file']);
+			unlink($this->dir . $config[$name]['file']);
 			unset($config[$name]);
 			$this->_writeConfig($config);
 
 			return true;
 		}
 
-		return false; 
+		return false;
 	}
+
 	private function _loadConfig() : array {
 		core::setError();
 
-		$path = $this->dir.'config.cfg';
+		$path = $this->dir . 'config.cfg';
 
 		if (!file_exists($path)) {
 			return [];
@@ -100,20 +102,20 @@ return $this->cache = new class(){
 
 		return unserialize(file_get_contents($path));
 	}
-	private function _writeConfig(array $config) : void{
+
+	private function _writeConfig(array $config) : void {
 		core::setError();
 
-		$path = $this->dir.'config.cfg';
+		$path = $this->dir . 'config.cfg';
 
 		if (!file_exists($path)) {
 			touch($path);
 		}
 
 		file_put_contents($path, serialize($config));
-
-		return;
 	}
-	private function __checkCache(string $name, array $config = null) : bool{
+
+	private function __checkCache(string $name, array $config = null) : bool {
 		core::setError();
 
 		if ($config == null) {
@@ -121,7 +123,7 @@ return $this->cache = new class(){
 		}
 
 		if (isset($config[$name]) and time() > $config[$name]['time']) {
-			unlink($this->dir.$config[$name]['file']);
+			unlink($this->dir . $config[$name]['file']);
 			unset($config[$name]);
 			$this->_writeConfig($config);
 
@@ -130,7 +132,8 @@ return $this->cache = new class(){
 
 		return true;
 	}
-	private function __checkAllCache() : void{
+
+	private function __checkAllCache() : void {
 		core::setError();
 
 		$config = $this->_loadConfig();
@@ -138,9 +141,9 @@ return $this->cache = new class(){
 		$fileList = ['.', '..', 'config.cfg'];
 
 		foreach ($config as $name => $data) {
-			if ($data['time'] < time() or !file_exists($this->dir.$data['file'])) {
-				if (file_exists($this->dir.$data['file'])) {
-					unlink($this->dir.$data['file']);
+			if ($data['time'] < time() or !file_exists($this->dir . $data['file'])) {
+				if (file_exists($this->dir . $data['file'])) {
+					unlink($this->dir . $data['file']);
 				}
 
 				unset($config[$name]);
@@ -153,14 +156,11 @@ return $this->cache = new class(){
 		$scanDir = array_diff($scanDir, $fileList);
 
 		foreach ($scanDir as $fileName) {
-			unlink($this->dir.$fileName);
-		}
-		
-		if($update) {
-			$this->_writeConfig($config); 
+			unlink($this->dir . $fileName);
 		}
 
-		return;
+		if ($update) {
+			$this->_writeConfig($config);
+		}
 	}
-}
-?>
+};

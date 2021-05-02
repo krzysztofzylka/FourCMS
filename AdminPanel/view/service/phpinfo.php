@@ -1,12 +1,12 @@
 <div class="content p-3">
-	<div class="container-fluid table-responsive">
+    <div class="container-fluid table-responsive">
 		<?php
 		ob_start();
-        phpinfo();
-        $phpinfo = ob_get_contents();
-        ob_end_clean();
-        $phpinfo = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo);
-        echo "
+		phpinfo();
+		$phpinfo = ob_get_contents();
+		ob_end_clean();
+		$phpinfo = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo);
+		echo "
             <style type='text/css'>
                 #phpinfo {}
                 #phpinfo pre {margin: 0; font-family: monospace;}
@@ -32,5 +32,5 @@
             </div>
             ";
 		?>
-	</div>
+    </div>
 </div>

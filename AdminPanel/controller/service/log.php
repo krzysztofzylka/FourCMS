@@ -6,20 +6,21 @@ return new class() extends core_controller {
 		$this->loadModel('GuiHelper');
 		$this->loadModel('Link');
 
-		if(!core::$module->account->checkPermission('service')
-			||!core::$module->account->checkPermission('service_logs')
+		if (!core::$module->account->checkPermission('service')
+			|| !core::$module->account->checkPermission('service_logs')
 		) {
 			header('location: 404.html');
 		}
 
 		$this->view();
 	}
+
 	public function view() {
 		core::setError();
 
 		if (isset($_GET['debug'])) {
 			$this->view_logDebug();
-		} elseif  (isset($_GET['file'])) {
+		} elseif (isset($_GET['file'])) {
 			$this->view_logInspect();
 		} else {
 			if (isset($_GET['delete'])) {
@@ -28,6 +29,7 @@ return new class() extends core_controller {
 			core::loadView('service.logList');
 		}
 	}
+
 	public function view_logInspect() {
 		core::setError();
 
@@ -43,7 +45,7 @@ return new class() extends core_controller {
 		$coreErrorListUrl = [];
 		foreach ($coreErrorList as $key => $data) {
 			$debug = core::$library->string->between($data, '[', ']', 4);
-			$coreErrorListUrl[$key] = 'logs.html?debug='.$debug;//$this->Link->generate(['page', 'debug' => $debug]);
+			$coreErrorListUrl[$key] = 'logs.html?debug=' . $debug;//$this->Link->generate(['page', 'debug' => $debug]);
 		}
 
 		$this->viewSetVariable('coreErrorListUrl', $coreErrorListUrl);
@@ -52,11 +54,13 @@ return new class() extends core_controller {
 		$this->viewSetVariable('file', $file);
 		$this->loadView('service.logInspect');
 	}
-	public function view_logDebug()  {
+
+	public function view_logDebug() {
 		core::setError();
 
 		$this->loadView('service.logDebug');
 	}
+
 	private function _deleteFile($file) {
 		core::setError();
 
@@ -70,5 +74,4 @@ return new class() extends core_controller {
 			$this->GuiHelper->contentAlert('Poprawnie usunięto plik', 'success');
 		}
 	}
-}
-?>
+};

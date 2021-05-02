@@ -1,9 +1,9 @@
 <?php
 return new class() extends core_controller {
 	public function __construct() {
-        core::setError();
+		core::setError();
 
-        if (!core::$module->account->checkPermission('option_editTemplate')) {
+		if (!core::$module->account->checkPermission('option_editTemplate')) {
 			header('location: 404.html');
 		}
 
@@ -12,8 +12,9 @@ return new class() extends core_controller {
 
 		$this->submitForm();
 		$this->view();
-    }
-    public function view() {
+	}
+
+	public function view() {
 		core::setError();
 
 		$this->viewSetVariable('templateName', $this->Template->templateName);
@@ -33,8 +34,9 @@ return new class() extends core_controller {
 		}
 
 		$this->loadView('option.templateEdit');
-    }
-    public function submitForm() {
+	}
+
+	public function submitForm() {
 		core::setError();
 
 		if (isset($_POST['createFile'])) {
@@ -49,6 +51,5 @@ return new class() extends core_controller {
 			file_put_contents('../' . $this->Template->templateDir . $file, $_POST['fileData']);
 			$this->GuiHelper->contentAlert('Poprawnie zapisano plik', 'success');
 		}
-    }
-}
-?>
+	}
+};

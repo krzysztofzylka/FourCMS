@@ -1,81 +1,85 @@
 <?php
 return new class() extends core_model {
-	public function list($groupID = null){
-        core::setError();
+	public function list($groupID = null) {
+		core::setError();
 
-        $perm = core::$library->database->query('SELECT * FROM AP_groupPermission'.(is_int($groupID)?(' WHERE id='.$groupID):''))->fetchAll(PDO::FETCH_ASSOC);
+		$perm = core::$library->database->query('SELECT * FROM AP_groupPermission' . (is_int($groupID) ? (' WHERE id=' . $groupID) : ''))->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach($perm as $id => $item) {
+		foreach ($perm as $id => $item) {
 			$perm[$id]['permission'] = json_decode($item['permission']);
 		}
 
-        return $perm;
-    }
-    public function showHTMLItem(string $permissionName, bool $checked = false){
-        core::setError();
+		return $perm;
+	}
 
-        $data = $this->getPerm($permissionName);
+	public function showHTMLItem(string $permissionName, bool $checked = false) : string {
+		core::setError();
 
-        return '<div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" name="'.$permissionName.'" id="'.$permissionName.'" '.($checked?'checked':'').'>
-            <label class="custom-control-label" for="'.$permissionName.'"></label>'.$data['description'].'
+		$data = $this->getPerm($permissionName);
+
+		return '<div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" name="' . $permissionName . '" id="' . $permissionName . '" ' . ($checked ? 'checked' : '') . '>
+            <label class="custom-control-label" for="' . $permissionName . '"></label>' . $data['description'] . '
         </div>';
-    }
-    public function getPerm(string $permissionName){
-        core::setError();
+	}
 
-        $prep = core::$library->database->prepare('SELECT * FROM permissionList WHERE permName=:permName');
-        $prep->bindParam(':permName', $permissionName, PDO::PARAM_STR);
+	public function getPerm(string $permissionName) {
+		core::setError();
 
-        if (!$prep->execute()) {
+		$prep = core::$library->database->prepare('SELECT * FROM permissionList WHERE permName=:permName');
+		$prep->bindParam(':permName', $permissionName, PDO::PARAM_STR);
+
+		if (!$prep->execute()) {
 			return false;
 		}
 
-        return $prep->fetch(PDO::FETCH_ASSOC);
-    }
-    public function editPerm(int $permissionID, string $permissionName, array $permission){
-        core::setError();
+		return $prep->fetch(PDO::FETCH_ASSOC);
+	}
 
-        $permission = json_encode($permission);
+	public function editPerm(int $permissionID, string $permissionName, array $permission) : bool {
+		core::setError();
 
-        $prep = core::$library->database->prepare('UPDATE AP_groupPermission SET name=:name, permission=:permission WHERE id=:permissionID');
-        $prep->bindParam(':permissionID', $permissionID, PDO::PARAM_INT);
-        $prep->bindParam(':name', $permissionName, PDO::PARAM_STR);
-        $prep->bindParam(':permission', $permission, PDO::PARAM_STR);
+		$permission = json_encode($permission);
 
-        if (!$prep->execute()) {
+		$prep = core::$library->database->prepare('UPDATE AP_groupPermission SET name=:name, permission=:permission WHERE id=:permissionID');
+		$prep->bindParam(':permissionID', $permissionID, PDO::PARAM_INT);
+		$prep->bindParam(':name', $permissionName, PDO::PARAM_STR);
+		$prep->bindParam(':permission', $permission, PDO::PARAM_STR);
+
+		if (!$prep->execute()) {
 			return false;
 		}
 
-        return true;
-    }
-    public function addPerm(string $permissionName, array $permission){
-        core::setError();
+		return true;
+	}
 
-        $permission = json_encode($permission);
+	public function addPerm(string $permissionName, array $permission) : bool {
+		core::setError();
 
-        $prep = core::$library->database->prepare('INSERT INTO AP_groupPermission (name, permission) VALUES (:name, :permission)');
-        $prep->bindParam(':name', $permissionName, PDO::PARAM_STR);
-        $prep->bindParam(':permission', $permission, PDO::PARAM_STR);
-        $prep->execute();
+		$permission = json_encode($permission);
 
-        return true;
-    }
-    public function getFullPermissionArray(){
+		$prep = core::$library->database->prepare('INSERT INTO AP_groupPermission (name, permission) VALUES (:name, :permission)');
+		$prep->bindParam(':name', $permissionName, PDO::PARAM_STR);
+		$prep->bindParam(':permission', $permission, PDO::PARAM_STR);
+		$prep->execute();
+
+		return true;
+	}
+
+	public function getFullPermissionArray() {
 		core::setError();
 
 		$permArray = [];
-        $prep = core::$library->database->prepare('SELECT permName FROM permissionList');
+		$prep = core::$library->database->prepare('SELECT permName FROM permissionList');
 
-        if (!$prep->execute()) {
-        	return core::setError(1);
+		if (!$prep->execute()) {
+			return core::setError(1);
 		}
 
-        foreach ($prep->fetchAll(PDO::FETCH_ASSOC) as $data) {
+		foreach ($prep->fetchAll(PDO::FETCH_ASSOC) as $data) {
 			$permArray[$data['permName']] = core::$module->account->checkPermission($data['permName']);
 		}
 
-        return $permArray;
-    }
-}
-?>
+		return $permArray;
+	}
+};

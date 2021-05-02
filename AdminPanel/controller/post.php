@@ -1,6 +1,6 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
+	public function __construct() {
 		core::setError();
 
 		$this->loadModel('GuiHelper');
@@ -13,6 +13,7 @@ return new class() extends core_controller {
 
 		$this->view();
 	}
+
 	public function view() {
 		core::setError();
 
@@ -41,13 +42,15 @@ return new class() extends core_controller {
 			$this->view_list();
 		}
 	}
-	public function view_list(){
+
+	public function view_list() {
 		core::setError();
 
 		$this->viewSetVariable('postList', $this->Post->list());
 		$this->loadView('post.list');
 	}
-	public function view_edit(){
+
+	public function view_edit() {
 		core::setError();
 
 		if (!isset($_GET['id'])) {
@@ -66,19 +69,20 @@ return new class() extends core_controller {
 			$this->viewSetVariable('post', $post);
 		}
 
-		$this->viewSetVariable('addPost', $_GET['id'] == 'dodaj' ? true : false);
+		$this->viewSetVariable('addPost', $_GET['id'] == 'dodaj');
 		$this->loadView('post.edit');
 	}
-	public function saveForm(){
+
+	public function saveForm() {
 		if (isset($_POST['text'])) {
 			if (strlen($_POST['title']) >= 3) {
-				$addPost = $_GET['id'] == 'dodaj' ? true : false;
+				$addPost = $_GET['id'] == 'dodaj';
 				$type = isset($_POST['type_default']) ? 'post' : $_POST['type'];
 				$hidden = isset($_POST['hidden']) ? 1 : 0;
 				$showMetadata = isset($_POST['showMetadata']) ? 1 : 0;
 
 				if ($addPost) {
-					$id = $this->Post->create($_POST['title'], $_POST['text'], core::$module->account->userData['id'], $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
+					$id = $this->Post->create($_POST['title'], $_POST['text'], core::$module->account->userData['id'], $_POST['url'], $type, boolval($hidden), boolval($showMetadata));
 
 					if (!$id) {
 						$this->GuiHelper->contentAlert('Błąd dodawania posta', 'danger');
@@ -86,7 +90,7 @@ return new class() extends core_controller {
 						header('location: postEdit-' . $id . '.html');
 					}
 				} else {
-					$edit = $this->Post->update((int)$_GET['id'], $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval((int)$hidden), boolval((int)$showMetadata));
+					$edit = $this->Post->update((int)$_GET['id'], $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval($hidden), boolval($showMetadata));
 
 					if ($edit) {
 						$this->GuiHelper->contentAlert('Poprawnie zamodyfikowano post');
@@ -98,5 +102,4 @@ return new class() extends core_controller {
 				core::$model['gui']->alert('Tytuł posta musi posiadać przynajmniej 3 znaki');
 		}
 	}
-}
-?>
+};

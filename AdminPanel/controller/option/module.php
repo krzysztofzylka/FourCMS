@@ -1,9 +1,9 @@
 <?php
 return new class() extends core_controller {
-	public function __construct(){
+	public function __construct() {
 		core::setError();
 
-		if(!core::$module->account->checkPermission('option_module')) {
+		if (!core::$module->account->checkPermission('option_module')) {
 			header('location: 404.html');
 			return;
 		}
@@ -19,7 +19,8 @@ return new class() extends core_controller {
 
 		$this->view();
 	}
-	public function view(){
+
+	public function view() {
 		core::setError();
 
 		if (isset($_GET['page2']) && $_GET['page2'] == 'moduleAdd') {
@@ -28,21 +29,22 @@ return new class() extends core_controller {
 			$this->view_module();
 		}
 	}
-	public function view_module(){
+
+	public function view_module() {
 		core::setError();
 
 		$moduleList = core::$library->module->moduleList(true);
 
-		foreach($moduleList as $key => $data) {
-			$moduleList[$key]['apiKey'] = $this->Config->read('moduleKey_'.$data['config']['uniqueID'], '');
+		foreach ($moduleList as $key => $data) {
+			$moduleList[$key]['apiKey'] = $this->Config->read('moduleKey_' . $data['config']['uniqueID'], '');
 		}
 
 		if (isset($_GET['searchUpdate'])) {
 			$uniqueID = $_GET['searchUpdate'];
-			$APIData = $this->Module->API_getData($uniqueID, $this->Config->read('moduleKey_'.$uniqueID, null));
+			$APIData = $this->Module->API_getData($uniqueID, $this->Config->read('moduleKey_' . $uniqueID, null));
 
 			if (!core::$isError && $APIData['status'] <> 'error') {
-				$key = $this->Config->read('moduleKey_'.$uniqueID, null);
+				$key = $this->Config->read('moduleKey_' . $uniqueID, null);
 				$this->viewSetVariable('key', $key);
 			}
 
@@ -53,18 +55,19 @@ return new class() extends core_controller {
 		$this->viewSetVariable('moduleList', $moduleList);
 		$this->loadView('option.module');
 	}
-	public function view_moduleAdd(){
+
+	public function view_moduleAdd() {
 		core::setError();
 
 		$APIData = $this->Module->API_getData();
 		unset($APIData['status']);
 
-		if(core::$isError) {
+		if (core::$isError) {
 			$this->GuiHelper->contentAlert('Nie udało się połączyć z serwerem', 'danger');
 		}
 
 		if (is_array($APIData)) {
-			foreach($APIData as $key => $data) {
+			foreach ($APIData as $key => $data) {
 				$APIData[$key]['moduleLocalData'] = core::$library->module->getConfig($data['name'], true);
 				$APIData[$key]['checkVersion'] = $APIData[$key]['moduleLocalData']['version'] == $data['version'];
 			}
@@ -73,27 +76,30 @@ return new class() extends core_controller {
 		$this->viewSetVariable('APIData', $APIData);
 		$this->loadView('option.moduleAdd');
 	}
-	public function saveModuleKeyFromGETData(){
+
+	public function saveModuleKeyFromGETData() {
 		core::setError();
 
 		if (isset($_POST['keySave'])) {
-			$this->Config->write('moduleKey_'.$_POST['keyUniqueID'], $_POST['key']);
+			$this->Config->write('moduleKey_' . $_POST['keyUniqueID'], $_POST['key']);
 			$this->GuiHelper->contentAlert('Poprawnie zapisano klucz dla modułu', 'success');
 		}
 	}
+
 	public function installFromPOSTData() {
 		core::setError();
 
-		if(isset($_POST['install'])){
+		if (isset($_POST['install'])) {
 			$this->installModule();
 		}
 	}
-	public function downloadAndinstallModuleFromGETData(){
+
+	public function downloadAndinstallModuleFromGETData() {
 		core::setError();
 
 		if (isset($_GET['installFromServer'])) {
 			$urlToFile = $_GET['installFromServer'];
-			$tempFilePath = core::$path['temp'].'downloadModuleFile.zip';
+			$tempFilePath = core::$path['temp'] . 'downloadModuleFile.zip';
 
 			file_put_contents($tempFilePath, fopen($urlToFile, 'r'));
 
@@ -104,10 +110,11 @@ return new class() extends core_controller {
 			}
 		}
 	}
+
 	public function installModule($file = null) {
 		core::setError();
 
-		$file = $file??$_FILES['file']['tmp_name'];
+		$file = $file ?? $_FILES['file']['tmp_name'];
 
 		if (core::$module->account->checkPermission('moduleInstall')) {
 			if (isset($file)) {
@@ -163,13 +170,13 @@ return new class() extends core_controller {
 			$this->GuiHelper->contentAlert('Nie posiadasz uprawnień do wgrywania modułów z plików', 'danger');
 		}
 	}
-	public function clearInstallerCacheFromGETData(){
+
+	public function clearInstallerCacheFromGETData() {
 		core::setError();
 
 		if (isset($_GET['clearInstallerCache']) and $_GET['clearInstallerCache'] == "true") {
-			core::$library->file->rmdir(core::$path['temp'].'installModule'.DIRECTORY_SEPARATOR);
+			core::$library->file->rmdir(core::$path['temp'] . 'installModule' . DIRECTORY_SEPARATOR);
 			$this->GuiHelper->contentAlert('Usunięto pliki cache', 'success');
 		}
 	}
-}
-?>
+};

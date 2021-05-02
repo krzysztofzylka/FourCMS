@@ -1,12 +1,12 @@
 <div class="content-header">
-	<div class="container-fluid">
-		<h1 class="m-0 text-dark">Podgląd pliku <?php echo $file ?></h1>
-	</div>
+    <div class="container-fluid">
+        <h1 class="m-0 text-dark">Podgląd pliku <?php echo $file ?></h1>
+    </div>
 </div>
 
 <div class='content pt-3'>
-	<div class="container-fluid">
-		<div class="card">
+    <div class="container-fluid">
+        <div class="card">
 			<?php
 			if (core::$library->string->strpos($file, 'core_error_') === 0) {
 				echo '<div class="card-body p-0" style="overflow: auto;">
@@ -25,8 +25,8 @@
 					$date = core::$library->string->between($item, '[', ']');
 
 					if ($date === null) {
-                        continue;
-                    }
+						continue;
+					}
 
 					$numer = core::$library->string->between($item, '[', ']', 1);
 					$nazwa = core::$library->string->between($item, '[', ']', 2);
@@ -61,8 +61,8 @@
 					$line = $explode[$i];
 
 					if ($data === '') {
-                        $data = core::$library->string->between($line, '[', ']');
-                    }
+						$data = core::$library->string->between($line, '[', ']');
+					}
 
 					$string .= str_replace('[' . $data . ']', '', $line);
 					$line_check = isset($explode[$i + 1]) ? (core::$library->string->between($explode[$i + 1], '[', ']') === null ? true : false) : false;
@@ -89,6 +89,6 @@
 			} else
 				echo '<div class="card-body">' . nl2br(file_get_contents($path)) . '</div>';
 			?>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>

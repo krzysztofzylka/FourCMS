@@ -1,11 +1,9 @@
 <?php
-//TODO: przebudować wszystko
 return new class() extends core_model {
-	private $load = null;
+	private $load;
 	private $data = '';
 	private $activeUrl = null;
 	private $activeUrlFull = null;
-	private $lastGroupID = '';
 	private $moduleExPosition = 2;
 
 	public function __construct() {
@@ -13,19 +11,21 @@ return new class() extends core_model {
 
 		$this->loadModel('Config');
 
-		$this->setActiveURL(basename(isset($_SERVER['REDIRECT_URL'])?$_SERVER['REDIRECT_URL']:$_SERVER['SCRIPT_NAME']));
-        $this->load = include('../file/adminPanel_menu.php');
+		$this->setActiveURL(basename($_SERVER['REDIRECT_URL'] ?? $_SERVER['SCRIPT_NAME']));
+		$this->load = include('../file/adminPanel_menu.php');
 		$this->loadModuleMenu();
 		$this->hiddenElement();
 		$this->loadModuleMenuEx();
 	}
-	public function loadMenu() {
+
+	public function loadMenu() : string {
 		core::setError();
 
 		$this->loadTree($this->load);
 
 		return $this->data;
-    }
+	}
+
 	private function hiddenElement() {
 		core::setError();
 
@@ -41,6 +41,7 @@ return new class() extends core_model {
 			unset($this->load['menu']);
 		}
 	}
+
 	private function loadModuleMenuEx() {
 		core::setError();
 
@@ -55,20 +56,21 @@ return new class() extends core_model {
 
 			$config = $cfg['fourCMS']['menuItem'];
 			$insert = [
-				'href' => 'FrameworkModuleAP-'.$item['name'].'.html',
+				'href' => 'FrameworkModuleAP-' . $item['name'] . '.html',
 				'name' => $config['name'],
-				'icon' => isset($config['icon'])?$config['icon']:'fas fa-circle',
-				'htmlPage' => isset($config['htmlPage'])?$config['htmlPage']:[],
+				'icon' => $config['icon'] ?? 'fas fa-circle',
+				'htmlPage' => $config['htmlPage'] ?? [],
 			];
 
 			if (isset($config['permission'])) {
 				$insert['permission'] = $config['permission'];
 			}
-			
+
 			array_splice($this->load, $this->moduleExPosition, 0, [$insert]);
 		}
 	}
-    private function loadTree($array) {
+
+	private function loadTree($array) {
 		core::setError();
 
 		foreach ($array as $item) {
@@ -88,27 +90,28 @@ return new class() extends core_model {
 				}
 			}
 
-			if ($actUrl){
+			if ($actUrl) {
 				$item['class'] = 'active';
 			}
 
-			$this->lastGroupID = core::$library->string->generateString(15, [true, true, false, false]);
-			$this->data .= '<li id="'.(isset($item['menu'])?$this->lastGroupID:'').'" class="nav-item '.(isset($item['menu'])?'has-treeview':'').'">
-				<a href="'.$item['href'].'" class="nav-link '.(isset($item['class'])?$item['class']:'').'">
-					<i class="nav-icon '.(isset($item['icon'])?$item['icon']:'fas fa-circle').'"></i>
-					<p>'.$item['name'].'</p>
-					'.(isset($item['menu'])?'<i class="right fas fa-angle-left"></i>':'').'
+			$lastGroupID = core::$library->string->generateString(15, [true, true, false, false]);
+			$this->data .= '<li id="' . (isset($item['menu']) ? $lastGroupID : '') . '" class="nav-item ' . (isset($item['menu']) ? 'has-treeview' : '') . '">
+				<a href="' . $item['href'] . '" class="nav-link ' . ($item['class'] ?? '') . '">
+					<i class="nav-icon ' . ($item['icon'] ?? 'fas fa-circle') . '"></i>
+					<p>' . $item['name'] . '</p>
+					' . (isset($item['menu']) ? '<i class="right fas fa-angle-left"></i>' : '') . '
 				</a>';
 
-				if (isset($item['menu'])) {
-					$this->data .= '<ul class="nav nav-treeview">';
-					$this->loadTree($item['menu']);
-					$this->data .= '</ul>';
-				}
+			if (isset($item['menu'])) {
+				$this->data .= '<ul class="nav nav-treeview">';
+				$this->loadTree($item['menu']);
+				$this->data .= '</ul>';
+			}
 
 			$this->data .= '</li>';
 		}
 	}
+
 	private function loadModuleMenu() {
 		core::setError();
 
@@ -120,10 +123,10 @@ return new class() extends core_model {
 				if (isset($item['config']['adminPanel']['menu'])) {
 					$apMenu = $item['config']['adminPanel']['menu'];
 					$array = [
-						'href' => 'FrameworkModuleAP-'.$item['name'].'.html',
-						'icon' => 'fas '.$apMenu['icon'],
+						'href' => 'FrameworkModuleAP-' . $item['name'] . '.html',
+						'icon' => 'fas ' . $apMenu['icon'],
 						'name' => $apMenu['name'],
-						'htmlPage' => isset($apMenu['htmlPage'])?$apMenu['htmlPage']:[],
+						'htmlPage' => $apMenu['htmlPage'] ?? [],
 					];
 
 					if (isset($apMenu['permission'])) {
@@ -139,6 +142,7 @@ return new class() extends core_model {
 			unset($this->load[$search]);
 		}
 	}
+
 	public function setActiveURL($url) : void {
 		core::setError();
 
@@ -146,7 +150,7 @@ return new class() extends core_model {
 
 		if (!is_bool(strpos($url, '-'))) {
 			$between = core::$library->string->between($url, '-', '.html');
-			
+
 			if (!is_null($between)) {
 				$urlFull = $url;
 				$url = str_replace($between, '*', $url);
@@ -155,8 +159,5 @@ return new class() extends core_model {
 
 		$this->activeUrl = $url;
 		$this->activeUrlFull = $urlFull;
-
-		return;
 	}
-}
-?>
+};

@@ -15,9 +15,9 @@
                 Inforamcje
             </div>
             <div class="card-body">
-                Nazwa szablonu: <?php echo $templateName ?><br />
-                Folder szablonu: <?php echo $templateDir ?><br />
-                Rozmiar szablonu: <?php echo $templateDirSize ?><br />
+                Nazwa szablonu: <?php echo $templateName ?><br/>
+                Folder szablonu: <?php echo $templateDir ?><br/>
+                Rozmiar szablonu: <?php echo $templateDirSize ?><br/>
                 Plików: <?php echo $templateDirFileCount ?>
             </div>
         </div>
@@ -31,11 +31,11 @@
                     <div class="form-group">
                         <label>Wybór pliku</label>
                         <select class="custom-select mb-3" name="file">
-                            <?php
-                            foreach ($templateDirFileList as $item) {
-                                echo '<option value="' . $item . '">' . $item . '</option>';
-                            }
-                            ?>
+							<?php
+							foreach ($templateDirFileList as $item) {
+								echo '<option value="' . $item . '">' . $item . '</option>';
+							}
+							?>
                         </select>
                     </div>
                     <button class="btn btn-primary">Wybierz plik do edycji</button>
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <?php if (isset($fileEditName)) { ?>
+		<?php if (isset($fileEditName)) { ?>
             <div class='card'>
                 <div class='card-header'>
                     Edycja pliku <b><?php echo $fileEditName ?></b>
@@ -73,6 +73,6 @@
                     </form>
                 </div>
             </div>
-        <?php } ?>
+		<?php } ?>
     </div>
 </div>

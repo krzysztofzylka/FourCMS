@@ -1,14 +1,15 @@
 <?php
-return $this->network = new class(){ 
+return $this->network = new class() {
 	public $version = '1.10';
 	public $method = 0;
 
-	public function __construct(){
+	public function __construct() {
 		core::setError();
 
 		$this->_getMethod();
 	}
-	private function _getMethod() : void{ 
+
+	private function _getMethod() : void {
 		core::setError();
 
 		if (function_exists('curl_version')) {
@@ -17,12 +18,14 @@ return $this->network = new class(){
 			$this->method = 2;
 		}
 	}
+
 	public function get(string $url, array $option = []) {
 		core::setError();
 
 		$option = $this->_getDefaultOptionForGet($option);
-		
-		switch($this->method){
+		$fp = null;
+
+		switch ($this->method) {
 			case 1:
 				$curl = curl_init();
 				$opt = [
@@ -41,9 +44,9 @@ return $this->network = new class(){
 				$getData = curl_exec($curl);
 				$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-				if ($httpCode < 200 and $httpcode > 200) {
+				if ($httpCode < 200 and $httpCode > 200) {
 					if (!$option['ignoreHttpCode']) {
-						return core::setError(2, 'error http code', 'Http Code: '.$httpCode);
+						return core::setError(2, 'error http code', 'Http Code: ' . $httpCode);
 					}
 				}
 
@@ -58,25 +61,23 @@ return $this->network = new class(){
 				if ($option['saveToFile']) {
 					fclose($fp);
 					return true;
-				} elseif($option['JSONData'] === true) {
+				} elseif ($option['JSONData'] === true) {
 					return json_decode($getData, $option['JSONAssoc']);
 				} else {
 					return $getData;
 				}
-				break;
 			default: //other
-				if($option['saveToFile']){
+				if ($option['saveToFile']) {
 					file_put_contents($option['saveToFile'], fopen($url, 'r'));
 					return true;
 				}
 				$contents = @file_get_contents($url);
-				if($contents === false)
-					return core::setError(1, 'error download data', '');
+				if ($contents === false)
+					return core::setError(1, 'error download data');
 				return $contents;
-				break;
 		}
-		return false;
 	}
+
 	public function getCurrentPageURL(array $option = []) : string {
 		core::setError();
 
@@ -88,31 +89,33 @@ return $this->network = new class(){
 			$option['dirOnly'] = false;
 		}
 
-		$url = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
+		$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
 
 		if ($option['request_uri'] === false) {
-			return $url.'/';
+			return $url . '/';
 		}
 
 		$url .= $_SERVER['REQUEST_URI'];
 
 		if ($option['dirOnly']) {
-			return $url = str_replace(basename($url), '', $url);
+			return str_replace(basename($url), '', $url);
 		}
 
 		return $url;
 	}
+
 	public function getClientIP() : string {
 		core::setError();
 
 		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 			return $_SERVER['HTTP_CLIENT_IP'];
-		} elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} else  {
+		} else {
 			return $_SERVER['REMOTE_ADDR'];
 		}
 	}
+
 	public function ping(string $url) : int {
 		core::setError();
 
@@ -125,82 +128,84 @@ return $this->network = new class(){
 		}
 
 		fclose($socket);
-		
+
 		return floor(($stoptime - $starttime) * 1000);
 	}
-	public function getHeader(string $name){
+
+	public function getHeader(string $name) {
 		core::setError();
 
 		$headers = apache_request_headers();
 
-		return isset($headers[$name])?null:$headers[$name];
+		return isset($headers[$name]) ? null : $headers[$name];
 	}
+
 	public function getBrowserInfo() : array {
 		core::setError();
 
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		$platform = 'Unknown';
-        $platformList = [
-            'Android' => 'Android',
-            'Iphone' => 'iOS',
-            'Linux' => 'Linux',
-            'macintosh|mac os x' => 'Mac',
-            'windows|win32' => 'Windows',
-            'Mobile' => 'Mobile'
-        ];
+		$platformList = [
+			'Android' => 'Android',
+			'Iphone' => 'iOS',
+			'Linux' => 'Linux',
+			'macintosh|mac os x' => 'Mac',
+			'windows|win32' => 'Windows',
+			'Mobile' => 'Mobile'
+		];
 
-        foreach ($platformList as $name => $value) {
-            if (preg_match('/'.$name.'/i', $userAgent)) {
-                $platform = $value;
-                break;
-            }
+		foreach ($platformList as $name => $value) {
+			if (preg_match('/' . $name . '/i', $userAgent)) {
+				$platform = $value;
+				break;
+			}
 		}
-		
+
 		$browser = 'Unknown';
-        $version = 'Unknown';
-        $browserList = [
-            ['Edg|Edge', 'Edge', ['Edg\/', 'Edge\/']],
-            ['OPR|Opera', 'Opera', ['OPR\/', 'Version\/', 'Opera\/']],
-            ['MSIE', 'Internet Explorer', ['MSIE ', 'rv:']],
-            ['GSA', 'GSA', ['GSA\/']],
-            ['UCBrowser', 'UCBrowser', ['UCBrowser\/']],
-            ['SamsungBrowser', 'SamsungBrowser', ['SamsungBrowser\/']],
-            ['YaBrowser', 'Yandex', ['YaBrowser\/']],
-            ['Mobile Safari', 'Mobile Safari', ['Mobile Safari\/']],
-            ['Camino', 'Camino', ['Camino\/']],
-            ['SeaMonkey', 'SeaMonkey', ['SeaMonkey\/']],
-            ['Firefox', 'Firefox', ['Firefox\/']],
-            ['Vivaldi', 'Vivaldi', ['Vivaldi\/']],
-            ['Chromium', 'Chromium', ['Chromium\/']],
-            ['Chrome', 'Google Chrome', ['Chrome\/']],
-            ['Kindle', 'Kindle', ['Kindle\/']],
-            ['OmniWeb', 'OmniWeb', ['OmniWeb\/']],
-            ['Safari', 'Safari', ['Safari\/', 'Version\/']],
-            ['Trident', 'Internet Explorer', ['rv:', 'Trident\/']],
-            ['Netscape', 'Netscape', ['Netscape\/']],
-            ['K-Meleon', 'K-Meleon', ['K-Meleon\/']],
-            ['AppleWebKit', 'AppleWebKit', ['AppleWebKit\/']],
-            ['Gecko', 'Gecko', ['Gecko\/']],
-            ['NetSurf', 'NetSurf', ['NetSurf\/']],
-            ['bot|crawl|slurp|spider|mediapartners', 'BOT', ['Version\/', 'Googlebot\/']],
-            //['', '', ['\/']],
-        ];
+		$version = 'Unknown';
+		$browserList = [
+			['Edg|Edge', 'Edge', ['Edg\/', 'Edge\/']],
+			['OPR|Opera', 'Opera', ['OPR\/', 'Version\/', 'Opera\/']],
+			['MSIE', 'Internet Explorer', ['MSIE ', 'rv:']],
+			['GSA', 'GSA', ['GSA\/']],
+			['UCBrowser', 'UCBrowser', ['UCBrowser\/']],
+			['SamsungBrowser', 'SamsungBrowser', ['SamsungBrowser\/']],
+			['YaBrowser', 'Yandex', ['YaBrowser\/']],
+			['Mobile Safari', 'Mobile Safari', ['Mobile Safari\/']],
+			['Camino', 'Camino', ['Camino\/']],
+			['SeaMonkey', 'SeaMonkey', ['SeaMonkey\/']],
+			['Firefox', 'Firefox', ['Firefox\/']],
+			['Vivaldi', 'Vivaldi', ['Vivaldi\/']],
+			['Chromium', 'Chromium', ['Chromium\/']],
+			['Chrome', 'Google Chrome', ['Chrome\/']],
+			['Kindle', 'Kindle', ['Kindle\/']],
+			['OmniWeb', 'OmniWeb', ['OmniWeb\/']],
+			['Safari', 'Safari', ['Safari\/', 'Version\/']],
+			['Trident', 'Internet Explorer', ['rv:', 'Trident\/']],
+			['Netscape', 'Netscape', ['Netscape\/']],
+			['K-Meleon', 'K-Meleon', ['K-Meleon\/']],
+			['AppleWebKit', 'AppleWebKit', ['AppleWebKit\/']],
+			['Gecko', 'Gecko', ['Gecko\/']],
+			['NetSurf', 'NetSurf', ['NetSurf\/']],
+			['bot|crawl|slurp|spider|mediapartners', 'BOT', ['Version\/', 'Googlebot\/']],
+			//['', '', ['\/']],
+		];
 
-        foreach ($browserList as $data) {
-            if (preg_match('/'.$data[0].'/i',$userAgent)) {
-                $browser = $data[1];
+		foreach ($browserList as $data) {
+			if (preg_match('/' . $data[0] . '/i', $userAgent)) {
+				$browser = $data[1];
 
-                foreach ($data[2] as $search) {
-                    preg_match('/('.$search.')+([0-9.]+)/m', $userAgent, $matches);
+				foreach ($data[2] as $search) {
+					preg_match('/(' . $search . ')+([0-9.]+)/m', $userAgent, $matches);
 
-                    if (count($matches) === 3) {
-                        $version = $matches[2];
-                        break;
-                    }
-                }
+					if (count($matches) === 3) {
+						$version = $matches[2];
+						break;
+					}
+				}
 
-                break;
-            }
+				break;
+			}
 		}
 
 		return [
@@ -210,11 +215,12 @@ return $this->network = new class(){
 			'platform' => $platform
 		];
 	}
-	private function _getDefaultOptionForGet($option) : array{
+
+	private function _getDefaultOptionForGet($option) : array {
 		core::setError();
 
 		if (!isset($option['userAgent'])) {
-			$option['userAgent'] = 'FourFramework ('.core::$info['version'].'/Library:'.$this->version.')';
+			$option['userAgent'] = 'FourFramework (' . core::$info['version'] . '/Library:' . $this->version . ')';
 		}
 
 		if (!isset($option['timeout'])) {
@@ -228,16 +234,15 @@ return $this->network = new class(){
 		if (!isset($option['JSONData'])) {
 			$option['JSONData'] = false;
 		}
-		
+
 		if (!isset($option['JSONAssoc'])) {
 			$option['JSONAssoc'] = true;
 		}
-		
-		if(!isset($option['saveToFile'])) {
+
+		if (!isset($option['saveToFile'])) {
 			$option['saveToFile'] = false;
 		}
-		
+
 		return $option;
 	}
 };
-?>
