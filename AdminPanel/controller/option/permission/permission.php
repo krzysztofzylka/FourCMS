@@ -11,13 +11,13 @@ return new class() extends core_controller {
 
 	public function view() {
 		if (isset($_GET['editID'])) {
-			if (!core::$module->account->checkPermission('option_users') or !core::$module->account->checkPermission('option_permissionEdit')) {
+			if (!core::$module->account->checkPermission('option_users') || !core::$module->account->checkPermission('option_permissionEdit')) {
 				header('location: 404.html');
 				return;
 			}
 
-			if (isset($_POST) and isset($_POST['savePermission'])) {
-				if ($_GET['editID'] == 1) {
+			if (isset($_POST) && isset($_POST['savePermission'])) {
+				if ($_GET['editID'] === 1) {
 					$this->GuiHelper->contentAlert('Nie można edytować uprawnień Administratora', 'danger');
 				} else {
 					$permissionName = $_POST['permissionName'];
@@ -34,7 +34,7 @@ return new class() extends core_controller {
 					$this->GuiHelper->contentAlert('Poprawnie zapisano uprawnienia', 'success');
 				}
 				$this->view_edit();
-			} elseif (isset($_POST) and isset($_POST['addPermission'])) {
+			} elseif (isset($_POST) && isset($_POST['addPermission'])) {
 				$permissionName = $_POST['permissionName'];
 
 				unset($_POST['permissionName'], $_POST['addPermission']);

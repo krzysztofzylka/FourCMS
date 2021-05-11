@@ -6,11 +6,11 @@
             </div>
             <div class="col-sm-6 text-right">
 				<?php
-				echo $this->GuiHelper->ajaxLink([
-					'url' => 'widget/view',
-					'name' => 'Zarządzaj widgetami',
-					'class' => 'btn btn-primary btn-sm'
-				]);
+				echo $this->GuiHelper->url(
+					'widget/view',
+					'Menadżer widgetów',
+					'btn btn-primary btn-sm'
+				);
 				?>
             </div>
         </div>

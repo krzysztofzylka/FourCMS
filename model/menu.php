@@ -7,25 +7,21 @@ return new class() extends core_model {
 	public function read(int $id = -1) {
 		core::setError();
 
-		if ($id <> -1) {
+		if ($id !== -1) {
 			return core::$library->database->query('SELECT * FROM menu WHERE id=' . $id)->fetch(PDO::FETCH_ASSOC);
 		}
 
-		foreach (core::$library->database->query('SELECT * FROM menu ORDER BY position ASC')->fetchAll(PDO::FETCH_ASSOC) as $item) {
+		foreach (core::$library->database->query('SELECT * FROM menu ORDER BY position')->fetchAll(PDO::FETCH_ASSOC) as $item) {
 			$menu[$item['name']] = $this->Interpreter->generateLink($item['link']);
 		}
 
-		if (!isset($menu)) {
-			return false;
-		}
-
-		return $menu;
+		return $menu ?? false;
 	}
 
 	public function list() {
 		core::setError();
 
-		return core::$library->database->query('SELECT * FROM menu ORDER BY position ASC')->fetchAll(PDO::FETCH_ASSOC);
+		return core::$library->database->query('SELECT * FROM menu ORDER BY position')->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function positionUp(int $id) : bool {

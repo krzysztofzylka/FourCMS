@@ -23,16 +23,14 @@ return $this->debug = new class() {
 				echo '<tr><td valign="top" style="width: 50px; background-color:#F0F0F0;">';
 				echo '<strong>' . $key . '</strong> ';
 
-				if ($var_type === true) {
-					if (!is_array($value)) {
-						$type = gettype($value);
+				if (($var_type === true) && !is_array($value)) {
+					$type = gettype($value);
 
-						if ($type === 'integer') {
-							$type = 'int';
-						}
-
-						echo '<i style="background: #79ff4c; border-radius: 4px;">{' . $type . '}</i>';
+					if ($type === 'integer') {
+						$type = 'int';
 					}
+
+					echo '<i style="background: #79ff4c; border-radius: 4px;">{' . $type . '}</i>';
 				}
 
 				echo '</td><td>';
@@ -55,13 +53,10 @@ return $this->debug = new class() {
 		switch (true) {
 			case stristr(PHP_OS, 'DAR'):
 				return 2;
-				break;
 			case stristr(PHP_OS, 'WIN'):
 				return 3;
-				break;
 			case stristr(PHP_OS, 'LINUX'):
 				return 4;
-				break;
 		}
 
 		return 1;

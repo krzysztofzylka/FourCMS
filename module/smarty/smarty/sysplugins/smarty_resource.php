@@ -139,17 +139,17 @@ abstract class Smarty_Resource
     /**
      * modify template_resource according to resource handlers specifications
      *
-     * @param \Smarty_Internal_Template|\Smarty $obj               Smarty instance
+     * @param Smarty_Internal_Template|Smarty $obj               Smarty instance
      * @param string                            $template_resource template_resource to extract resource handler and
      *                                                             name of
      *
      * @return string unique resource name
-     * @throws \SmartyException
+     * @throws SmartyException
      */
     public static function getUniqueTemplateName($obj, $template_resource)
     {
         $smarty = $obj->_getSmartyObj();
-        list($name, $type) = self::parseResourceName($template_resource, $smarty->default_resource_type);
+        [$name, $type] = self::parseResourceName($template_resource, $smarty->default_resource_type);
         // TODO: optimize for Smarty's internal resource types
         $resource = Smarty_Resource::load($smarty, $type);
         // go relative to a given template?
@@ -171,9 +171,9 @@ abstract class Smarty_Resource
      * @param Smarty                   $smarty            smarty object
      * @param string                   $template_resource resource identifier
      *
-     * @return \Smarty_Template_Source Source Object
-     * @throws \SmartyException
-     */
+     * @return Smarty_Template_Source Source Object
+     * @throws SmartyException
+	 */
     public static function source(
         Smarty_Internal_Template $_template = null,
         Smarty $smarty = null,

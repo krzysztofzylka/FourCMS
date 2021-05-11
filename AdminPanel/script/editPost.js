@@ -33,7 +33,7 @@ $(function () {
     };
 
     $('#postTypeCheckbox').change(function () {
-        if ($(this).is(':checked') == true) {
+        if ($(this).is(':checked') === true) {
             $('#postTypeForm').hide();
         } else {
             $('#postTypeForm').show();
@@ -41,7 +41,7 @@ $(function () {
     });
 
     $('#postURLAutoCheckbox').change(function () {
-        if ($(this).is(':checked') == true) {
+        if ($(this).is(':checked') === true) {
             $('#postURLAutoDiv').hide();
             $('#postURLAutoInput').val('auto');
         } else {

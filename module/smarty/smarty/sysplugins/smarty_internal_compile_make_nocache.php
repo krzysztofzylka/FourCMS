@@ -42,7 +42,7 @@ class Smarty_Internal_Compile_Make_Nocache extends Smarty_Internal_CompileBase
      * Compiles code for the {make_nocache} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
      */
@@ -51,7 +51,7 @@ class Smarty_Internal_Compile_Make_Nocache extends Smarty_Internal_CompileBase
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         if ($compiler->template->caching) {
-            $output = "<?php \$_smarty_tpl->smarty->ext->_make_nocache->save(\$_smarty_tpl, {$_attr[ 'var' ]});\n?>\n";
+            $output = "<?php \$_smarty_tpl->smarty->ext->_make_nocache->save(\$_smarty_tpl, {$_attr[ 'var' ]})\n?>\n";
             $compiler->template->compiled->has_nocache_code = true;
             $compiler->suppressNocacheProcessing = true;
             return $output;

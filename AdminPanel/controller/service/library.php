@@ -3,7 +3,7 @@ return new class() extends core_controller {
 	public function __construct() {
 		core::setError();
 
-		if (!core::$module->account->checkPermission('service') or !core::$module->account->checkPermission('service_library')) {
+		if (!core::$module->account->checkPermission('service') || !core::$module->account->checkPermission('service_library')) {
 			header('location: 404.html');
 		}
 
@@ -15,7 +15,7 @@ return new class() extends core_controller {
 		$apiList = [];
 
 		foreach (scandir(core::$path['library']) as $fileName) {
-			if (core::$library->string->strpos($fileName, '.php') == -1) {
+			if (core::$library->string->strpos($fileName, '.php') === -1) {
 				continue;
 			}
 			$libraryName = str_replace('.php', '', $fileName);
@@ -26,7 +26,7 @@ return new class() extends core_controller {
 		}
 
 		foreach (scandir(core::$path['library'] . 'API/') as $fileName) {
-			if (core::$library->string->strpos($fileName, '.php') == -1) {
+			if (core::$library->string->strpos($fileName, '.php') === -1) {
 				continue;
 			}
 			$apiName = str_replace('.php', '', $fileName);

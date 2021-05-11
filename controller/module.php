@@ -16,6 +16,7 @@ return new class() extends core_controller{
         }
 
         include($displayPath);
+
+		return false;
     }
-}
-?>
+};

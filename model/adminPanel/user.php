@@ -1,6 +1,10 @@
 <?php
-return new class() {
+return new class() extends app_controller {
 	public $defaultAvatar = 'images/userImage/defaultUser.png';
+
+	public function __construct(){
+		$this->loadModel('GuiHelper');
+	}
 
 	public function changePassword() {
 		core::setError();
@@ -16,7 +20,7 @@ return new class() {
 		} else {
 			$changePassword = core::$module->account->changePassword(core::$module->account->userData['login'], $haslo, $haslo2);
 
-			if (core::$isError or !$changePassword) {
+			if (core::$isError || !$changePassword) {
 				switch (core::$error['number']) {
 					case 1:
 						$this->GuiHelper->contentAlert('Nie znaleziono takiego użytkownika', 'danger');
@@ -41,15 +45,20 @@ return new class() {
 		if ($userID == -1) {
 			$avatar = core::$module->account->userData['avatar'];
 
-			if (is_null($avatar) or !file_exists($avatar)) {
+			if (is_null($avatar) || !file_exists($avatar)) {
 				return file_exists('../' . $this->defaultAvatar) ? '../' . $this->defaultAvatar : $this->defaultAvatar;
 			}
 
 			return file_exists('../' . $avatar) ? '../' . $avatar : $avatar;
 		} else {
-			$userAvatar = core::$module->account->getData($userID)['avatar'];
+			$userData = core::$module->account->getData($userID);
+			if (!is_array($userData)) {
+				$userAvatar = null;
+			} else {
+				$userAvatar = $userData['avatar'];
+			}
 
-			if (is_null($userAvatar) or !file_exists($userAvatar)) {
+			if (is_null($userAvatar) || !file_exists($userAvatar)) {
 				return file_exists('../' . $this->defaultAvatar) ? '../' . $this->defaultAvatar : $this->defaultAvatar;
 			}
 

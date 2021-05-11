@@ -59,7 +59,7 @@ return new class() extends core_controller {
 
 		$this->saveForm();
 
-		if ($_GET['id'] != 'dodaj') {
+		if ($_GET['id'] !== 'dodaj') {
 			$post = $this->Post->read((int)$_GET['id']);
 
 			if (!$post) {
@@ -69,20 +69,20 @@ return new class() extends core_controller {
 			$this->viewSetVariable('post', $post);
 		}
 
-		$this->viewSetVariable('addPost', $_GET['id'] == 'dodaj');
+		$this->viewSetVariable('addPost', $_GET['id'] === 'dodaj');
 		$this->loadView('post.edit');
 	}
 
 	public function saveForm() {
 		if (isset($_POST['text'])) {
 			if (strlen($_POST['title']) >= 3) {
-				$addPost = $_GET['id'] == 'dodaj';
+				$addPost = $_GET['id'] === 'dodaj';
 				$type = isset($_POST['type_default']) ? 'post' : $_POST['type'];
 				$hidden = isset($_POST['hidden']) ? 1 : 0;
 				$showMetadata = isset($_POST['showMetadata']) ? 1 : 0;
 
 				if ($addPost) {
-					$id = $this->Post->create($_POST['title'], $_POST['text'], core::$module->account->userData['id'], $_POST['url'], $type, boolval($hidden), boolval($showMetadata));
+					$id = $this->Post->create($_POST['title'], $_POST['text'], core::$module->account->userData['id'], $_POST['url'], $type, (bool)$hidden, (bool)$showMetadata);
 
 					if (!$id) {
 						$this->GuiHelper->contentAlert('Błąd dodawania posta', 'danger');
@@ -90,7 +90,7 @@ return new class() extends core_controller {
 						header('location: postEdit-' . $id . '.html');
 					}
 				} else {
-					$edit = $this->Post->update((int)$_GET['id'], $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, boolval($hidden), boolval($showMetadata));
+					$edit = $this->Post->update((int)$_GET['id'], $_POST['title'], $_POST['text'], -1, $_POST['url'], $type, (bool)$hidden, (bool)$showMetadata);
 
 					if ($edit) {
 						$this->GuiHelper->contentAlert('Poprawnie zamodyfikowano post');
@@ -98,8 +98,9 @@ return new class() extends core_controller {
 						$this->GuiHelper->contentAlert('Błąd modyfikowania posta', 'danger');
 					}
 				}
-			} else
+			} else {
 				core::$model['gui']->alert('Tytuł posta musi posiadać przynajmniej 3 znaki');
+			}
 		}
 	}
 };

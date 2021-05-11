@@ -30,7 +30,10 @@
                                 <td>' . $item['name'] . '</td>
                                 <td>' . $item['email'] . '</td>
                                 <td style="cursor: help;" data-toggle="tooltip" title="' . $permissionDataList[$item['permission']] . '">' . core::$module->account->getPermissionName($item['permission']) . '</td>
-                                <td>' . (!$item['blocked'] ? '<a href="#" class="btn btn-warning btn-xs ' . (($item['id'] == '1' or !core::$module->account->checkPermission('blockUser') or (int)core::$module->account->userData['id'] == (int)$item['id']) ? 'disabled' : '') . '" data-ajax="option.user.list/blockUser/' . $item['id'] . '">Zablokuj</a>' : '<a href="#" class="btn btn-info btn-xs  ' . (!core::$module->account->checkPermission('blockUser') ? 'disabled' : '') . '" data-ajax="option.user.list/unBlock/' . $item['id'] . '">Odblokuj</a>') . '</td>
+                                <td>
+                                    ' . (!$item['blocked'] ? '<a href="#" class="btn btn-warning btn-xs ' . (($item['id'] == '1' || !core::$module->account->checkPermission('blockUser') or (int)core::$module->account->userData['id'] == (int)$item['id']) ? 'disabled' : '') . '" data-ajax="option.user.list/blockUser/' . $item['id'] . '">Zablokuj</a>' : '<a href="#" class="btn btn-info btn-xs  ' . (!core::$module->account->checkPermission('blockUser') ? 'disabled' : '') . '" data-ajax="option.user.list/unBlock/' . $item['id'] . '">Odblokuj</a>') . '
+                                    <a herf="#" class="btn btn-primary btn-xs ' . ($item['id'] == '1' ? 'disabled' : '') . '" data-ajax="user.user/restartPassword/' . $item['id'] . '">Zresetuj hasło</a>
+                                </td>
                             </tr>';
 					}
 					?>

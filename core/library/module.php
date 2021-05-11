@@ -6,7 +6,7 @@ return $this->module = new class() {
 		core::setError();
 
 		if (is_bool(array_search($name, core::$module->_list))) {
-			if ($loadFile == true) {
+			if ($loadFile) {
 				if (file_exists(core::$path['module'] . $name . '/config.php')) {
 					return include(core::$path['module'] . $name . '/config.php');
 				} else {
@@ -35,7 +35,11 @@ return $this->module = new class() {
 					'name' => $name,
 					'path' => core::$path['module'] . $name . '/',
 					'loaded' => !is_bool(array_search($name, core::$module->_list)),
-					'config' => $loadConfig === true ? (is_bool(array_search($name, core::$module->_list)) ? include($path) : core::$module->_config[$name]) : null,
+					'config' => $loadConfig === true
+						? (is_bool(in_array($name, core::$module->_list))
+							? include($path)
+							: core::$module->_config[$name])
+						: null,
 				];
 			}
 		}
@@ -85,7 +89,7 @@ return $this->module = new class() {
 		foreach ((array)$module as $key => $value) {
 			preg_match_all("/(class@anonymous(.*)0x[A-Z0-9]{8})(.*)/im", $key, $matches, PREG_SET_ORDER);
 
-			if (count($matches) > 0 and $matches[0][3] <> null) {
+			if (count($matches) > 0 && $matches[0][3] !== null) {
 				$anonymousvariable[$matches[0][3]] = $value;
 			}
 		}

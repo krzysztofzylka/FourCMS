@@ -1603,14 +1603,14 @@ class Smarty_Internal_Templateparser
     /**
      * template prefix array
      *
-     * @var \Smarty_Internal_ParseTree[]
+     * @var Smarty_Internal_ParseTree[]
      */
     public $template_prefix = array();
 
     /**
      * template prefix array
      *
-     * @var \Smarty_Internal_ParseTree[]
+     * @var Smarty_Internal_ParseTree[]
      */
     public $template_postfix = array();
 
@@ -2166,8 +2166,8 @@ class Smarty_Internal_Templateparser
                 -$this->compiler->getRdelLength()));
         if ($tag == 'strip') {
             $this->strip = true;
-            $this->_retvalue = null;;
-        } else {
+            $this->_retvalue = null;
+		} else {
             if (defined($tag)) {
                 if ($this->security) {
                     $this->security->isTrustedConstant($tag, $this->compiler);

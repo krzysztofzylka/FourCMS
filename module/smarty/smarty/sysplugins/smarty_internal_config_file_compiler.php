@@ -97,7 +97,7 @@ class Smarty_Internal_Config_File_Compiler
      * @param Smarty_Internal_Template $template
      *
      * @return bool true if compiling succeeded, false if it failed
-     * @throws \SmartyException
+     * @throws SmartyException
      */
     public function compileTemplate(Smarty_Internal_Template $template)
     {
@@ -162,7 +162,7 @@ class Smarty_Internal_Config_File_Compiler
             "\n";
         $template_header .= "         compiled from '{$this->template->source->filepath}' */ ?>\n";
         $code = '<?php $_smarty_tpl->smarty->ext->configLoad->_loadConfigVars($_smarty_tpl, ' .
-                var_export($this->config_data, true) . '); ?>';
+                var_export($this->config_data, true) . ') ?>';
         return $template_header . $this->template->smarty->ext->_codeFrame->create($this->template, $code);
     }
 

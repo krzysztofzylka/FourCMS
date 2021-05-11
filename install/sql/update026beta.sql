@@ -1,0 +1,3 @@
+ALTER TABLE `widget` CHANGE `id` `id` INT(24) NOT NULL AUTO_INCREMENT;
+INSERT INTO `permissionList` (`permName`, `name`, `description`)
+	VALUES ('option_module', 'Moduły', 'Dostęp do modułów (w ustawieniach)');

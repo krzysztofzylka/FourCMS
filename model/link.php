@@ -1,11 +1,11 @@
 <?php
 return new class() {
-	public function generate($array, $autoIncludeAllGet = false, array $unsetData = []) : string {
+	public function generate($array, bool $autoIncludeAllGet = false, array $unsetData = []) : string {
 		core::setError();
 
 		$arrayData = '';
 
-		if ($autoIncludeAllGet == true) {
+		if ($autoIncludeAllGet) {
 			foreach ($_GET as $name => $value) {
 				if (!isset($array[$name])) {
 					$array[$name] = $value;
@@ -25,16 +25,16 @@ return new class() {
 					continue;
 				}
 
-				$arrayData .= ($arrayData == '' ? '' : '&') . $value . '=' . $_GET[$value];
+				$arrayData .= ($arrayData === '' ? '' : '&') . $value . '=' . $_GET[$value];
 			} else {
-				$arrayData .= ($arrayData == '' ? '' : '&') . $name . '=' . $value;
+				$arrayData .= ($arrayData === '' ? '' : '&') . $name . '=' . $value;
 			}
 		}
 
 		return 'index.php?' . $arrayData;
 	}
 
-	public function generateAP($array = []) {
+	public function generateAP($array = []) : string {
 		core::setError();
 
 		$arrayData = '';
@@ -45,14 +45,14 @@ return new class() {
 					continue;
 				}
 
-				$arrayData .= ($arrayData == '' ? '' : '&') . $value . '=' . $_GET[$value];
+				$arrayData .= ($arrayData === '' ? '' : '&') . $value . '=' . $_GET[$value];
 			} else {
-				$arrayData .= ($arrayData == '' ? '' : '&') . $name . '=' . $value;
+				$arrayData .= ($arrayData === '' ? '' : '&') . $name . '=' . $value;
 			}
 		}
 
 		if (isset($_GET['modul'])) {
-			if ($arrayData <> "") {
+			if ($arrayData !== "") {
 				$arrayData = '?' . $arrayData;
 			}
 
@@ -65,7 +65,7 @@ return new class() {
 	public function bootstrapLinkGenerator($actual = '', $showList = ['post', 'module', 'link'], $inputName = 'link') {
 		core::setError();
 
-		$explode = ($actual == '') ? ['', ''] : (explode('-', $actual, 2));
+		$explode = ($actual === '') ? ['', ''] : (explode('-', $actual, 2));
 
 		//HTML
 		echo '<div class="form-row">
@@ -81,30 +81,32 @@ return new class() {
 			<div class="form-group col-md-8">
 				<select class="custom-select" id="linkGenerator_slave"><option selected>#</option></select>
 				<input type="text" class="form-control" id="linkGenerator_slave2" placeholder="Link" value="#">
-				<input type="text" id="link" name="' . $inputName . '" value="#"></input>
+				<input type="text" id="link" name="' . $inputName . '" value="#"/>
 			</div>
 		</div>';
 
 		//JavaScript
 		echo '<script>
-		var auto1 = "' . (isset($explode[0]) ? $explode[0] : 'Wybierz') . '";
-        var auto2 = "' . (isset($explode[1]) ? $explode[0] . '-' . $explode[1] : '') . '";
-		var controller_list = [';
-		foreach (array_diff(scandir('../' . core::$path['controller']), ['.', '..', '.htaccess']) as $item)
+		let auto1 = "' . ($explode[0] ?? 'Wybierz') . '";
+        let auto2 = "' . (isset($explode[1]) ? $explode[0] . '-' . $explode[1] : '') . '";
+		let controller_list = [;';
+		foreach (array_diff(scandir('../' . core::$path['controller']), ['.', '..', '.htaccess']) as $item) {
 			echo '"' . str_replace('.php', '', $item) . '", ';
+		}
 		echo '];
 		var post_list = [["#", "--- Pusty ---"],';
-		foreach (core::$model['post']->list() as $item)
+		foreach (core::$model['post']->list() as $item) {
 			echo '["post-' . $item['id'] . '.html", "' . $item['title'] . '"],';
+		}
 		echo '];
         var module_list = [';
-		foreach (core::$model['module']->moduleDisplayPageList() as $item)
+		foreach (core::$model['module']->moduleDisplayPageList() as $item) {
 			echo '["module-' . $item['name'] . '.html", "' . $item['title'] . '"],';
+		}
 		echo '];
 		</script>';
 
 		//load javascript script
 		echo file_exists('script/linkGenerator.js') ? '<script src="script/linkGenerator.js"></script>' : '<script src="../script/linkGenerator.js"></script>';
 	}
-}
-?>
+};

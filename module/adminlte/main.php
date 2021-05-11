@@ -18,6 +18,7 @@ return new class() {
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>';
 		core::$module->smarty->smarty->assign('adminlte', $adminlte);
+
+		return true;
 	}
-}
-?>
+};

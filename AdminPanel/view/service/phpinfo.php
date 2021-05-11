@@ -3,8 +3,7 @@
 		<?php
 		ob_start();
 		phpinfo();
-		$phpinfo = ob_get_contents();
-		ob_end_clean();
+		$phpinfo = ob_get_clean();
 		$phpinfo = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo);
 		echo "
             <style type='text/css'>

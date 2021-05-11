@@ -23,7 +23,7 @@ return new class() extends core_controller {
 	public function view() {
 		core::setError();
 
-		if (isset($_GET['page2']) && $_GET['page2'] == 'moduleAdd') {
+		if (isset($_GET['page2']) && $_GET['page2'] === 'moduleAdd') {
 			$this->view_moduleAdd();
 		} else {
 			$this->view_module();
@@ -43,7 +43,7 @@ return new class() extends core_controller {
 			$uniqueID = $_GET['searchUpdate'];
 			$APIData = $this->Module->API_getData($uniqueID, $this->Config->read('moduleKey_' . $uniqueID, null));
 
-			if (!core::$isError && $APIData['status'] <> 'error') {
+			if (!core::$isError && $APIData['status'] !== 'error') {
 				$key = $this->Config->read('moduleKey_' . $uniqueID, null);
 				$this->viewSetVariable('key', $key);
 			}
@@ -69,7 +69,7 @@ return new class() extends core_controller {
 		if (is_array($APIData)) {
 			foreach ($APIData as $key => $data) {
 				$APIData[$key]['moduleLocalData'] = core::$library->module->getConfig($data['name'], true);
-				$APIData[$key]['checkVersion'] = $APIData[$key]['moduleLocalData']['version'] == $data['version'];
+				$APIData[$key]['checkVersion'] = $APIData[$key]['moduleLocalData']['version'] === $data['version'];
 			}
 		}
 
@@ -101,7 +101,7 @@ return new class() extends core_controller {
 			$urlToFile = $_GET['installFromServer'];
 			$tempFilePath = core::$path['temp'] . 'downloadModuleFile.zip';
 
-			file_put_contents($tempFilePath, fopen($urlToFile, 'r'));
+			file_put_contents($tempFilePath, fopen($urlToFile, 'rb'));
 
 			$this->installModule($tempFilePath);
 
@@ -174,7 +174,7 @@ return new class() extends core_controller {
 	public function clearInstallerCacheFromGETData() {
 		core::setError();
 
-		if (isset($_GET['clearInstallerCache']) and $_GET['clearInstallerCache'] == "true") {
+		if (isset($_GET['clearInstallerCache']) && $_GET['clearInstallerCache'] === "true") {
 			core::$library->file->rmdir(core::$path['temp'] . 'installModule' . DIRECTORY_SEPARATOR);
 			$this->GuiHelper->contentAlert('Usunięto pliki cache', 'success');
 		}

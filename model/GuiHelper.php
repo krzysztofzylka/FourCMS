@@ -9,7 +9,7 @@ return new class() {
 
 		echo '<div class="content pt-2">
             <div class="alert alert-' . $alertType . '">
-                ' . (($title <> null) ? '<h4 class="alert-heading">' . $title . '</h4>' : '') . '
+                ' . (($title !== null) ? '<h4 class="alert-heading">' . $title . '</h4>' : '') . '
                 ' . $value . '
             </div>
         </div>';
@@ -34,7 +34,7 @@ return new class() {
 	) {
 		core::setError();
 
-		$explode = ($actual == '') ? ['', ''] : (explode('-', $actual, 2));
+		$explode = ($actual === '') ? ['', ''] : (explode('-', $actual, 2));
 
 		//HTML
 		echo '<div class="form-row">
@@ -50,7 +50,7 @@ return new class() {
 			<div class="form-group col-md-8">
 				<select class="custom-select" id="linkGenerator_slave"><option selected>#</option></select>
 				<input type="text" class="form-control" id="linkGenerator_slave2" placeholder="Link" value="#">
-				<input type="text" id="link" name="' . $inputName . '" value="#"></input>
+				<input type="text" id="link" name="' . $inputName . '" value="#"/>
 			</div>
 		</div>';
 
@@ -82,35 +82,12 @@ return new class() {
 		echo file_exists('script/linkGenerator.js') ? '<script src="script/linkGenerator.js"></script>' : '<script src="../script/linkGenerator.js"></script>';
 	}
 
-	public function ajaxLink($option) : string {
-		if (!isset($option['type'])) {
-			$option['type'] = 'dialog';
-		}
-
-		if (!isset($option['urlLink'])) {
-			$option['urlLink'] = '#';
-		}
-
-		if (!isset($option['name'])) {
-			$option['name'] = '???';
-		}
-
-		if (!isset($option['title'])) {
-			$option['title'] = 'Dialogbox';
-		}
-
-		if (!isset($option['class'])) {
-			$option['class'] = '';
-		}
-
-		switch ($option['type']) {
-			case 'ajaxLink':
-				return '<a href="' . $option['urlLink'] . '" class="' . $option['class'] . '" data-ajax="' . $option['url'] . '">' . $option['name'] . '</a>';
-			case 'dialog':
-			default:
-				return '<a href="' . $option['urlLink'] . '" class="' . $option['class'] . '" data-dialog-title="' . $option['title'] . '" data-dialog="' . $option['url'] . '">' . $option['name'] . '</a>';
-		}
-
+	public function url(
+		string $url,
+		string $name,
+		string $class = ''
+	) {
+		return '<a href="#" class="' . $class . '" ajax="' . $url . '">' . $name . '</a>';
 	}
 
 	public function toast(

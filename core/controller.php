@@ -22,12 +22,16 @@ class core_controller {
 	public function loadView(string $viewName) : view {
 		core::setError();
 
-		$viewPath = core::loadView(
-			$viewName,
-			[
-				'returnPathOnly' => true
-			]
-		);
+		if (isset($this->moduleConfig['pathList']['view'])) {
+			$viewPath = $this->moduleConfig['pathList']['view'] . str_replace('.', '/', $viewName) . '.php';
+		} else {
+			$viewPath = core::loadView(
+				$viewName,
+				[
+					'returnPathOnly' => true
+				]
+			);
+		}
 
 		return new view(
 			$viewPath,

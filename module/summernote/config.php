@@ -5,4 +5,3 @@ return [
 	'version' => '1.2',
 	'uniqueID' => '001113741cac8e85be8e4cd75a4e80ac'
 ];
-?>

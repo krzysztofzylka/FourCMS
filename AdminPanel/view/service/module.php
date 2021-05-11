@@ -22,8 +22,8 @@
 								' . (isset($module['config']['adminPanel']) ? '<a href="FrameworkModuleAP-' . $module['name'] . '.html"><i class="fas fa-window-maximize" data-toggle="tooltip" data-placement="left" title="Panel administracyjny"></i></a>' : '') . '
 								</td>
 								<td><a href="FrameworkModuleInfo-' . $module['name'] . '.html">' . $module['name'] . '</a></td>
-								<td>' . (isset($module['config']['uniqueID']) ? $module['config']['uniqueID'] : '') . '</td>
-								<td>' . (isset($module['config']['version']) ? $module['config']['version'] : '') . '</td>
+								<td>' . ($module['config']['uniqueID'] ?? '') . '</td>
+								<td>' . ($module['config']['version'] ?? '') . '</td>
 							</tr>';
 					}
 					?>

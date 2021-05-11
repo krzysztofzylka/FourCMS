@@ -15,19 +15,16 @@
                     <td>' . $widget['widgetData']['moduleName'] . '</td>
                     <td>' . $widget['widgetData']['description'] . '</td>
                     <td>
-                        ' . $this->GuiHelper->ajaxLink([
-				'type' => 'ajaxLink',
-				'url' => 'widget/posUp/' . $widget['id'],
-				'name' => '<i class="nav-icon fas fa-arrow-up"></i>'
-			]) . $this->GuiHelper->ajaxLink([
-				'type' => 'ajaxLink',
-				'url' => 'widget/posDown/' . $widget['id'],
-				'name' => '<i class="nav-icon fas fa-arrow-down"></i>'
-			]) . $this->GuiHelper->ajaxLink([
-				'type' => 'ajaxLink',
-				'url' => 'widget/delete/' . $widget['id'],
-				'name' => '<i class="fas fa-trash text-danger"></i>'
-			]) . '
+                        ' . $this->GuiHelper->url(
+                            'widget/posUp/' . $widget['id'],
+				            '<i class="nav-icon fas fa-arrow-up"></i>'
+			            ) . $this->GuiHelper->url(
+				            'widget/posDown/' . $widget['id'],
+				            '<i class="nav-icon fas fa-arrow-down"></i>'
+			            ) . $this->GuiHelper->url(
+                            'widget/delete/' . $widget['id'],
+				            '<i class="fas fa-trash text-danger"></i>'
+			            ) . '
                     </td>
                 </tr>';
 	}
@@ -52,11 +49,10 @@
                     <td>' . $widget['name'] . '</td>
                     <td>' . $widget['moduleName'] . '</td>
                     <td>' . $widget['description'] . '</td>
-                    <td>' . $this->GuiHelper->ajaxLink([
-				'type' => 'ajaxLink',
-				'url' => 'widget/add/' . $widget['uniqueID'],
-				'name' => '<i class="fas fa-plus"></i>'
-			]) . '</td>
+                    <td>' . $this->GuiHelper->url(
+				        'widget/add/' . $widget['uniqueID'],
+				        '<i class="fas fa-plus"></i>'
+                    ) . '</td>
                 </tr>';
 	}
 	?>

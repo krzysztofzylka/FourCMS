@@ -1,9 +1,9 @@
 <?php
 return new class() {
-	public $templateDir = null;
-	public $templateName = null;
+	public $templateDir;
+	public $templateName;
 	public $defaultTemplateDir = 'defaultBlog';
-	private $extendsListAdminPanel = null;
+	private $extendsListAdminPanel;
 
 	public function __construct() {
 		core::setError();
@@ -52,14 +52,17 @@ return new class() {
 	public function display($fileName) {
 		core::setError();
 
-		if (is_null($this->extendsListAdminPanel))
+		if (is_null($this->extendsListAdminPanel)) {
 			$this->scanModuleResource();
+		}
+
 		if (isset($this->extendsListAdminPanel[$fileName])) {
 			$extendsData = implode('|', $this->extendsListAdminPanel[$fileName]);
 			core::$module['smarty']->smarty->addTemplateDir('../module/');
 			core::$model['template']->display('extends:' . $fileName . '|' . $extendsData);
-		} else
+		} else {
 			core::$module['smarty']->smarty->display($fileName);
+		}
 	}
 
 	public function scanModuleResource() {
@@ -90,9 +93,9 @@ return new class() {
 		foreach ($files as $value) {
 			$path = core::$library->file->repairPath($dir . DIRECTORY_SEPARATOR . $value);
 
-			if (!is_dir($path))
+			if (!is_dir($path)) {
 				$results[] = $path;
-			elseif ($value != "." && $value != "..") {
+			} elseif ($value !== "." && $value !== "..") {
 				$this->__getDirContents($path, $results);
 				$results[] = $path;
 			}

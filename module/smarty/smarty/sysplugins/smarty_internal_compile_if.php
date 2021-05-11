@@ -20,11 +20,11 @@ class Smarty_Internal_Compile_If extends Smarty_Internal_CompileBase
      * Compiles code for the {if} tag
      *
      * @param array                                 $args      array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler  compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler  compiler object
      * @param array                                 $parameter array with compilation parameter
      *
      * @return string compiled code
-     * @throws \SmartyCompilerException
+     * @throws SmartyCompilerException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
@@ -82,13 +82,13 @@ class Smarty_Internal_Compile_Else extends Smarty_Internal_CompileBase
      * Compiles code for the {else} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        list($nesting, $compiler->tag_nocache) = $this->closeTag($compiler, array('if', 'elseif'));
+        [$nesting, $compiler->tag_nocache] = $this->closeTag($compiler, array('if', 'elseif'));
         $this->openTag($compiler, 'else', array($nesting, $compiler->tag_nocache));
         return '<?php } else { ?>';
     }
@@ -106,17 +106,17 @@ class Smarty_Internal_Compile_Elseif extends Smarty_Internal_CompileBase
      * Compiles code for the {elseif} tag
      *
      * @param array                                 $args      array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler  compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler  compiler object
      * @param array                                 $parameter array with compilation parameter
      *
      * @return string compiled code
-     * @throws \SmartyCompilerException
+     * @throws SmartyCompilerException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-        list($nesting, $compiler->tag_nocache) = $this->closeTag($compiler, array('if', 'elseif'));
+        [$nesting, $compiler->tag_nocache] = $this->closeTag($compiler, array('if', 'elseif'));
         if (!isset($parameter[ 'if condition' ])) {
             $compiler->trigger_template_error('missing elseif condition', null, true);
         }
@@ -187,7 +187,7 @@ class Smarty_Internal_Compile_Ifclose extends Smarty_Internal_CompileBase
      * Compiles code for the {/if} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
      */
@@ -197,7 +197,7 @@ class Smarty_Internal_Compile_Ifclose extends Smarty_Internal_CompileBase
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;
         }
-        list($nesting, $compiler->nocache) = $this->closeTag($compiler, array('if', 'else', 'elseif'));
+        [$nesting, $compiler->nocache] = $this->closeTag($compiler, array('if', 'else', 'elseif'));
         $tmp = '';
         for ($i = 0; $i < $nesting; $i++) {
             $tmp .= '}';

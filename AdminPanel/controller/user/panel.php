@@ -15,7 +15,7 @@ return new class() extends core_controller {
 
 		$userID = isset($_GET['userID']) ? (int)$_GET['userID'] : (int)core::$module->account->userData['id'];
 
-		if (!core::$module->account->checkPermission('otherUser') and $userID <> (int)core::$module->account->userData['id']) {
+		if (!core::$module->account->checkPermission('otherUser') && $userID !== (int)core::$module->account->userData['id']) {
 			$userID = (int)core::$module->account->userData['id'];
 			$this->GuiHelper->contentAlert('Nie posiadasz uprawnień do przeglądania profili użytkowników, wyświetlony zostanie aktualny profil użytkownika.', 'warning');
 		}
@@ -68,9 +68,9 @@ return new class() extends core_controller {
 		}
 
 		if (isset($_POST['save_permission'])) {
-			if (!core::$module->account->checkPermission('permissionUserEdit'))
+			if (!core::$module->account->checkPermission('permissionUserEdit')) {
 				$this->GuiHelper->contentAlert('Nie posiadasz uprawnień do zmiany tej opcji', 'danger');
-			else {
+			} else {
 				core::$module->account->setUserPermission($userData['id'], (int)$_POST['permission']);
 				$this->GuiHelper->contentAlert('Poprawnie zmieniono grupę uprawnień użytkownika', 'success');
 			}

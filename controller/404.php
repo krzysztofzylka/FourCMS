@@ -4,5 +4,4 @@ return new class() extends core_controller{
         $this->loadView('404');
         $this->view->execute();
     }
-}
-?>
+};

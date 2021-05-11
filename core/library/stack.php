@@ -16,7 +16,7 @@ return $this->stack = new class() {
 			}
 
 			public function isEmpty() : bool {
-				return $this->_count == 0;
+				return $this->_count === 0;
 			}
 
 			public function pop() {

@@ -10,7 +10,10 @@ return new class() extends app_controller {
 	public function view() {
 		core::setError();
 
-		$this->viewSetType('page');
+		$this->layout = 'dialogbox';
+		$this->dialogboxTitle = 'Zarządzanie  widgetami';
+		$this->dialogboxWidth = 900;
+		$this->viewSetType('blankPage');
 		$this->viewSetVariable('pageTitle', 'Zarządzanie  widgetami');
 
 		$userWidget = $this->Widget->getUserWidget(core::$module->account->userData['id']);

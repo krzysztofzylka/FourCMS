@@ -21,13 +21,14 @@
                     <tbody>
 					<?php
 					foreach ($postList as $post) {
-						if (strlen($post['title']) < 1)
+						if (strlen($post['title']) < 1) {
 							$item['title'] = '- Brak tytułu -';
+						}
 						echo '<tr>
 								<td>
 									<a href="postEdit-' . $post['id'] . '.html">' . $post['title'] . '</a>
-									' . (boolval($post['hidden']) ? '<i class="far fa-eye-slash" data-toggle="tooltip" data-original-title="Post posiada status ukryty"></i>' : '') . ' 
-									' . ($post['type'] <> 'post' ? '<i class="fas fa-cubes" data-toggle="tooltip" data-original-title="Post posiada inny typ"></i>' : '') . '
+									' . ($post['hidden'] ? '<i class="far fa-eye-slash" data-toggle="tooltip" data-original-title="Post posiada status ukryty"></i>' : '') . ' 
+									' . ($post['type'] !== 'post' ? '<i class="fas fa-cubes" data-toggle="tooltip" data-original-title="Post posiada inny typ"></i>' : '') . '
 								</td>
 								<td>
 									' . $post['date'] . '

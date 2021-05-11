@@ -20,7 +20,7 @@ return new class() extends app_controller {
 
 			foreach ($item['permission'] as $name) {
 				$perm = $this->Permission->getPerm($name);
-				$permissionData .= ($permissionData <> '' ? ', ' : '') . $perm['name'];
+				$permissionData .= ($permissionData !== '' ? ', ' : '') . $perm['name'];
 			}
 
 			$permissionDataList[$item['id']] = $permissionData;
@@ -31,15 +31,15 @@ return new class() extends app_controller {
 		$this->loadView('option.user.list');
 	}
 
-	public function blockUser($id) {
+	public function blockUser(int $id) {
 		core::setError();
 
 		if (!core::$module->account->checkPermission('blockUser')) {
 			$this->response('Nie posiadasz uprawnień do zablokowania użytkownika', 'ERR');
-		} elseif ((int)$id == 1) {
+		} elseif ($id === 1) {
 			$this->response('Nie można zablokować konta administratora', 'ERR');
 		} else {
-			$block = core::$module->account->blockUser((int)$id);
+			$block = core::$module->account->blockUser($id);
 
 			if ($block) {
 				$this->response('Zablokowano użytkownika', 'OK');
@@ -49,15 +49,15 @@ return new class() extends app_controller {
 		}
 	}
 
-	public function unBlock($id) {
+	public function unBlock(int $id) {
 		core::setError();
 
 		if (!core::$module->account->checkPermission('blockUser')) {
 			$this->response('Nie posiadasz uprawnień do odblokowania użytkownika', 'ERR');
-		} elseif ((int)$id == 1) {
+		} elseif ($id === 1) {
 			$this->response('Nie można odblokować konta administratora', 'ERR');
 		} else {
-			$unblock = core::$module->account->unblockUser((int)$id);
+			$unblock = core::$module->account->unblockUser($id);
 
 			if ($unblock) {
 				$this->response('Odblokowano użytkownika', 'OK');

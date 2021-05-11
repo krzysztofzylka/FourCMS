@@ -4,7 +4,7 @@ return $this->database = new class() {
 	public $conn;
 	public $isConnect = false;
 	public $connError = true;
-	public $connType = null;
+	public $connType;
 	private $connList = [];
 
 	public function connect(array $config) {
@@ -45,7 +45,7 @@ return $this->database = new class() {
 			$this->isConnect = true;
 			$this->setCharset();
 			$this->connType = $config['type'];
-			array_push($this->connList, $this->conn);
+			$this->connList[] = $this->conn;
 
 			return $this->conn;
 		} catch (PDOException $error) {
@@ -108,7 +108,7 @@ return $this->database = new class() {
 			return core::setError(1, 'connection error');
 		}
 
-		$where = $sWhere <> null ? (' WHERE ' . $sWhere) : '';
+		$where = $sWhere !== null ? (' WHERE ' . $sWhere) : '';
 		$prep = $this->prepare('SELECT count(*) as count FROM ' . $sTable . '' . $where, $conn);
 		$prep->execute();
 		$data = $prep->fetch(PDO::FETCH_ASSOC);
@@ -201,8 +201,6 @@ return $this->database = new class() {
 		if (!$this->isConnect) {
 			return core::setError(1, 'connection error');
 		}
-
-		$conn = $conn ?? $this->conn;
 
 		return $this->conn->query($query);
 	}

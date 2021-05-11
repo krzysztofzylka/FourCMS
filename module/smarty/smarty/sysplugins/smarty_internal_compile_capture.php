@@ -36,7 +36,7 @@ class Smarty_Internal_Compile_Capture extends Smarty_Internal_CompileBase
      * Compiles code for the {$smarty.capture.xxx}
      *
      * @param array                                 $args      array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler  compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler  compiler object
      * @param array                                 $parameter array with compilation parameter
      *
      * @return string compiled code
@@ -54,7 +54,7 @@ class Smarty_Internal_Compile_Capture extends Smarty_Internal_CompileBase
      * Compiles code for the {capture} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      * @param null                                  $parameter
      *
      * @return string compiled code
@@ -69,7 +69,7 @@ class Smarty_Internal_Compile_Capture extends Smarty_Internal_CompileBase
         $compiler->_cache[ 'capture_stack' ][] = array($compiler->nocache);
         // maybe nocache because of nocache variables
         $compiler->nocache = $compiler->nocache | $compiler->tag_nocache;
-        $_output = "<?php \$_smarty_tpl->smarty->ext->_capture->open(\$_smarty_tpl, $buffer, $assign, $append);?>";
+        $_output = "<?php \$_smarty_tpl->smarty->ext->_capture->open(\$_smarty_tpl, $buffer, $assign, $append)?>";
         return $_output;
     }
 }
@@ -86,7 +86,7 @@ class Smarty_Internal_Compile_CaptureClose extends Smarty_Internal_CompileBase
      * Compiles code for the {/capture} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      * @param null                                  $parameter
      *
      * @return string compiled code
@@ -99,7 +99,7 @@ class Smarty_Internal_Compile_CaptureClose extends Smarty_Internal_CompileBase
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;
         }
-        list($compiler->nocache) = array_pop($compiler->_cache[ 'capture_stack' ]);
+        [$compiler->nocache] = array_pop($compiler->_cache[ 'capture_stack' ]);
         return "<?php \$_smarty_tpl->smarty->ext->_capture->close(\$_smarty_tpl);?>";
     }
 }

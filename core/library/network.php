@@ -36,7 +36,7 @@ return $this->network = new class() {
 				];
 
 				if ($option['saveToFile']) {
-					$fp = fopen($option['saveToFile'], 'w');
+					$fp = fopen($option['saveToFile'], 'wb');
 					$opt[CURLOPT_FILE] = $fp;
 				}
 
@@ -44,10 +44,8 @@ return $this->network = new class() {
 				$getData = curl_exec($curl);
 				$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-				if ($httpCode < 200 and $httpCode > 200) {
-					if (!$option['ignoreHttpCode']) {
-						return core::setError(2, 'error http code', 'Http Code: ' . $httpCode);
-					}
+				if (($httpCode < 200 && $httpCode > 200) && !$option['ignoreHttpCode']) {
+					return core::setError(2, 'error http code', 'Http Code: ' . $httpCode);
 				}
 
 				if (curl_errno($curl)) {
@@ -68,12 +66,16 @@ return $this->network = new class() {
 				}
 			default: //other
 				if ($option['saveToFile']) {
-					file_put_contents($option['saveToFile'], fopen($url, 'r'));
+					file_put_contents($option['saveToFile'], fopen($url, 'rb'));
 					return true;
 				}
+
 				$contents = @file_get_contents($url);
-				if ($contents === false)
+
+				if ($contents === false) {
 					return core::setError(1, 'error download data');
+				}
+
 				return $contents;
 		}
 	}

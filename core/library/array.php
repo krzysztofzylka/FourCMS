@@ -25,11 +25,10 @@ return $this->array = new class() {
 
 		foreach ($array as $id => $value) {
 			if (isset($value[$keyName])) {
-				if ($keyValue == -1) {
+				if ($keyValue === -1) {
 					return $id;
-				} else {
-					if ($value[$keyName] == $keyValue)
-						return $id;
+				} elseif ($value[$keyName] === $keyValue) {
+					return $id;
 				}
 			}
 		}
@@ -44,12 +43,12 @@ return $this->array = new class() {
 
 		switch ($type) {
 			case 'ASC':
-				usort($array, function ($a, $b) {
+				usort($array, static function ($a, $b) {
 					return $a[$GLOBALS['module_sort2D_name']] <=> $b[$GLOBALS['module_sort2D_name']];
 				});
 				break;
 			case 'DESC':
-				usort($array, function ($a, $b) {
+				usort($array, static function ($a, $b) {
 					return $a[$GLOBALS['module_sort2D_name']] <= $b[$GLOBALS['module_sort2D_name']];
 				});
 				break;

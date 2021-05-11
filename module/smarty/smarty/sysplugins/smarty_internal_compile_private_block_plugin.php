@@ -35,14 +35,14 @@ class Smarty_Internal_Compile_Private_Block_Plugin extends Smarty_Internal_Compi
      * Compiles code for the execution of block plugin
      *
      * @param array                                 $args      array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler  compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler  compiler object
      * @param array                                 $parameter array with compilation parameter
      * @param string                                $tag       name of block plugin
      * @param string                                $function  PHP function name
      *
      * @return string compiled code
-     * @throws \SmartyCompilerException
-     * @throws \SmartyException
+     * @throws SmartyCompilerException
+     * @throws SmartyException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter, $tag, $function = null)
     {
@@ -52,7 +52,7 @@ class Smarty_Internal_Compile_Private_Block_Plugin extends Smarty_Internal_Compi
             $_attr = $this->getAttributes($compiler, $args);
             $this->nesting++;
             unset($_attr[ 'nocache' ]);
-            list($callback, $_paramsArray, $callable) = $this->setup($compiler, $_attr, $tag, $function);
+            [$callback, $_paramsArray, $callable] = $this->setup($compiler, $_attr, $tag, $function);
             $_params = 'array(' . implode(',', $_paramsArray) . ')';
             // compile code
             $output = "<?php ";
@@ -74,7 +74,7 @@ class Smarty_Internal_Compile_Private_Block_Plugin extends Smarty_Internal_Compi
                 $compiler->tag_nocache = true;
             }
             // closing tag of block plugin, restore nocache
-            list($_params, $compiler->nocache, $callback) = $this->closeTag($compiler, substr($tag, 0, -5));
+            [$_params, $compiler->nocache, $callback] = $this->closeTag($compiler, substr($tag, 0, -5));
             // compile code
             if (!isset($parameter[ 'modifier_list' ])) {
                 $mod_pre = $mod_post = $mod_content = '';
@@ -93,7 +93,7 @@ class Smarty_Internal_Compile_Private_Block_Plugin extends Smarty_Internal_Compi
                     ) . ";\n";
             }
             $output =
-                "<?php {$mod_content}\$_block_repeat=false;\n{$mod_pre}echo {$callback}({$_params}, {$mod_content2}, \$_smarty_tpl, \$_block_repeat);\n{$mod_post}}\n";
+				"<?php {$mod_content}\$_block_repeat=false;\n{$mod_pre}echo {$callback}({$_params}, {$mod_content2}, \$_smarty_tpl, \$_block_repeat)\n{$mod_post}}\n";
             $output .= 'array_pop($_smarty_tpl->smarty->_cache[\'_tag_stack\']);?>';
         }
         return $output;
@@ -102,7 +102,7 @@ class Smarty_Internal_Compile_Private_Block_Plugin extends Smarty_Internal_Compi
     /**
      * Setup callback and parameter array
      *
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler
+     * @param Smarty_Internal_TemplateCompilerBase $compiler
      * @param array                                 $_attr attributes
      * @param string                                $tag
      * @param string                                $function

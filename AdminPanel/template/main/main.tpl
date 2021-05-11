@@ -20,15 +20,54 @@
             height: auto !important;
             position: absolute;
         }
+
+        .loader {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 20000;
+            display: none;
+        }
+
+        .loaderSpinner {
+            animation: spin 1s infinite linear;
+            border: solid 2vmin transparent;
+            border-radius: 50%;
+            border-right-color: #09f;
+            border-top-color: #09f;
+            box-sizing: border-box;
+            height: 20vmin;
+            left: calc(50% - 10vmin);
+            position: fixed;
+            top: calc(50% - 10vmin);
+            width: 20vmin;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
     </style>
 </head>
 
 <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
+<div class="loader">
+    <div class="loaderSpinner"></div>
+</div>
+
 <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-dark navbar-gray-dark">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="index.html"><i class="fas fa-bars"></i></a>
+                <a class="nav-link" style="padding-top: 13px;" data-widget="pushmenu" href="index.html"><i
+                            class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="index.html" class="nav-link">Strona główna</a>
@@ -39,12 +78,13 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+            {if $showSearchPanel}
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                <a class="nav-link" data-widget="navbar-search" style="padding-top: 13px;" href="#" role="button">
                     <i class="fas fa-search"></i>
                 </a>
-                <div class="navbar-search-block">
-                    <form class="form-inline" action="search.html" method="GET">
+                <div class="navbar-search-block" style="padding-top: 19px;">
+                    <form class="form-inline" action="search/view" method="GET" data-dialog-title="123">
                         <div class="input-group input-group-sm">
                             <input class="form-control form-control-navbar" type="search" placeholder="Szukaj..."
                                    aria-label="Search" name="searchMenu">
@@ -59,6 +99,7 @@
                         </div>
                     </form>
                 </div>
+                {/if}
             </li>
 
             <li class="nav-item dropdown">
@@ -84,7 +125,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <a class="nav-link" style="padding-top: 13px;" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>

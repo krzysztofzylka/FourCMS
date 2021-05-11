@@ -4,4 +4,3 @@ return [
     'description' => 'Domyślny szablon strony',
     'image' => 'template.png'
 ];
-?>

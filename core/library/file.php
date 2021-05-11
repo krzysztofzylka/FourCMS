@@ -34,23 +34,21 @@ return $this->file = new class() {
 			return core::setError(2, 'upload file error', 'error: ' . $file['error']);
 		}
 
-		if ($option['fileExtension'] <> null) {
+		if ($option['fileExtension'] !== null) {
 			$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 			$option['fileExtension'] = strtolower($option['fileExtension']);
 
-			if (array_search($ext, explode(',', $option['fileExtension'])) === false) {
+			if (!in_array($ext, explode(',', $option['fileExtension']))) {
 				return core::setError(7, 'invalid file extension', 'possible extensions: ' . $option['fileExtension']);
 			}
 		}
 
-		if ($option['maxFileSize'] > -1) {
-			if ($file['size'] >= $option['maxFileSize']) {
-				return core::setError(
-					6,
-					'file size is too large',
-					'file size: ' . core::$library->memory->formatBytes($file['size']) . ', max file size: ' . core::$library->memory->formatBytes($option['maxFileSize'])
-				);
-			}
+		if (($option['maxFileSize'] > -1) && $file['size'] >= $option['maxFileSize']) {
+			return core::setError(
+				6,
+				'file size is too large',
+				'file size: ' . core::$library->memory->formatBytes($file['size']) . ', max file size: ' . core::$library->memory->formatBytes($option['maxFileSize'])
+			);
 		}
 
 		$newName = $newName ?? $file['name'];
@@ -61,7 +59,7 @@ return $this->file = new class() {
 
 		$newPathLastChr = substr($newPath, strlen($newPath) - 1);
 
-		if ($newPathLastChr <> '\\' and $newPathLastChr <> '/') {
+		if ($newPathLastChr !== '\\' && $newPathLastChr !== '/') {
 			$newPath .= '\\';
 		}
 
@@ -162,7 +160,7 @@ return $this->file = new class() {
 
 		$path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-		while (strpos($path, DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) <> false) {
+		while (strpos($path, DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) !== false) {
 			$path = str_replace(DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $path);
 		}
 
@@ -200,7 +198,7 @@ return $this->file = new class() {
 		}
 
 		foreach (scandir($path) as $item) {
-			if ($item == '.' || $item == '..') {
+			if ($item === '.' || $item === '..') {
 				continue;
 			}
 
@@ -218,33 +216,29 @@ return $this->file = new class() {
 		$dir = opendir($src);
 		mkdir($dst);
 
-		if ($childFolder != '') {
+		if ($childFolder !== '') {
 			mkdir($dst . '/' . $childFolder);
 
 			while (false !== ($file = readdir($dir))) {
-				if (($file != '.') && ($file != '..')) {
+				if (($file !== '.') && ($file !== '..')) {
 					if (is_dir($src . '/' . $file)) {
 						if (!$this->recurseCopy($src . '/' . $file, $dst . '/' . $childFolder . '/' . $file)) {
 							return core::setError(2);
 						}
-					} else {
-						if (!copy($src . '/' . $file, $dst . '/' . $childFolder . '/' . $file)) {
-							return core::setError(1);
-						}
+					} elseif (!copy($src . '/' . $file, $dst . '/' . $childFolder . '/' . $file)) {
+						return core::setError(1);
 					}
 				}
 			}
 		} else {
 			while (false !== ($file = readdir($dir))) {
-				if (($file != '.') && ($file != '..')) {
+				if (($file !== '.') && ($file !== '..')) {
 					if (is_dir($src . '/' . $file)) {
 						if (!$this->recurseCopy($src . '/' . $file, $dst . '/' . $file)) {
 							return core::setError(2);
 						}
-					} else {
-						if (!copy($src . '/' . $file, $dst . '/' . $file)) {
-							return core::setError(1);
-						}
+					} elseif (!copy($src . '/' . $file, $dst . '/' . $file)) {
+						return core::setError(1);
 					}
 				}
 			}

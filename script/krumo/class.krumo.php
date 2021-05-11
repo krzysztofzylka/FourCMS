@@ -1227,7 +1227,7 @@ class Krumo
 
         print "</div>";
 
-        if (!($data instanceof \Closure) && count($data)) {
+        if (!($data instanceof Closure) && count($data)) {
             static::_vars($data);
         }
 

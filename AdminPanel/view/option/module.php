@@ -7,11 +7,11 @@
                 </div>
                 <div class="card-body">
 					<?php
-					if (core::$isError)
+					if (core::$isError) {
 						$this->GuiHelper->alert('Błąd pobierania danych z serwera', 'danger');
-                    elseif ($APIData['status'] == 'error')
+					} elseif ($APIData['status'] === 'error') {
 						$this->GuiHelper->alert('Nie znaleziono takiego modułu w API', 'danger');
-					else {
+					} else {
 						echo '<div class="alert alert-warning" role="alert">
                             <h4 class="alert-heading">UWAGA!</h4>
                             <p>Przed instalacja/aktualizacją modułu upewnij się, że pobierasz go z pewnego źródła!<br />
@@ -63,8 +63,8 @@
 
 						echo '<tr>
                             <td>
-                                ' . (isset($list['config']['name']) ? $list['config']['name'] : $list['name']) . ' <a data-toggle="collapse" href="#collapseModule' . $list['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $list['name'] . '"><i class="fas fa-info-circle"></i></a> <br />
-                                <small class="text-muted">' . (isset($list['config']['description']) ? $list['config']['description'] : '') . '</small>
+                                ' . ($list['config']['name'] ?? $list['name']) . ' <a data-toggle="collapse" href="#collapseModule' . $list['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $list['name'] . '"><i class="fas fa-info-circle"></i></a> <br />
+                                <small class="text-muted">' . ($list['config']['description'] ?? '') . '</small>
                                 <div class="collapse" id="collapseModule' . $list['name'] . '">
                                     <span class="text-primary font-weight-bold">Dodatkowe informacje</span><br />
                                     UniqueID: <span class="text-info">' . $list['config']['uniqueID'] . '</span><br />
@@ -104,8 +104,8 @@
 
 						echo '<tr>
                             <td>
-                                ' . (isset($list['config']['name']) ? $list['config']['name'] : $list['name']) . ' <a data-toggle="collapse" href="#collapseModule' . $list['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $list['name'] . '"><i class="fas fa-info-circle"></i></a> <br />
-                                <small class="text-muted">' . (isset($list['config']['description']) ? $list['config']['description'] : '') . '</small>
+                                ' . ($list['config']['name'] ?? $list['name']) . ' <a data-toggle="collapse" href="#collapseModule' . $list['name'] . '" role="button" aria-expanded="false" aria-controls="collapseModule' . $list['name'] . '"><i class="fas fa-info-circle"></i></a> <br />
+                                <small class="text-muted">' . ($list['config']['description'] ?? '') . '</small>
                                 <div class="collapse" id="collapseModule' . $list['name'] . '">
                                     <span class="text-primary font-weight-bold">Dodatkowe informacje</span><br />
                                     UniqueID: <span class="text-info">' . $list['config']['uniqueID'] . '</span><br />

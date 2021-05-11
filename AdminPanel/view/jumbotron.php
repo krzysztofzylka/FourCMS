@@ -8,7 +8,7 @@
                 <form method="POST">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" name="show" class="custom-control-input" name="type_default"
-                               id="jumbotronShow" <?php echo(boolval($jumbotron['show']) == true ? 'checked' : '') ?>>
+                               id="jumbotronShow" <?php echo((bool)$jumbotron['show'] === true ? 'checked' : '') ?>>
                         <label class="custom-control-label" for="jumbotronShow">Wyświetlenie telebimu na stronie</label>
                     </div>
                     <div class="form-group">
@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label>Link do którego prowadzi telebim</label>
 						<?php
-						echo $this->GuiHelper->bootstrapFormLinkGenerator(!isset($jumbotron['url']) ? '' : $jumbotron['url'], ['module', 'post', 'link'], 'url', 'post')
+						echo $this->GuiHelper->bootstrapFormLinkGenerator($jumbotron['url'] ?? '', ['module', 'post', 'link'], 'url', 'post')
 						?>
                     </div>
                     <button class="btn btn-primary" name="jumbotronSave">Zapisz</button>

@@ -65,7 +65,7 @@
 					}
 
 					$string .= str_replace('[' . $data . ']', '', $line);
-					$line_check = isset($explode[$i + 1]) ? (core::$library->string->between($explode[$i + 1], '[', ']') === null ? true : false) : false;
+					$line_check = isset($explode[$i + 1]) && core::$library->string->between($explode[$i + 1], '[', ']') === null;
 
 					if ($line_check === true) {
 						$string .= '<br />';
@@ -86,8 +86,9 @@
 				echo '</tbody>
 				</table>
 				</div>';
-			} else
+			} else {
 				echo '<div class="card-body">' . nl2br(file_get_contents($path)) . '</div>';
+			}
 			?>
         </div>
     </div>

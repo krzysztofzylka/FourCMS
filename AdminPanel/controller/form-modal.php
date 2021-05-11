@@ -23,5 +23,4 @@ return new class() extends app_controller {
 
 		$this->GuiHelper->contentAlert($_POST['text']);
 	}
-}
-?>
+};

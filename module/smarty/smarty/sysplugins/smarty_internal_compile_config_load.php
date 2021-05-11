@@ -63,10 +63,10 @@ class Smarty_Internal_Compile_Config_Load extends Smarty_Internal_CompileBase
      * Compiles code for the {config_load} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
-     * @throws \SmartyCompilerException
+     * @throws SmartyCompilerException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
@@ -90,7 +90,7 @@ class Smarty_Internal_Compile_Config_Load extends Smarty_Internal_CompileBase
         }
         // create config object
         $_output =
-            "<?php\n\$_smarty_tpl->smarty->ext->configLoad->_loadConfigFile(\$_smarty_tpl, {$conf_file}, {$section}, {$_scope});\n?>\n";
+			"<?php\n\$_smarty_tpl->smarty->ext->configLoad->_loadConfigFile(\$_smarty_tpl, {$conf_file}, {$section}, {$_scope})\n?>\n";
         return $_output;
     }
 }

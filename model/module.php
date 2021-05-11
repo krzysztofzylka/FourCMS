@@ -120,7 +120,7 @@ return new class() extends core_model {
 					return core::setError(10);
 				}
 
-				if (isset($config['copyDirectory']) and $config['copyDirectory'] == true) {
+				if (isset($config['copyDirectory']) && $config['copyDirectory']) {
 					core::$library->file->rmdir($modulePath);
 					core::$library->file->recurseCopy($tempDir . $config['moduleDirectory'] . DIRECTORY_SEPARATOR, $modulePath);
 				}
@@ -138,7 +138,7 @@ return new class() extends core_model {
 					return core::setError(11);
 				}
 
-				if (isset($config['copyDirectory']) && $config['copyDirectory'] == true) {
+				if (isset($config['copyDirectory']) && $config['copyDirectory']) {
 					core::$library->file->rmdir($modulePath);
 					core::$library->file->recurseCopy($tempDir . $config['moduleDirectory'] . DIRECTORY_SEPARATOR, $modulePath);
 				}
@@ -146,10 +146,6 @@ return new class() extends core_model {
 			}
 			core::$library->file->rmdir($tempDir);
 			return true;
-
-			core::$library->file->rmdir($tempDir);
-
-			return core::setError(9);
 		} else {
 			return core::setError(4);
 		}
@@ -158,13 +154,19 @@ return new class() extends core_model {
 	public function API_getData($uniqueID = null, $downloadKey = null) {
 		core::setError();
 		$urlToModuleAPI = $this->Config->read('api_module');
-		if ($urlToModuleAPI == '')
+
+		if ($urlToModuleAPI === '') {
 			return core::setError(1);
+		}
+
 		$urlToModuleAPI .= is_null($uniqueID) ? '' : '?uniqueID=' . $uniqueID;
 		$urlToModuleAPI .= is_null($downloadKey) ? '' : '&downloadKey=' . $downloadKey;
 		$getDataFromAPI = core::$library->network->get($urlToModuleAPI);
-		if (core::$isError)
+
+		if (core::$isError) {
 			return core::setError(2);
+		}
+
 		return json_decode($getDataFromAPI, true);
 	}
 

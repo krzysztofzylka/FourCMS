@@ -5,7 +5,7 @@ return new class() {
 
 		$post = core::$library->database->query('SELECT * FROM post WHERE id=' . $id)->fetch(PDO::FETCH_ASSOC);
 
-		if ((is_null($post['id']) or boolval($post['hidden']) == true) and $GLOBALS['FourCMS'] <> 'admin') {
+		if ((is_null($post['id']) || (bool)$post['hidden'] !== true) && $GLOBALS['FourCMS'] !== 'admin') {
 			return false;
 		}
 
@@ -28,7 +28,7 @@ return new class() {
 			$where .= '`hidden`=0';
 		}
 
-		if ($where <> '') {
+		if ($where !== '') {
 			$where = 'WHERE ' . $where;
 		}
 
@@ -38,7 +38,7 @@ return new class() {
 			$post[$key]['text'] = strip_tags($item['text']);
 			$post[$key]['userName'] = core::$module->account->getData((int)$item['user'])['name'];
 
-			if ($post[$key]['url'] == "auto") {
+			if ($post[$key]['url'] === "auto") {
 				$post[$key]['url'] = 'post-' . $post[$key]['id'] . '.html';
 			}
 		}
@@ -84,11 +84,11 @@ return new class() {
 	) : bool {
 		core::setError();
 
-		$prep = core::$library->database->prepare('UPDATE post SET `text`=:text, `title`=:title, ' . ($user <> -1 ? '`user`=:user,' : '') . ' `url`=:url, `type`=:type, `hidden`=:hidden, `showMetaData`=:showMetaData WHERE `id`=' . $id);
+		$prep = core::$library->database->prepare('UPDATE post SET `text`=:text, `title`=:title, ' . ($user !== -1 ? '`user`=:user,' : '') . ' `url`=:url, `type`=:type, `hidden`=:hidden, `showMetaData`=:showMetaData WHERE `id`=' . $id);
 		$prep->bindValue(':text', $text, PDO::PARAM_STR);
 		$prep->bindValue(':title', $title, PDO::PARAM_STR);
 
-		if ($user <> -1) {
+		if ($user !== -1) {
 			$prep->bindValue(':user', $user, PDO::PARAM_INT);
 		}
 
@@ -114,7 +114,7 @@ return new class() {
 			return core::setError(1);
 		}
 
-		if ($prep->rowCount() == 0) {
+		if ($prep->rowCount() === 0) {
 			return core::setError(2);
 		}
 
@@ -124,8 +124,7 @@ return new class() {
 	private function _imageDirProtect($text) {
 		core::setError();
 
-		$text = str_replace('src="../', '<img src="', $text);
-		return str_replace("src='../", "<img src='", $text);
+		return str_replace(['src="../', "src='../"], ['<img src="', "<img src='"], $text);
 
 	}
 };

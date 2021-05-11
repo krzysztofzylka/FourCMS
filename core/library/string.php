@@ -21,11 +21,11 @@ return $this->string = new class() {
 			$strpos1 = $this->strpos($string, $start, $offset * ($adding === 1 ? 2 : 1)) + strlen($start);
 			$strpos2 = $this->strpos($string, $end, $adding + (($adding === 1 ? 2 : 1) * $offset));
 
-			if ($strpos1 < 0 or $strpos2 < 0) {
+			if ($strpos1 < 0 || $strpos2 < 0) {
 				break;
 			}
 
-			array_push($return, substr($string, $strpos1, $strpos2 - $strpos1));
+			$return[] = substr($string, $strpos1, $strpos2 - $strpos1);
 
 			if (!$multiple) {
 				break;
@@ -63,8 +63,8 @@ return $this->string = new class() {
 					$generateString .= $string[$i + $x];
 				}
 
-				if ($generateString == $searchString) {
-					if ($offset == 0) {
+				if ($generateString === $searchString) {
+					if ($offset === 0) {
 						return $i;
 					}
 
@@ -90,22 +90,22 @@ return $this->string = new class() {
 			$string .= '0123456789';
 		}
 
-		if (isset($data[1]) and $data[1]) {
+		if (isset($data[1]) && $data[1]) {
 			$string .= 'abcdefghijklmnopqrstuvwxyz';
 		}
 
-		if (isset($data[2]) and $data[2]) {
+		if (isset($data[2]) && $data[2]) {
 			$string .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		}
 
-		if (isset($data[3]) and $data[3]) {
+		if (isset($data[3]) && $data[3]) {
 			$string .= '!@#%^&*()_+=-}{[]?';
 		}
 
 		$stringLen = strlen($string);
 
 		for ($i = 1; $i <= $length; $i++) {
-			$return .= $string[rand(1, $stringLen) - 1];
+			$return .= $string[random_int(1, $stringLen) - 1];
 		}
 
 		return $return;
@@ -120,17 +120,17 @@ return $this->string = new class() {
 	public function removeQuotes(string $string) {
 		core::setError();
 
-		if (strlen($string) == 0) {
+		if ($string === '') {
 			return $string;
 		}
 
 		$list = ['`', '"', '\''];
 		$searchFirstInt = array_search($string[0], $list);
 		$searchFirst = $searchFirstInt > -1;
-		$searchLast = $searchFirst === true && substr($string, strlen($string) - 1) == $list[$searchFirstInt];
+		$searchLast = $searchFirst === true && substr($string, strlen($string) - 1) === $list[$searchFirstInt];
 
-		if ($searchFirst and $searchLast) {
-			return substr($string, 1, strlen($string) - 2);
+		if ($searchFirst && $searchLast) {
+			return substr($string, 1, -1);
 		}
 
 		return $string;
@@ -141,7 +141,7 @@ return $this->string = new class() {
 
 		$findCount = 0;
 		while (true) {
-			if ($this->strpos($string, $search, $findCount) == -1) {
+			if ($this->strpos($string, $search, $findCount) === -1) {
 				break;
 			}
 			$findCount++;

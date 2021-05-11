@@ -1,1 +1,4 @@
-Panel administracyjny dla nowego moduł
+<?php
+$module = core::loadModule('emptyModule');
+
+krumo($module);

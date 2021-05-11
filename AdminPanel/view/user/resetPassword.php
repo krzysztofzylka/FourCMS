@@ -1,0 +1,1 @@
+Czy na pewno chcesz zresetować hasło użytkownika <b><?php echo $user['name'] ?></b> (<?php echo $user['login'] ?>)?<br />

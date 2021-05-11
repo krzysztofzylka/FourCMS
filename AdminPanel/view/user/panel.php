@@ -45,8 +45,9 @@
                                                 <label>Zmiana uprawnień użytkownika</label>
                                                 <select name="permission" class="custom-select">
 													<?php
-													foreach ($permissionList as $item)
-														echo '<option value="' . $item['id'] . '" ' . ((int)$user['permission'] == (int)$item['id'] ? 'selected' : '') . '>' . $item['name'] . '</option>';
+													foreach ($permissionList as $item) {
+														echo '<option value="' . $item['id'] . '" ' . ((int)$user['permission'] === (int)$item['id'] ? 'selected' : '') . '>' . $item['name'] . '</option>';
+													}
 													?>
                                                 </select>
                                             </div>
@@ -75,6 +76,7 @@
                             </li>
                             <!-- posts -->
                             <li class="list-group-item"><b>Postów</b> <a class="float-right">?</a></li>
+							<?php echo $userAccount ? '<a href="userChangePassword.html" class="btn btn-secondary"><i class="nav-icon fas fa-key"></i> Zmiana hasła</a>' : ''; ?>
                         </ul>
                     </div>
                 </div>
@@ -83,8 +85,8 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#posts" data-toggle="tab" style="">Posty</a></li>
-							<?php echo $userAccount ? '<li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab" style="">Ustawienia</a></li>' : ''; ?>
+                            <li class="nav-item"><a class="nav-link active" href="#posts" data-toggle="tab">Posty</a></li>
+							<?php echo $userAccount ? '<li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Ustawienia</a></li>' : ''; ?>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -95,7 +97,15 @@
                             </div>
                             <!-- setting -->
                             <div class="tab-pane" id="settings">
-								<?php echo $userAccount ? '<a href="userChangePassword.html" class="btn btn-secondary"><i class="nav-icon fas fa-key"></i> Zmiana hasła</a>' : ''; ?>
+                                <form method="POST" action="user.controller/saveSetting">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" name="hiddenSearch" id="hiddenSearch" <?php echo core::$model->UserOption->read('hiddenSearch', true) ? 'checked' : '' ?>>
+                                            <label class="custom-control-label" name="hiddenSearch" for="hiddenSearch">Ukrycie wyszukiwarki</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" name="settingSave" class="btn btn-block btn-primary">Zapisz</button>
+                                </form>
                             </div>
                         </div>
                     </div>

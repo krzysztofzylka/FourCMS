@@ -63,7 +63,7 @@ class core {
 			error_reporting(0);
 		}
 
-		if (isset($option['moveToHttps']) && boolval($option['moveToHttps']) == true) {
+		if (isset($option['moveToHttps']) && $option['moveToHttps']) {
 			self::_protectHTTPS($option['enableLocalhostHTTPS']);
 		}
 
@@ -73,7 +73,7 @@ class core {
 		self::$info['frameworkPath'] = dirname(__DIR__) . DIRECTORY_SEPARATOR;
 
 		foreach (self::$path as $name => $value) {
-			self::$path[$name] = ((self::$option['localPath'] === true and array_search($name, self::$option['localIgnored']) === false) ? self::$option['localPathReversion'] : self::$info['reversion']) . $value; //tworznie ścieżki dla zmiennej $path
+			self::$path[$name] = ((self::$option['localPath'] === true && !in_array($name, self::$option['localIgnored'])) ? self::$option['localPathReversion'] : self::$info['reversion']) . $value; //tworznie ścieżki dla zmiennej $path
 			self::$path[$name] = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, self::$path[$name]);
 
 			if (!file_exists(self::$path[$name]) && self::$option['autoCreatePath'] === true) {
@@ -94,11 +94,11 @@ class core {
 	}
 
 	public static function setError(int $number = -1, string $name = '', $description = '') : bool {
-		self::$isError = $number <> -1;
+		self::$isError = $number !== -1;
 		self::$error = [
 			'number' => $number,
 			'name' => htmlspecialchars($name),
-			'description' => htmlspecialchars($description),
+			'description' => is_array($description)?$description:htmlspecialchars($description),
 			'debug_backTrace' => self::$isError ? debug_backtrace() : null
 		];
 		self::_writeCoreErrorLog();
@@ -132,7 +132,7 @@ class core {
 	public static function loadController(string $name) {
 		self::setError();
 
-		if (in_array($name, array_keys(self::$controller->_list))) {
+		if (array_key_exists($name, self::$controller->_list)) {
 			return self::setError(3, 'the class has already been loaded');
 		}
 
@@ -166,7 +166,7 @@ class core {
 			$option['path'] = self::$path['model'];
 		}
 
-		if (!$option['returnOnly'] and in_array($modelName, self::$model->_list)) {
+		if (!$option['returnOnly'] && in_array($modelName, self::$model->_list)) {
 			return self::$model->{str_replace('.', '__', $modelName)};
 		}
 
@@ -216,7 +216,7 @@ class core {
 	public static function loadModule(string $moduleName) {
 		self::setError();
 
-		if (in_array($moduleName, self::$module->_list) and self::$option['multipleModule'] === false) {
+		if (in_array($moduleName, self::$module->_list) && self::$option['multipleModule'] === false) {
 			return self::setError(1, 'The class has already been loaded');
 		}
 
@@ -239,7 +239,7 @@ class core {
 
 		$moduleClassName = $moduleName;
 
-		if (in_array($moduleName, self::$module->_list) and self::$option['multipleModule'] === true) {
+		if (in_array($moduleName, self::$module->_list) && self::$option['multipleModule'] === true) {
 			$nameCounter = 2;
 			while (true) {
 				$moduleClassName = $moduleName . '_k' . $nameCounter;
@@ -252,13 +252,13 @@ class core {
 
 		self::$module->_config[$moduleClassName] = $config;
 
-		if (isset($config['include']) and is_array($config['include'])) {
+		if (isset($config['include']) && is_array($config['include'])) {
 			foreach ($config['include'] as $includeFileName) {
 				include($modulePath . $includeFileName);
 			}
 		}
 
-		if (isset($config['moduleFile']) and !file_exists($modulePath . $config['moduleFile'])) {
+		if (isset($config['moduleFile']) && !file_exists($modulePath . $config['moduleFile'])) {
 			return self::setError(4, 'module file not found', $modulePath . $config['moduleFile']);
 		}
 
@@ -288,7 +288,7 @@ class core {
 			if (is_object(self::$library)) {
 				self::$library->debug->print_r($return);
 			} else {
-				print_r($return);
+				var_dump($return);
 			}
 		}
 
@@ -302,7 +302,7 @@ class core {
 		$localhost = $_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_NAME'] === '127.0.0.1';
 		$httpsURL = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-		if ($httpsOn === false and ($localhost === false or $enableLocalhostHTTPS === true)) {
+		if ($httpsOn === false && ($localhost === false || $enableLocalhostHTTPS === true)) {
 			header('location: ' . $httpsURL);
 		}
 	}
@@ -329,7 +329,7 @@ class core {
 			$reversion = substr($reversion, 1, strlen($reversion));
 		}
 
-		while (strpos($reversion, DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) <> false) {
+		while (strpos($reversion, DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR) !== false) {
 			$reversion = str_replace(DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $reversion);
 		}
 
@@ -337,7 +337,7 @@ class core {
 	}
 
 	private static function _writeCoreErrorLog() : void {
-		if (!self::$isError or self::$option['saveCoreError']) {
+		if (!self::$isError || self::$option['saveCoreError']) {
 			return;
 		}
 
@@ -350,14 +350,14 @@ class core {
 	}
 
 	private static function _showCoreErrorInHTML() : void {
-		if (self::$option['showCoreError'] === true or !core::$isError) {
+		if (self::$option['showCoreError'] === true || !self::$isError) {
 			return;
 		}
 
 		echo '<b>Core error:</b> (' . self::$error['number'] . ') [<i>' . self::$error['name'] . '</i>] ';
 
 		if (is_array(self::$error['description'])) {
-			print_r(self::$error['description']);
+			var_dump(self::$error['description']);
 		} else {
 			echo self::$error['description'] . '<br />';
 		}

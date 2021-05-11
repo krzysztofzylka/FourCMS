@@ -23,7 +23,7 @@
                                 </td>
                                 <td style="width: 150px">
                                     Wersja: <small class="badge badge-info">' . $data['version'] . '</small>
-                                    <a href="module-add.html?installFromServer=' . $data['file']['filePath'] . '" class="btn btn-xs btn-' . ($checkVersion ? 'secondary' : ($moduleLocalData == false ? 'primary' : 'success')) . ' btn-block ' . ((is_null($data['file']) or $checkVersion) ? 'disabled' : '') . '">' . ($checkVersion ? 'Zainstalowane' : ($moduleLocalData == false ? 'Instaluj' : 'Aktualizuj')) . '</a>
+                                    <a href="module-add.html?installFromServer=' . $data['file']['filePath'] . '" class="btn btn-xs btn-' . ($checkVersion ? 'secondary' : ($moduleLocalData == false ? 'primary' : 'success')) . ' btn-block ' . ((is_null($data['file']) || $checkVersion) ? 'disabled' : '') . '">' . ($checkVersion ? 'Zainstalowane' : ($moduleLocalData == false ? 'Instaluj' : 'Aktualizuj')) . '</a>
                                 </td>
                             </tr>';
 						}

@@ -21,14 +21,14 @@ class Smarty_Internal_Method_ClearAssign
     /**
      * clear the given assigned template variable(s).
      *
-     * @api  Smarty::clearAssign()
-     * @link http://www.smarty.net/docs/en/api.clear.assign.tpl
-     *
-     * @param \Smarty_Internal_Data|\Smarty_Internal_Template|\Smarty $data
+     * @param \Smarty_Internal_Data|\Smarty_Internal_Template|Smarty $data
      * @param string|array                                            $tpl_var the template variable(s) to clear
      *
-     * @return \Smarty_Internal_Data|\Smarty_Internal_Template|\Smarty
-     */
+     * @return \Smarty_Internal_Data|\Smarty_Internal_Template|Smarty
+     *@link http://www.smarty.net/docs/en/api.clear.assign.tpl
+     *
+     * @api  Smarty::clearAssign()
+	 */
     public function clearAssign(Smarty_Internal_Data $data, $tpl_var)
     {
         if (is_array($tpl_var)) {

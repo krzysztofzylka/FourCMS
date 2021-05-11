@@ -1,15 +1,15 @@
 <?php
-return new class() { //create main class
+return new class() extends core_module { //create main class
 	public $hashAlghoritm = 'pbkdf2'; //hash alghoritm
 	public $sessionID; //user session name
 	public $sessionIPName; //ip user session name
 	public $sessionUserHash; //user hash
-	public $userData = null; //user data
+	public $userData; //user data
 	public $DBTablePrefix = ''; //prefix for table in database
 	public $defaultPermissionGroup = 1; //default permission
-	private $userPermissionList = null;
-	private $dbConn = null; //PDO Object
-	private $dbTable = [
+	public $userPermissionList;
+	public $dbConn; //PDO Object
+	public $dbTable = [
 		'user' => 'user',
 		'groupPermission' => 'groupPermission'
 	];
@@ -20,6 +20,8 @@ return new class() { //create main class
 		if (core::$library->database->isConnect === false) {
 			return core::setError(1, 'Connect error');
 		}
+
+		$this->loadModel('Config');
 
 		$this->_generateSessionName();
 		$this->dbConn = core::$library->database->conn;
@@ -95,7 +97,7 @@ return new class() { //create main class
 
 		$user = $user->fetch(PDO::FETCH_ASSOC);
 
-		if ((int)$user['count'] == 0) {
+		if ((int)$user['count'] === 0) {
 			return core::setError(1, 'user with such login was not found');
 		}
 
@@ -185,7 +187,7 @@ return new class() { //create main class
 
 		$user = $user->fetch(PDO::FETCH_ASSOC);
 
-		if (!$this->_userCheckHash($user['userSessionHash']) or $user['blocked']) {
+		if (!$this->_userCheckHash($user['userSessionHash']) || $user['blocked']) {
 			$this->_deleteSession();
 
 			return core::setError(2, 'user error');
@@ -200,7 +202,7 @@ return new class() { //create main class
 	public function getData(int $userID = -1) {
 		core::setError();
 
-		$userID = $userID <> -1 ? $userID : $this->_userID();
+		$userID = $userID !== -1 ? $userID : $this->_userID();
 		$user = $this->dbConn->prepare('SELECT id,login,email,name,avatar,permission,blocked FROM ' . $this->dbTable['user'] . ' WHERE id=:userID');
 		$user->bindParam(':userID', $userID, PDO::PARAM_INT);
 
@@ -214,7 +216,7 @@ return new class() { //create main class
 	public function getPermission() {
 		core::setError();
 
-		if ($this->userPermissionList <> null) {
+		if ($this->userPermissionList !== null) {
 			return $this->userPermissionList;
 		}
 
@@ -245,7 +247,7 @@ return new class() { //create main class
 		return $permissionList;
 	}
 
-	public function checkPermission(string $name) : bool {
+	public function checkPermission($permissionName) : bool {
 		core::setError();
 
 		if ($this->checkUser() === false) {
@@ -262,13 +264,13 @@ return new class() { //create main class
 			return true;
 		}
 
-		return !is_bool(array_search($name, $permission));
+		return !is_bool(array_search($permissionName, $permission));
 	}
 
 	public function setTablePrefix(string $prefix) : bool {
 		core::setError();
 
-		if ($this->DBTablePrefix == '') {
+		if ($this->DBTablePrefix === '') {
 			$this->dbTable['user'] = $prefix . '_user';
 			$this->dbTable['groupPermission'] = $prefix . '_groupPermission';
 		} else {
@@ -351,7 +353,7 @@ return new class() { //create main class
 			return false;
 		}
 
-		return $_SESSION[$this->sessionIPName] == core::$library->network->getClientIP();
+		return $_SESSION[$this->sessionIPName] === core::$library->network->getClientIP();
 	}
 
 	private function _userSetHash(string $hash, int $userID) : bool {
@@ -431,37 +433,33 @@ return new class() { //create main class
 	private function _userCheckHash($userHash) : bool {
 		core::setError();
 
-		if ($userHash <> $_SESSION[$this->sessionUserHash]) {
-			return false;
-		}
-
-		return true;
+		return !($userHash !== $_SESSION[$this->sessionUserHash]);
 	}
 
 	private function _generateSessionName() {
 		core::setError();
 
-		$this->sessionID = core::$model->Config->read('module_account_sessionID', null);
+		$this->sessionID = $this->Config->read('module_account_sessionID', null);
 
 		if (is_null($this->sessionID)) {
-			$generateString = md5(rand(1000, 9999) . date('Ymdhisv') . rand(1000, 9999));
-			core::$model->Config->write('module_account_sessionID', $generateString);
+			$generateString = md5(random_int(1000, 9999) . date('Ymdhisv') . random_int(1000, 9999));
+			$this->Config->write('module_account_sessionID', $generateString);
 			$this->sessionID = $generateString;
 		}
 
-		$this->sessionIPName = core::$model->Config->read('module_account_sessionIPName', null);
+		$this->sessionIPName = $this->Config->read('module_account_sessionIPName', null);
 
 		if (is_null($this->sessionIPName)) {
-			$generateString = md5(rand(1000, 9999) . date('Ymdhisv') . rand(1000, 9999));
-			core::$model->Config->write('module_account_sessionIPName', $generateString);
+			$generateString = md5(random_int(1000, 9999) . date('Ymdhisv') . random_int(1000, 9999));
+			$this->Config->write('module_account_sessionIPName', $generateString);
 			$this->sessionIPName = $generateString;
 		}
 
-		$this->sessionUserHash = core::$model->Config->read('module_account_sessionUserHash', null);
+		$this->sessionUserHash = $this->Config->read('module_account_sessionUserHash', null);
 
 		if (is_null($this->sessionUserHash)) {
-			$generateString = md5(rand(1000, 9999) . date('Ymdhisv') . rand(1000, 9999));
-			core::$model->Config->write('module_account_sessionUserHash', $generateString);
+			$generateString = md5(random_int(1000, 9999) . date('Ymdhisv') . random_int(1000, 9999));
+			$this->Config->write('module_account_sessionUserHash', $generateString);
 			$this->sessionUserHash = $generateString;
 		}
 	}

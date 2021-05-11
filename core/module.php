@@ -1,8 +1,8 @@
 <?php
 
-class core_module {
+class core_module extends core_controller {
+	public $moduleConfig;
 	public $model = [];
-	private $moduleConfig;
 
 	public function __construct() {
 		$this->moduleConfig = core::$module->_config[core::$module->_lastLoadModule];
@@ -13,23 +13,6 @@ class core_module {
 		];
 	}
 
-	public function checkPermission($permissionName) {
-		return core::$module->account->checkPermission($permissionName);
-	}
-
-	public function loadModel(...$modelsName) {
-		core::setError();
-
-		foreach ($modelsName as $modelName) {
-			$this->{str_replace('.', '_', $modelName)} = core::loadModel(
-				$modelName,
-				[
-					'returnOnly' => true
-				]
-			);
-		}
-	}
-
 	public function loadModuleModel(...$modelsName) {
 		core::setError();
 
@@ -38,19 +21,7 @@ class core_module {
 		}
 	}
 
-	public function loadModuleView(string $name) {
-		core::setError();
-
-		$path = $this->moduleConfig['pathList']['view'] . str_replace('.', DIRECTORY_SEPARATOR, $name) . '.php';
-
-		if (!file_exists($path)) {
-			return core::setError(1, 'file not exists', 'file not exists in path: (' . $path . ')');
-		}
-
-		return include($path);
-	}
-
-	public function loadModelController(string $name) {
+	public function loadModuleController(string $name) {
 		core::setError();
 
 		$path = $this->moduleConfig['pathList']['controller'] . str_replace('.', DIRECTORY_SEPARATOR, $name) . '.php';

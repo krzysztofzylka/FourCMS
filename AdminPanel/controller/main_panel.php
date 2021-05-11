@@ -21,8 +21,7 @@ return new class() extends core_controller {
 
 					include($widgetData['widgetPath']);
 
-					$userWidgetsArray[] = ob_get_contents();
-					ob_end_clean();
+					$userWidgetsArray[] = ob_get_clean();
 				}
 			} else {
 				//TODO: Usunięcie z bazy danych starych widgetów które już nie istnieją

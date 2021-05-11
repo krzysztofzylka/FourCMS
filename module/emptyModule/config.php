@@ -26,4 +26,3 @@ return [
 		'includeFile' => null, //url do pliku który jest uruchamiany na początku skryptu index.php panelu administratora
 	]
 ];
-?>

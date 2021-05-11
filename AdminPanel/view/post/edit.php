@@ -11,8 +11,9 @@
                             <textarea id="textarea" name="text" placeholder="Tutaj umieść tekst"
                                       style="width: 100%; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $addPost ? '' : $post['text'] ?></textarea>
                             <button class="btn btn-primary"><?php echo $addPost ? 'Dodaj' : 'Zapisz' ?></button>
-							<?php if (!$addPost)
-								echo '<a href="postDelete-' . $post['id'] . '.html" class="btn btn-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten element?\nTego nie da się cofnąć.\');">Usuń</a>'; ?>
+							<?php if (!$addPost) {
+								echo '<a href="postDelete-' . $post['id'] . '.html" class="btn btn-danger" onclick="return confirm(\'Czy na pewno chcesz usunąć ten element?\nTego nie da się cofnąć.\');">Usuń</a>';
+							} ?>
                         </div>
                     </div>
                 </div>
@@ -35,14 +36,14 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" name="hidden"
-                                           id="hiddenPostCheckbox" <?php echo $addPost ? '' : (boolval($post['hidden']) ? 'checked' : '') ?>>
+                                           id="hiddenPostCheckbox" <?php echo $addPost ? '' : ($post['hidden'] ? 'checked' : '') ?>>
                                     <label class="custom-control-label" for="hiddenPostCheckbox">Ukryj post</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" name="showMetadata"
-                                           id="showMetadataCheckbox" <?php echo $addPost ? '' : (boolval($post['showMetaData']) ? 'checked' : '') ?>>
+                                           id="showMetadataCheckbox" <?php echo $addPost ? '' : ($post['showMetaData'] ? 'checked' : '') ?>>
                                     <label class="custom-control-label" for="showMetadataCheckbox">Wyświetl metadane</label>
                                     <small class="form-text text-muted">Zaznaczenie opcji umożliwia wyłączenie wyświetlenia użytkownika oraz daty dodania posta</small>
                                 </div>
@@ -51,10 +52,10 @@
                                 <label>Odnośnik do posta</label>
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input"
-                                           id="postURLAutoCheckbox" <?php echo $addPost ? 'checked' : ($post['url'] == 'auto' ? 'checked' : '') ?>>
+                                           id="postURLAutoCheckbox" <?php echo $addPost ? 'checked' : ($post['url'] === 'auto' ? 'checked' : '') ?>>
                                     <label class="custom-control-label" for="postURLAutoCheckbox">Automatycznie generuj link</label>
                                 </div>
-                                <div id='postURLAutoDiv' style='<?php echo $addPost ? 'display: none;' : ($post['url'] == 'auto' ? 'display: none;' : '') ?>'>
+                                <div id='postURLAutoDiv' style='<?php echo $addPost ? 'display: none;' : ($post['url'] === 'auto' ? 'display: none;' : '') ?>'>
                                     <input type="text" class="form-control" id="postURLAutoInput" name="url" placeholder="Link"
                                            value="<?php echo $addPost ? 'auto' : $post['url'] ?>">
                                     <small class="form-text text-muted">wartość <b>auto</b> oznacza automatyczne generowanie odnośnika do posta</small>
@@ -64,10 +65,10 @@
                                 <label>Zmiana typu posta</label>
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" name="type_default"
-                                           id="postTypeCheckbox" <?php echo ($addPost or $post['type'] == 'post') ? 'checked' : '' ?>>
+                                           id="postTypeCheckbox" <?php echo ($addPost || $post['type'] === 'post') ? 'checked' : '' ?>>
                                     <label class="custom-control-label" for="postTypeCheckbox">Wyświetlaj jako treść</label>
                                 </div>
-                                <div id='postTypeForm' style="<?php echo ($addPost or $post['type'] == 'post') ? 'display: none;' : '' ?>">
+                                <div id='postTypeForm' style="<?php echo ($addPost || $post['type'] === 'post') ? 'display: none;' : '' ?>">
 									<?php echo $this->GuiHelper->bootstrapFormLinkGenerator($addPost ? '' : $post['type'], ['module'], 'type', 'post') ?>
                                 </div>
                                 <small class="form-text text-muted">Ta opcja pozwala zmienić rodzaju posta z tekstu na treść z wybranego modułu</small>

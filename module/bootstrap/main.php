@@ -7,15 +7,22 @@ return new class() {
 	];
 
 	public function __construct() {
-		if (is_bool(array_search('smarty', core::$module->_list)))
+		if (is_bool(array_search('smarty', core::$module->_list))) {
 			return core::setError(1, 'smarty not exists');
+		}
+
 		$this->generateHTMLData();
+
+		return true;
 	}
 
 	public function generateHTMLData() {
 		$bootstrap = '';
-		foreach ($this->headerData as $data)
+
+		foreach ($this->headerData as $data) {
 			$bootstrap .= $data;
+		}
+
 		core::$module->smarty->smarty->assign('bootstrap', $bootstrap);
 	}
 
@@ -23,9 +30,12 @@ return new class() {
 		$this->headerData['dataTablesCSS'] = '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css"/>';
 		$this->headerData['dataTablesJqueryJS'] = '<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>';
 		$this->headerData['dataTablesBootstrapJS'] = '<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>';
-		$this->headerData['dataTablesStyle'] = '<style> .dataTables_wrapper .row:last-child{ padding: 10px; } .dataTables_wrapper .row:first-child{ padding: 10px; padding-bottom: 0px; } </style>';
-		if ($multipleTable)
+		$this->headerData['dataTablesStyle'] = '<style> .dataTables_wrapper .row:last-child{ padding: 10px; } .dataTables_wrapper .row:first-child{ padding: 10px 10px 0;} </style>';
+
+		if ($multipleTable) {
 			$this->headerData['dataTablesMultipleTableJS'] = '<script> $(document).ready(function() { $(\'table.dataTable\').DataTable({ "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Polish.json" }, stateSave: true }); }); </script>';
+		}
+
 		$this->generateHTMLData();
 	}
 

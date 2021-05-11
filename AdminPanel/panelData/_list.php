@@ -7,4 +7,3 @@ return [
 		'widgetPath' => 'panelData/adminPanelVersion.php'
 	]
 ];
-?>

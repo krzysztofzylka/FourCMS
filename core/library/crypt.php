@@ -4,7 +4,7 @@ return $this->crypt = new class() {
 	private $method = 'AES-256-CBC';
 	public $salt = '0123456789012345';
 	public $hashSalt = 'FourFramework2020!+#';
-	public $otherFunction = null;
+	public $otherFunction;
 	public $hashAlgorithm = ['md5', 'sha256', 'pbkdf2', 'sha512', 'crc32', 'ripemd256', 'snefru', 'gost', 'md5SALT', 'otherFunc'];
 
 	public function crypt(string $string, $hash = null) : string {
@@ -35,45 +35,38 @@ return $this->crypt = new class() {
 		switch ($algorithm) {
 			case '001':
 			case 'md5':
-				$return = str_replace('{type}', '001', $return);
-				$return = str_replace('{hash}', md5($string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['001', md5($string)], $return);
 				break;
 			case '002':
 			case 'sha256':
-				$return = str_replace('{type}', '002', $return);
-				$return = str_replace('{hash}', hash('sha256', $string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['002', hash('sha256', $string)], $return);
 				break;
 			case '003':
 			case 'pbkdf2':
-				if (!function_exists("hash_pbkdf2"))
+				if (!function_exists("hash_pbkdf2")) {
 					return core::setError(1, 'unknown function');
-				$return = str_replace('{type}', '003', $return);
-				$return = str_replace('{hash}', hash_pbkdf2("sha256", $string, $this->salt, 4096, 20), $return);
-				break;
+				}
+			$return = str_replace(['{type}', '{hash}'], ['003', hash_pbkdf2("sha256", $string, $this->salt, 4096, 20)], $return);
+			break;
 			case '004':
 			case 'sha512':
-				$return = str_replace('{type}', '004', $return);
-				$return = str_replace('{hash}', hash('sha512', $string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['004', hash('sha512', $string)], $return);
 				break;
 			case '005':
 			case 'crc32':
-				$return = str_replace('{type}', '005', $return);
-				$return = str_replace('{hash}', hash('crc32', $string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['005', hash('crc32', $string)], $return);
 				break;
 			case '006':
 			case 'ripemd256':
-				$return = str_replace('{type}', '006', $return);
-				$return = str_replace('{hash}', hash('ripemd256', $string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['006', hash('ripemd256', $string)], $return);
 				break;
 			case '007':
 			case 'snefru':
-				$return = str_replace('{type}', '007', $return);
-				$return = str_replace('{hash}', hash('snefru', $string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['007', hash('snefru', $string)], $return);
 				break;
 			case '008':
 			case 'gost':
-				$return = str_replace('{type}', '008', $return);
-				$return = str_replace('{hash}', hash('gost', $string), $return);
+				$return = str_replace(['{type}', '{hash}'], ['008', hash('gost', $string)], $return);
 				break;
 			case '009':
 			case 'md5SALT':
@@ -81,11 +74,11 @@ return $this->crypt = new class() {
 				$hash = '';
 
 				for ($i = 0; $i <= strlen($string); $i++) {
-					$hash .= substr($string, $i, 1);
-					$saltChr = substr($this->hashSalt, $i, 1);
+					$hash .= $string[$i];
+					$saltChr = $this->hashSalt[$i];
 
-					if ($saltChr == '') {
-						$saltChr = substr($this->hashSalt, 0, 1);
+					if ($saltChr === '') {
+						$saltChr = $this->hashSalt[0];
 					}
 					$hash .= $saltChr;
 				}
@@ -97,9 +90,8 @@ return $this->crypt = new class() {
 				if (!function_exists($this->otherFunction)) {
 					return core::setError(2, 'hash function not exists');
 				}
-				$return = str_replace('{type}', '010', $return);
-				$return = str_replace('{hash}', call_user_func($this->otherFunction, $string), $return);
-				break;
+			$return = str_replace(['{type}', '{hash}'], ['010', call_user_func($this->otherFunction, $string)], $return);
+			break;
 		}
 		return $return;
 	}
@@ -109,7 +101,7 @@ return $this->crypt = new class() {
 
 		$algoritm = substr($hash, 1, 3);
 
-		if (substr($hash, 0, 1) <> '$' and substr($hash, 4, 1) <> '$') {
+		if ($hash[0] !== '$' && $hash[4] !== '$') {
 			return core::setError(1, 'hash syntax error');
 		}
 
@@ -135,7 +127,7 @@ return $this->crypt = new class() {
 		$d = dir($path);
 
 		while (false !== ($entry = $d->read())) {
-			if ($entry != '.' && $entry != '..') {
+			if ($entry !== '.' && $entry !== '..') {
 				if (is_dir($path . '/' . $entry)) {
 					$filemd5s[] = $this->md5_dir($path . '/' . $entry);
 				} else {

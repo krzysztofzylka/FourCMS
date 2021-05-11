@@ -15,7 +15,7 @@
 							echo $post['text'];
 						} ?>
                     </p>
-					<?php if ($post['url'] <> '') { ?>
+					<?php if ($post['url'] !== '') { ?>
                         <p><a href="<?php echo $post['url'] ?>">Czytaj dalej...</a></p>
 					<?php } ?>
                 </div>

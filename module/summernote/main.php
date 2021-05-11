@@ -17,5 +17,7 @@ return new class() {
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-pl-PL.min.js"></script>';
 		core::$module->smarty->smarty->assign('summernote', $summernote);
+
+		return true;
 	}
 };

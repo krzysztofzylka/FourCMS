@@ -1,6 +1,6 @@
 <?php
 return new class() {
-	public $configList = null;
+	public $configList;
 
 	public function read(string $name, $default = null) {
 		core::setError();
@@ -11,7 +11,7 @@ return new class() {
 
 		$query = core::$library->database->query('SELECT *, count(*) as count FROM config WHERE name="' . $name . '"')->fetch(PDO::FETCH_ASSOC);
 
-		if ($query['count'] == 0) {
+		if ($query['count'] === 0) {
 			return $default;
 		}
 
@@ -25,7 +25,7 @@ return new class() {
 		$sql = 'UPDATE config SET value=:value WHERE name=:name';
 		$query = core::$library->database->query('SELECT count(*) as count FROM config WHERE name="' . $name . '"')->fetch(PDO::FETCH_ASSOC);
 
-		if ($query['count'] == 0) {
+		if ($query['count'] === 0) {
 			$sql = 'INSERT INTO config (value, name) VALUES (:value, :name)';
 		}
 

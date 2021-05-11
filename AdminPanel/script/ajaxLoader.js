@@ -1,4 +1,4 @@
-//0.0.4 Alpha
+//0.0.7 Alpha
 let ajaxLoader = {
     config: {
         debug: true,
@@ -7,85 +7,126 @@ let ajaxLoader = {
         controller: 'link-{name}',
         mainPageGetName: 'page'
     },
-    refreshDialog: function ($this) {
-        let config = this._generateConfig($this);
-
-        if (config.dialog.object === null) {
-            return false;
+    configList: {},
+    spinner: function (type) {
+        if (type === 'show' || type === 'start') {
+            $('.loader').show();
+        } else if (type === 'hide') {
+            $('.loader').hide();
         }
-
-        $dialog = config.dialog.object;
-        $dialog.load(config.dialog.controller.urlFull);
-        $('.dataTable').DataTable();
-
-        this.__debug('refreshDialog', config);
     },
-    reloadMainPage: function (element = null, postData = {}) {
-        let config = this._generateConfig(element);
+    defineLayout: function (config) {
+        switch (config.layout) {
+            case 'dialogbox':
+                config = ajaxLoader._generateDialogbox(config);
+                $('#' + config.dialog.id).dialog({
+                    open: function () {
+                        $(this).html(config.responseData).ready(function () {
+                            config = ajaxLoader._loadDialogboxConfig(config);
+                        });
+                    },
+                    title: config.dialog.config.title,
+                });
 
-        if (config.mainURL.url === null) {
-            return false;
+                this.configList['dialogbox#' + config.dialog.id] = config;
+                ajaxLoader.spinner('hide');
+                break;
+            case 'toast':
+            default:
+                if (typeof config.responseData === 'object') {
+                    switch (config.responseData.type) {
+                        case 'OK':
+                            toastr.success(config.responseData.message);
+                            break;
+                        case 'ERROR':
+                        case 'ERR':
+                            toastr.error(config.responseData.message);
+                            break;
+                        default:
+                            toastr.info(config.responseData.message);
+                            break;
+                    }
+                }
+                ajaxLoader.spinner('hide');
+                break;
         }
 
-        $(ajaxLoader.config.data).load(config.mainURL.urlFull + config.data._GETString, postData, function () {
-            $('table.dataTable').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Polish.json"
-                },
-                stateSave: true
+        if (config.dialog.config.reload
+            && config.dialog.object !== null
+            && config.dialog.controller.urlFull !== null
+        ) {
+            ajaxLoader.spinner('start');
+            config.dialog.object.load(config.dialog.controller.urlFull, {}, function () {
+                ajaxLoader.spinner('hide');
             });
+        }
+
+        if (config.pageReload
+            && config.mainURL.url !== null
+        ) {
+            ajaxLoader.spinner('start');
+            $(ajaxLoader.config.data).load(config.mainURL.urlFull + config.data._GETString, {}, function () {
+                $('table.dataTable').DataTable({
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Polish.json"
+                    },
+                    stateSave: true
+                });
+                ajaxLoader.spinner('hide');
+            });
+        }
+    },
+    _loadDialogboxConfig: function (config) {
+        let $dialog = $('#' + config.dialog.id);
+        config.dialog.object = $dialog;
+
+        if ($dialog === null) {
+            return config;
+        }
+
+
+        if (this._isJSON(config.dialog.config.button)) {
+            let buttons = {};
+
+            $.each(config.dialog.config.button, function (i, button) {
+                let buttonData = {};
+                buttonData.text = button.text;
+                buttonData.click = function () {
+                };
+                buttons[i] = buttonData;
+            });
+
+            $dialog.find('.ui-dialog-content').dialog('option', 'buttons', buttons);
+
+            const $buttonContainer = $dialog.parent().find('.ui-dialog-buttonpane');
+
+            $.each(config.dialog.config.button, function (i, button) {
+                let $buttonHandle = $buttonContainer.find(".ui-button").eq(i);
+                if (typeof button.dataAjax !== 'undefined') {
+                    $buttonHandle.wrap('<a href="#" data-ajax="' + button.dataAjax + '"></a>');
+                }
+            });
+        }
+
+        if (config.dialog.config.width !== null) {
+            $dialog.parent().width(config.dialog.config.width);
+        }
+
+        if (config.dialog.config.height !== null) {
+            $dialog.parent().height(config.dialog.config.height);
+        }
+
+        let win = $(window);
+        $dialog.parent().css({
+            position: 'absolute',
+            left: (win.width() - $dialog.outerWidth()) / 2,
+            top: (win.height() - $dialog.outerHeight()) / 2,
+            'zIndex': 10000
         });
 
-        this.__debug('loadPage', config);
-    },
-    sendForm: function ($this) {
-        let config = this._generateConfig($this);
+        config.dialog.controller = config.controllerData;
 
-        $.ajax({
-            url: config.form.url,
-            type: config.form.request_method,
-            data: config.form.data,
-        }).done(function (data) {
-            $(ajaxLoader.config.data).append(data);
-            ajaxLoader.reloadMainPage($this);
-        });
-
-        this.__debug('sendForm', config);
-    },
-    _generateUniqueId: (function () {
-        let i = 1;
-
-        return function () {
-            return i++;
-        }
-    })(),
-    _getGetData: function (name = null) {
-        let parts = window.location.search.substr(1).split("&");
-        let $_GET = {};
-
-        if (parts[0] === '') {
-            return $_GET;
-        }
-
-        for (let i = 0; i < parts.length; i++) {
-            let temp = parts[i].split("=");
-            $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
-        }
-
-        if (name === null) {
-            return $_GET;
-        } else {
-            return eval('$_GET.' + name);
-        }
-    },
-    _isJSON: function (string) {
-        try {
-            JSON.parse(string);
-        } catch (e) {
-            return false;
-        }
-
-        return true;
+        return config;
     },
     _generateControllerData: function (data) {
         let array = [];
@@ -109,54 +150,98 @@ let ajaxLoader = {
 
         return config;
     },
-    _generateDialogbox: function () {
-        const dialogId = 'dialog-' + this._generateUniqueId();
+    _getViewConfig: function (config) {
+        if (typeof config.responseData === 'object') {
+            config.dialog.config = config.responseData.ajaxLoaderConfig.dialogbox;
+            config.layout = config.responseData.ajaxLoaderConfig.layout;
+            config.pageReload = config.responseData.ajaxLoaderConfig.pageReload === true;
+            config.dialog.config.button = JSON.parse(config.responseData.ajaxLoaderConfig.dialogbox.button);
 
-        $('<div/>', {
-            id: dialogId
-        }).appendTo(ajaxLoader.config.data).ready(function () {
-            $('#' + dialogId).dialog({
-                autoOpen: false,
-                width: 600,
-                height: 500,
-                moveToTop: true,
-                close: function () {
-                    $(this).dialog('destroy').remove();
-                }
-            });
-            $('#' + dialogId).css({
-                overflow: 'auto'
-            });
-        });
+            return config;
+        }
 
-        return dialogId;
+        config.dialog.config = JSON.parse(atob(config.responseData.match("viewConfig_dialogbox = \"(.*)\";")[1]));
+        config.layout = config.responseData.match("viewConfig_layout = \"(.*)\";")[1];
+        config.pageReload = config.responseData.match("viewConfig_pageReload = \"(.*)\";")[1] === true;
+        config.dialog.config.button = JSON.parse(config.dialog.config.button);
+
+        return config;
     },
     _generateControllerURL: function (name) {
-        if (name === null) {
+        if (name === null || name === undefined) {
             return null;
         }
 
         return this.config.controller.replace('{name}', name);
     },
+    _ajax: function (config) {
+        if (config.controllerData.urlFull === null) {
+            ajaxLoader.spinner('hide');
+            return null;
+        }
+
+        ajaxLoader.spinner('start');
+
+        $.ajax({
+            url: config.controllerData.urlFull,
+            type: 'POST',
+            data: config.controllerData.data
+        }).done(function (data, textStatus, jqXHR) {
+            config.responseData = data;
+            config.responseTextStatus = textStatus;
+            config.responseXHR = jqXHR;
+            config = ajaxLoader._getViewConfig(config);
+            ajaxLoader.defineLayout(config);
+        }).fail(function (xhr) {
+            config.responseError = xhr;
+            ajaxLoader.spinner('hide');
+        });
+    },
+    _getGetData: function (name = null) {
+        let parts = window.location.search.substr(1).split("&");
+        let $_GET = {};
+
+        if (parts[0] === '') {
+            return $_GET;
+        }
+
+        for (let i = 0; i < parts.length; i++) {
+            let temp = parts[i].split("=");
+            $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+        }
+
+        if (name === null) {
+            return $_GET;
+        } else {
+            return eval('$_GET.' + name);
+        }
+    },
     _generateConfig: function (element) {
-        let url = $(element).attr('data-dialog'),
-            mainControllerName = $('body').attr('mainPage');
+        let mainControllerName = $('body').attr('mainPage');
 
         if (mainControllerName === undefined) {
             mainControllerName = this._getGetData(ajaxLoader.config.mainPageGetName);
         }
 
         let config = {
-            url: url,
+            url: $(element).attr('ajax'),
             mainURL: this._generateControllerData(mainControllerName),
-            type: null,
-            controllerData: this._generateControllerData(url),
+            controllerData: this._generateControllerData($(element).attr('ajax')),
             ajaxLoaderConfig: this.config,
+            layout: null,
+            pageReload: false,
             dialog: {
                 object: null,
                 id: null,
                 title: null,
-                controller: null
+                controller: {
+                    controller: null,
+                    data: {},
+                    full: null,
+                    url:  null,
+                    urlFull: null
+                },
+                config: null
             },
             data: {
                 _GET: this._getGetData(null),
@@ -167,32 +252,62 @@ let ajaxLoader = {
                 requestMethod: null,
                 data: null,
                 url: null
-            }
+            },
+            configList: this.configList
         }
 
         const $dialog = $(element).closest('.ui-dialog-content');
 
         if ($dialog.length > 0) {
-            config.dialog.id = $dialog.attr('id');
-            config.dialog.title = $('#' + config.dialog.id).parent().find('.ui-dialog-title').eq(0).text();
-            config.dialog.object = $dialog;
-            config.dialog.controllerName = $('#' + config.dialog.id).parent().attr('data-dialog-url');
-            config.dialog.controller = this._generateControllerData(config.dialog.controllerName);
-            config.url = $dialog.attr('data-dialog-url');
-            config.controllerData = this._generateControllerData(config.url);
+            const dialogConfig = ajaxLoader.configList['dialogbox#' + $dialog.attr('id')];
+            config.dialog = dialogConfig.dialog;
         }
 
         if ($(element).is('form')) {
             config.form = {
                 controllerName: $(element).attr("action"),
                 requestMethod: $(element).attr("method"),
-                data: $(element).serialize()
+                data: $(element).serialize(),
+                url: this._generateControllerURL($(element).attr("action"))
             }
-
-            config.form.url = this._generateControllerURL(config.form.controllerName);
+            config.controllerData = this._generateControllerData(config.form.controllerName);
         }
 
         return config;
+    },
+    _generateDialogbox: function (config) {
+        config.dialog.id = 'dialog-' + this.__uniqueId();
+        config.dialog.title = '';
+
+        $('<div/>', {
+            id: config.dialog.id
+        }).appendTo(ajaxLoader.config.dialog).ready(function () {
+            $('#' + config.dialog.id).dialog({
+                autoOpen: false,
+                moveToTop: true,
+                maxHeight: 600,
+                close: function () {
+                    $(this).dialog('destroy').remove();
+                    delete ajaxLoader.configList['dialogbox#' + $(this).attr('id')];
+                }
+            });
+            $('#' + config.dialog.id).css({
+                overflow: 'auto'
+            });
+        });
+
+        config.dialog.object = $('#' + config.dialog.id);
+
+        return config;
+    },
+    _isJSON: function (string) {
+        try {
+            JSON.parse(string);
+        } catch (e) {
+            return false;
+        }
+
+        return true;
     },
     __debug: function (name, data) {
         if (this.config.debug === false) {
@@ -204,97 +319,35 @@ let ajaxLoader = {
             date: new Date(),
             config: data
         })
-    }
+    },
+    __uniqueId: (function () {
+        let i = 1;
+
+        return function () {
+            return i++;
+        }
+    })()
 }
 
 
-$(document).ready(function () {
-    $(document).on('click', 'a[data-ajax]', function () {
+jQuery(function () {
+    $(document).on('click', '[ajax]', function () {
         let config = ajaxLoader._generateConfig(this);
-        config.type = 'ajax';
-        config.url = $(this).attr('data-ajax');
-        config.controllerData = ajaxLoader._generateControllerData(config.url);
-        const $self = this;
+        ajaxLoader.spinner('show');
 
-        $.ajax({
-            url: config.controllerData.urlFull,
-            type: 'POST',
-            data: config.controllerData.data,
-        }).done(function (data) {
-            if (ajaxLoader._isJSON(data) || jQuery.type(data) === 'object') {
-                if (jQuery.type(data) !== 'object') {
-                    data = JSON.parse(data);
-                }
+        ajaxLoader._ajax(config);
 
-                config.responseJSON = data;
-
-                switch (data.type) {
-                    case 'OK':
-                        toastr.success(data.message);
-                        break;
-                    case 'ERROR':
-                    case 'ERR':
-                        toastr.error(data.message);
-                        break;
-                    default:
-                        toastr.info(data.message);
-                        break;
-                }
-            } else {
-                config.responseText = data;
-            }
-
-            ajaxLoader.refreshDialog($self);
-            ajaxLoader.reloadMainPage($self);
-        }).fail(function (request, status, error) {
-            config.responseError = {
-                request,
-                status,
-                error
-            }
-        });
-
-
-        ajaxLoader.__debug('click -> a[data-ajax]', config);
+        ajaxLoader.__debug('ajax', config);
     });
 
-    $(document).on('click', 'a[data-dialog]', function (event) {
-        event.stopImmediatePropagation();
-
-        let config = ajaxLoader._generateConfig(this);
-        config.dialog.id = null;
-        config.dialog.title = $(this).attr('data-dialog-title');
-        config.type = 'dialog';
-        config.title = $(this).attr('data-dialog-title');
-
-        if (typeof $(this).attr('dialog-id') !== 'undefined') {
-            config.dialog.id = $(this).attr('dialog-id');
-        } else {
-            config.dialog.id = ajaxLoader._generateDialogbox();
-        }
-
-        $('#' + config.dialog.id).dialog({
-            open: function () {
-                $(this).parent().attr('data-dialog-url', config.controllerData.urlFull);
-                $(this).load(config.controllerData.urlFull);
-            },
-            title: config.title,
-        });
-
-        ajaxLoader.__debug('click -> a[data-dialog]', config);
-    });
-
-    $(document).on('click', 'a[data-dialog-refresh]', function (event) {
-        event.stopImmediatePropagation();
-
-        ajaxLoader.refreshDialog(this);
-    });
-
-    $(document).on('submit', '.ui-dialog-content form', function (event) {
+    $(document).on('submit', 'form[action]', function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
 
-        ajaxLoader.sendForm(this);
-        ajaxLoader.refreshDialog(this);
+        let config = ajaxLoader._generateConfig(this);
+
+        ajaxLoader._ajax(config);
+
+        $(this).trigger("reset");
     });
 });

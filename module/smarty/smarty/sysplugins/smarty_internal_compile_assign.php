@@ -39,11 +39,11 @@ class Smarty_Internal_Compile_Assign extends Smarty_Internal_CompileBase
      * Compiles code for the {assign} tag
      *
      * @param array                                 $args      array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler  compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler  compiler object
      * @param array                                 $parameter array with compilation parameter
      *
      * @return string compiled code
-     * @throws \SmartyCompilerException
+     * @throws SmartyCompilerException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
@@ -89,7 +89,7 @@ class Smarty_Internal_Compile_Assign extends Smarty_Internal_CompileBase
             $output .= "\$_tmp_array{$parameter['smarty_internal_index']} = {$_attr['value']};\n";
             $output .= "\$_smarty_tpl->_assignInScope({$_var}, \$_tmp_array{$_params});?>";
         } else {
-            $output = "<?php \$_smarty_tpl->_assignInScope({$_var}, {$_attr['value']}{$_params});?>";
+            $output = "<?php \$_smarty_tpl->_assignInScope({$_var}, {$_attr['value']}{$_params})?>";
         }
         return $output;
     }

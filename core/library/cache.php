@@ -19,10 +19,9 @@ return $this->cache = new class() {
 		core::setError();
 
 		$config = $this->_loadConfig();
-		$check = $this->__checkCache($name, $config);
 
-		if (!isset($config[$name]) or $check == false) {
-			$callData = call_user_func($function);
+		if (!isset($config[$name]) || !$this->__checkCache($name, $config)) {
+			$callData = $function();
 			$this->writeCache($name, $callData, $time);
 
 			return $callData;
@@ -33,15 +32,13 @@ return $this->cache = new class() {
 
 	public function readCache(string $name) {
 		core::setError();
-
 		$config = $this->_loadConfig();
+
 		if (!isset($config[$name])) {
 			return core::setError(1, 'cache not exists');
 		}
 
-		$check = $this->__checkCache($name, $config);
-
-		if ($check == false) {
+		if (!$this->__checkCache($name, $config)) {
 			return core::setError(2, 'cache is expired');
 		}
 
@@ -118,11 +115,11 @@ return $this->cache = new class() {
 	private function __checkCache(string $name, array $config = null) : bool {
 		core::setError();
 
-		if ($config == null) {
+		if (is_null($config)) {
 			$config = $this->_loadConfig();
 		}
 
-		if (isset($config[$name]) and time() > $config[$name]['time']) {
+		if (isset($config[$name]) && time() > $config[$name]['time']) {
 			unlink($this->dir . $config[$name]['file']);
 			unset($config[$name]);
 			$this->_writeConfig($config);
@@ -141,7 +138,7 @@ return $this->cache = new class() {
 		$fileList = ['.', '..', 'config.cfg'];
 
 		foreach ($config as $name => $data) {
-			if ($data['time'] < time() or !file_exists($this->dir . $data['file'])) {
+			if ($data['time'] < time() || !file_exists($this->dir . $data['file'])) {
 				if (file_exists($this->dir . $data['file'])) {
 					unlink($this->dir . $data['file']);
 				}
@@ -149,7 +146,7 @@ return $this->cache = new class() {
 				unset($config[$name]);
 				$update = true;
 			}
-			array_push($fileList, $data['file']);
+			$fileList[] = $data['file'];
 		}
 
 		$scanDir = scanDir($this->dir);

@@ -5,8 +5,8 @@ class view {
 		'prepend' => [],
 		'append' => []
 	];
-	private $__viewGuiHelper = null;
-	private $__viewType = null;
+	private $__viewGuiHelper;
+	private $__viewType;
 	private $__viewFileName;
 	private $__viewName;
 	private $__viewVariable = [];
@@ -37,7 +37,6 @@ class view {
 				]
 			);
 		}
-
 		ob_start();
 		echo $this->_loadViewType('prepend');
 		include($this->__viewFileName);
@@ -51,7 +50,7 @@ class view {
 	private function _loadViewType($type) {
 		core::setError();
 
-		if ($this->__viewType <> null and isset($this->__viewTypeList[$type][$this->__viewType])) {
+		if ($this->__viewType !== null && isset($this->__viewTypeList[$type][$this->__viewType])) {
 			header('contentType: ' . $this->__viewType);
 
 			return $this->_pregReplaceVariable($this->__viewTypeList[$type][$this->__viewType]);
@@ -86,7 +85,7 @@ class view {
 				default:
 					switch ($matches[1]) {
 						case '__randomGuiId':
-							$this->__viewVariable[$matches[1]] = md5(uniqid(rand(), true));
+							$this->__viewVariable[$matches[1]] = md5(uniqid(mt_rand(), true));
 							return $this->__viewVariable[$matches[1]];
 						case '__viewPath':
 							return $this->__viewFileName;

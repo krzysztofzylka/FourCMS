@@ -4,7 +4,7 @@ return new class() extends core_model {
 		$this->loadModel('Interpreter');
 	}
 
-	public function read($force = false) {
+	public function read(bool $force = false) {
 		core::setError();
 
 		$jumbotron = [];
@@ -13,11 +13,11 @@ return new class() extends core_model {
 			$jumbotron[$item['name']] = $item['value'];
 		}
 
-		if ($force == true) {
+		if ($force) {
 			return $jumbotron;
 		}
 
-		if (boolval((int)$jumbotron['show']) == false) {
+		if ((bool)$jumbotron['show'] === false) {
 			return false;
 		}
 

@@ -12,7 +12,7 @@ return $this->api = new class() {
 			return core::setError(1, 'api file not exists');
 		}
 
-		array_push($this->list, $name);
+		$this->list[] = $name;
 
 		return include($api_path);
 	}

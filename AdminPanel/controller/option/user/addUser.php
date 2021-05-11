@@ -19,7 +19,7 @@ return new class() extends core_controller {
 
 	public function submitForm() {
 		if (isset($_POST['addUser'])) {
-			if ($_POST['password'] <> $_POST['password2']) {
+			if ($_POST['password'] !== $_POST['password2']) {
 				$this->GuiHelper->contentAlert('Podane hasła się nie zgadzają', 'danger');
 			} elseif (strlen($_POST['password']) < 6) {
 				$this->GuiHelper->contentAlert('Hasło musi posiadać przynajmniej 6 znaków', 'danger');

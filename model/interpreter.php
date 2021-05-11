@@ -13,7 +13,7 @@ return new class() extends core_model {
 
 		/* brzydkie ale potrzebne dla starszych wersji
 		TODO: jakiś interpreter który podczas aktualizacji to poprawi i to nie będzie potrzebne */
-		if (count($data) == 1) {
+		if (count($data) === 1) {
 			$data = explode('-', $data[0], 2);
 		}
 
@@ -28,7 +28,7 @@ return new class() extends core_model {
 			case 'module':
 				$data[2] = explode('/', $data[1], 2);
 
-				if (count($data[2]) == 1) {
+				if (count($data[2]) === 1) {
 					/* brzydkie ale potrzebne dla starszych wersji
 					TODO: jakiś interpreter który podczas aktualizacji to poprawi i to nie będzie potrzebne */
 					$data[2] = explode('-', $data[1], 2);
@@ -66,7 +66,7 @@ return new class() extends core_model {
 		$dataOrginal = $data;
 		$data = explode('/', $data, 2);
 
-		if (count($data) == 1) {
+		if (count($data) === 1) {
 			$data = explode('-', $data[0], 2);
 		}
 
@@ -74,7 +74,7 @@ return new class() extends core_model {
 			case 'post':
 				$data[1] = str_replace('.html', '', $data[1]);
 				$post = $this->Post->read((int)$data[1]);
-				if ($post == false) {
+				if ($post === false) {
 					return '-- Nie znaleziono postu --';
 				}
 				$data[1] = $post['title'];

@@ -20,10 +20,11 @@ function permissionPregReplace($matches) {
             <div class="card-header">
                 <div class="card-title">
 					<?php
-					if ($edit)
+					if ($edit) {
 						echo 'Dodanie grupy uprawnień';
-					else
+					} else {
 						echo 'Edytowanie grupy uprawnień';
+					}
 					?></div>
             </div>
             <form method="POST">
@@ -59,6 +60,7 @@ function permissionPregReplace($matches) {
 							<?php echo core::$model->Permission->showHTMLItem('blockUser', !is_bool(array_search('blockUser', $permission))) ?>
 							<?php echo core::$model->Permission->showHTMLItem('option_usersAdd', !is_bool(array_search('option_usersAdd', $permission))) ?>
 							<?php echo core::$model->Permission->showHTMLItem('option_permissionEdit', !is_bool(array_search('option_permissionEdit', $permission))) ?>
+							<?php echo core::$model->Permission->showHTMLItem('option_userResetPassword', !is_bool(array_search('option_userResetPassword', $permission))) ?>
                         </div>
 						<?php echo core::$model->Permission->showHTMLItem('option_module', !is_bool(array_search('option_module', $permission))) ?>
                         <!-- Serwis -->
@@ -85,10 +87,11 @@ function permissionPregReplace($matches) {
                 </div>
                 <div class="card-footer">
 					<?php
-					if ($edit)
+					if ($edit) {
 						echo '<button type="submit" class="btn btn-primary" name="addPermission">Dodaj</button>';
-					else
+					} else {
 						echo '<button type="submit" class="btn btn-primary" name="savePermission">Zapisz</button>';
+					}
 					?>
                 </div>
             </form>

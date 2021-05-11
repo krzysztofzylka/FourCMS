@@ -23,7 +23,7 @@ return $this->security = new class() {
 			return core::setError(1, 'No find session token');
 		}
 
-		if ($token == $_SESSION[$name]) {
+		if ($token === $_SESSION[$name]) {
 			return true;
 		}
 
@@ -33,6 +33,6 @@ return $this->security = new class() {
 	public function isXMLHttpRequest() : bool {
 		core::setError();
 
-		return (core::$library->network->getHeader('X_REQUESTED_WITH') == 'XMLHttpRequest');
+		return (core::$library->network->getHeader('X_REQUESTED_WITH') === 'XMLHttpRequest');
 	}
 };

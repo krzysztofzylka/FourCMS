@@ -46,10 +46,10 @@ return $this->image = new class() {
 
 		if ($imageWidth > $imageHeight) {
 			$resizeWidth = $maxWidth;
-			$resizeHeight = intval($imageHeight * $resizeWidth / $imageWidth);
+			$resizeHeight = (int)($imageHeight * $resizeWidth / $imageWidth);
 		} else {
 			$resizeHeight = $maxHeight;
-			$resizeWidth = intval($imageWidth * $resizeHeight / $imageHeight);
+			$resizeWidth = (int)($imageWidth * $resizeHeight / $imageHeight);
 		}
 
 		$newImage = imagecreatetruecolor($resizeWidth, $resizeHeight);

@@ -1,9 +1,14 @@
 <?php
-return new class() {
-	private $config;
-
+return new class() extends core_module {
 	public function __construct() {
-		$this->config = core::$module->_config['emptyModule'];
+		parent::__construct();
+
+		$this->loadModuleModel('Default');
+
+//		$this->model['Default']->printString('abcd');
+
+		$this->viewSetType('page');
+		$this->viewSetVariable('pageTitle', 'Panel administracyjny');
+		$this->loadView('empty');
 	}
-}
-?>
+};

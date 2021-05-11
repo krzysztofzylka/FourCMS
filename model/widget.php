@@ -32,11 +32,7 @@ return new class() {
 	public function getWidgetData(string $uniqueID) {
 		core::setError();
 
-		if (!isset($this->widgetList[$uniqueID])) {
-			return false;
-		}
-
-		return $this->widgetList[$uniqueID];
+		return $this->widgetList[$uniqueID] ?? false;
 	}
 
 	public function userAddWidget(int $userID, string $uniqueID) : bool {
@@ -62,7 +58,7 @@ return new class() {
 	public function getUserWidget(int $userID, int $widgetID = null) {
 		core::setError();
 
-		if ($widgetID == null) {
+		if ($widgetID === null) {
 			$prepare = core::$library->database->prepare('SELECT * FROM widget WHERE userID=:userID ORDER BY position');
 			$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);
 
@@ -70,8 +66,7 @@ return new class() {
 				return false;
 			}
 
-			$widget = $prepare->fetchAll(PDO::FETCH_ASSOC);
-			return $widget;
+			return $prepare->fetchAll(PDO::FETCH_ASSOC);
 		} else {
 			$prepare = core::$library->database->prepare('SELECT * FROM widget WHERE id=:widgetID and userID=:userID LIMIT 1');
 			$prepare->bindParam(':userID', $userID, PDO::PARAM_INT);

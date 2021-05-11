@@ -19,12 +19,13 @@ return new class() {
 					case 'card':
 						$this->addData('<div class="card">');
 						if (isset($item['header'])) {
-							if (isset($item['header'])) {
-								$this->addData('<div class="card-header">');
-								if (isset($item['header']['title']))
-									$this->addData('<h3 class="card-title">' . $item['header']['title'] . '</h3>');
-								$this->addData('</div>');
+							$this->addData('<div class="card-header">');
+
+							if (isset($item['header']['title'])) {
+								$this->addData('<h3 class="card-title">' . $item['header']['title'] . '</h3>');
 							}
+
+							$this->addData('</div>');
 						}
 
 						if (isset($item['data'])) {
@@ -89,7 +90,7 @@ return new class() {
                                 <select name="' . $item['configName'] . '" class="custom-select">');
 						if (isset($item['data'])) {
 							foreach ($item['data'] as $value => $name) {
-								$this->addData('<option value="' . $value . '" ' . (strval($data) == strval($value) ? 'selected' : '') . '>' . $name . '</option>');
+								$this->addData('<option value="' . $value . '" ' . ((string)$data === (string)$value ? 'selected' : '') . '>' . $name . '</option>');
 							}
 						}
 						$this->addData('</select>
@@ -113,7 +114,6 @@ return new class() {
 	public function returnOption() : string {
 		core::setError();
 		return $this->data;
-		$this->clearOption();
 	}
 
 	public function clearOption() {

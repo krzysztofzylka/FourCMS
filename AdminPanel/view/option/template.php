@@ -16,7 +16,7 @@
                         </div>
                         <div class="card-footer">';
 
-					if ($template['templateName'] == $activeTemplate) {
+					if ($template['templateName'] === $activeTemplate) {
 						echo '<a href="#" class="btn btn-success btn-block disabled">AKTYWNY</a>';
 					} else {
 						echo '<a href="siteTemplateActive-' . $template['templateName'] . '.html" class="btn btn-primary btn-block">Aktywuj</a>';

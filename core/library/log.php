@@ -27,8 +27,7 @@ return $this->log = new class() {
 		core::setError();
 
 		$fileName = $fileName ?? $this->fileName;
-		$write = str_replace('{date}', date('Y-m-d H:i:s'), $this->writeData);
-		$write = str_replace('{text}', $text, $write);
+		$write = str_replace(['{date}', '{text}'], [date('Y-m-d H:i:s'), $text], $this->writeData);
 
 		return !is_bool(file_put_contents($this->logPath . $fileName, $write . PHP_EOL, FILE_APPEND));
 	}
@@ -40,12 +39,12 @@ return $this->log = new class() {
 
 		foreach ($scandir as $fileName) {
 
-			if (core::$library->string->strpos($fileName, '.log') == -1) {
+			if (core::$library->string->strpos($fileName, '.log') === -1) {
 				continue;
 			}
 
 			$return[] = [
-				'name' => substr($fileName, 0, strlen($fileName) - 4),
+				'name' => substr($fileName, 0, -4),
 				'fileName' => $fileName,
 				'path' => $this->logPath . $fileName,
 				'size' => filesize($this->logPath . $fileName),
@@ -54,7 +53,7 @@ return $this->log = new class() {
 			];
 		}
 
-		if ($sort <> false) {
+		if ($sort !== false) {
 			$return = core::$library->array->sort2D($return, $sort, $sortType);
 		}
 

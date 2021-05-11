@@ -10,5 +10,7 @@ return new class() {
 
 		$fontawesome = '<link rel="stylesheet" href="' . $config['path'] . 'script/css/all.min.css">';
 		core::$module->smarty->smarty->assign('fontawesome', $fontawesome);
+
+		return true;
 	}
 };

@@ -77,8 +77,9 @@ return new class() extends core_controller {
 					$this->view_list();
 					break;
 			}
-		} else
+		} else {
 			$this->view_list();
+		}
 	}
 
 	public function view_list() {
@@ -89,7 +90,7 @@ return new class() extends core_controller {
 		foreach ($menuList as $key => $array) {
 			$menuList[$key]['prettyLink'] = $this->Interpreter->showPrettyText($array['link']);
 
-			if (strlen($array['name']) == 0) {
+			if ($array['name'] === '') {
 				$menuList[$key]['name'] = '--- Brak nazwy ---';
 			}
 		}

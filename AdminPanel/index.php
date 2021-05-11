@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (!file_exists('../file/db_config.php')) {
+	die('Brak pliku konfiguracyjnego file/db_config.php');
+}
+
 include('../script/krumo/class.krumo.php');
 
 $GLOBALS['FourCMS'] = 'admin';
@@ -46,13 +50,15 @@ if (!core::$module->account->checkUser()) {
 		'AdminPanel.User',
 		'Permission',
 		'Module',
-		'GuiHelper'
+		'GuiHelper',
+		'UserOption'
 	);
 
 	core::$module->smarty->smarty->assign('menu', core::$model->AdminPanel__Menu->loadMenu());
 	core::$module->smarty->smarty->assign('user', core::$module->account->userData);
 	core::$module->smarty->smarty->assign('userAvatar', core::$model->AdminPanel__User->getAvatar(-1));
 	core::$module->smarty->smarty->assign('userPermission', core::$model->Permission->getFullPermissionArray());
+	core::$module->smarty->smarty->assign('showSearchPanel', core::$model->UserOption->read('hiddenSearch', 1));
 
 	$page = $_GET['page'] ?? 'main_panel';
 
@@ -61,8 +67,6 @@ if (!core::$module->account->checkUser()) {
 	}
 
 	$dataContainer = loadController($page);
-
-	ob_end_clean();
 
 	echo '<script>
 		window.addEventListener("DOMContentLoaded", () => {
@@ -74,7 +78,6 @@ if (!core::$module->account->checkUser()) {
 		core::$module->smarty->smarty->assign('data', $dataContainer);
 		core::$module->smarty->smarty->display('main/main.tpl');
 	} else {
-		core::$module->smarty->smarty->display('main/scriptLoader.tpl');
 		echo $dataContainer;
 	}
 }
@@ -83,7 +86,7 @@ function loadController($page) {
 	ob_start();
 	$page = explode('/', $page);
 	if (isset($page[1])) {
-		if (mb_substr($page[0], 0, 5) === 'link-') {
+		if (mb_strpos($page[0], 'link-') === 0) {
 			$page[0] = mb_substr($page[0], 5);
 		}
 		$controller = core::loadController($page[0]);
@@ -91,7 +94,7 @@ function loadController($page) {
 		if (is_object($controller)) {
 			call_user_func_array([$controller, $page[1]], $parameter);
 		} else {
-			xdebug_var_dump(core::$error['name']);
+			var_dump(core::$error['name']);
 		}
 	} else {
 		core::loadController($page[0]);
@@ -107,7 +110,5 @@ function loadController($page) {
             </div>
         </div>';
 	}
-	$data = ob_get_contents();
-	ob_end_clean();
-	return $data;
+	return ob_get_clean();
 }

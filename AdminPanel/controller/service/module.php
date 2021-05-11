@@ -1,18 +1,16 @@
 <?php
-return new class() extends core_controller {
+return new class() extends app_controller {
 	public function __construct() {
 		core::setError();
 
-		if (isset($_GET['type']) and $_GET['type'] == 'adminpanel') {
-			if (!core::$module->account->checkPermission('module')) {
-				header('404.html');
-			}
-		} else {
-			if (!core::$module->account->checkPermission('service')
-				|| !core::$module->account->checkPermission('service_module')
-			) {
+		if (isset($_GET['type']) && $_GET['type'] === 'adminpanel') {
+			if (!$this->checkPermission('module')) {
 				header('location: 404.html');
 			}
+		} else if (!$this->checkPermission('service')
+			|| !$this->checkPermission('service_module')
+		) {
+			header('location: 404.html');
 		}
 
 		$this->loadModel('GuiHelper');
@@ -60,15 +58,20 @@ return new class() extends core_controller {
 
 			switch (core::$error['number']) {
 				case 1:
+					$this->GuiHelper->alert('Wybrany moduł nie istnieje', 'danger');
+					break;
+				case 2:
 					$this->GuiHelper->alert('Wybrany moduł nie posiada panelu administracyjnego', 'danger');
+					break;
+				case 3:
+					$this->GuiHelper->alert('Wybrany moduł nie posiada pliku panelu administracyjnego', 'danger');
 					break;
 				default:
 					$this->GuiHelper->alert('Wystąpił błąd (' . core::$error['number'] . ')', 'danger');
 					break;
 			}
 		}
-		$moduleContent = ob_get_contents();
-		ob_end_clean();
+		$moduleContent = ob_get_clean();
 
 		$this->viewSetVariable('moduleContent', $moduleContent);
 		$this->loadView('service.moduleAdminPanel');

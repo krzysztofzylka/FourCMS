@@ -82,11 +82,11 @@ class Smarty_Internal_Compile_Section extends Smarty_Internal_Compile_Private_Fo
      * Compiles code for the {section} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
-     * @throws \SmartyCompilerException
-     * @throws \SmartyException
+     * @throws SmartyCompilerException
+     * @throws SmartyException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
@@ -411,7 +411,7 @@ class Smarty_Internal_Compile_Sectionelse extends Smarty_Internal_CompileBase
      * Compiles code for the {sectionelse} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
      */
@@ -419,7 +419,7 @@ class Smarty_Internal_Compile_Sectionelse extends Smarty_Internal_CompileBase
     {
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-        list($openTag, $nocache, $local, $sectionVar) = $this->closeTag($compiler, array('section'));
+        [$openTag, $nocache, $local, $sectionVar] = $this->closeTag($compiler, array('section'));
         $this->openTag($compiler, 'sectionelse', array('sectionelse', $nocache, $local, $sectionVar));
         return "<?php }} else {\n ?>";
     }
@@ -437,7 +437,7 @@ class Smarty_Internal_Compile_Sectionclose extends Smarty_Internal_CompileBase
      * Compiles code for the {/section} tag
      *
      * @param array                                 $args     array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
+     * @param Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
      */
@@ -448,7 +448,7 @@ class Smarty_Internal_Compile_Sectionclose extends Smarty_Internal_CompileBase
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;
         }
-        list($openTag, $compiler->nocache, $local, $sectionVar) =
+        [$openTag, $compiler->nocache, $local, $sectionVar] =
             $this->closeTag($compiler, array('section', 'sectionelse'));
         $output = "<?php\n";
         if ($openTag === 'sectionelse') {
