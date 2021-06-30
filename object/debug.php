@@ -1,13 +1,6 @@
 <?php
-/*
-debug::addMessage('Czy to jest dobrze', 'core', 'info');
-debug::addMessage('Czy tak powinno wyjść?', 'core', 'question');
-debug::addMessage('Dobrze!', 'core', 'check');
-debug::addMessage('Chyba nie?', 'core', 'warning');
-debug::addMessage('test', 'core', 'danger');
-debug::addMessage([1 => 'asb?'], 'core', 'danger');
-*/
 include('../script/krumo/class.krumo.php');
+
 class debug{
     public static $arrayData = [];
     public static $formatString = '';

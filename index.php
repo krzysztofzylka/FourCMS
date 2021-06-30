@@ -19,8 +19,10 @@ core::loadModel(['extends.module']);
 core::loadModule('account');
 core::$module['account']->sessionName = '3656fa29eb585561c83099a844c995f6';
 core::$module['account']->setTablePrefix('AP');
-if(core::$module['account']->checkUser())
+
+if (core::$module['account']->checkUser()) {
     core::$module['account']->userGetData();
+}
 
 //loadModel
 core::loadModel(['config', 'gui', 'link', 'module', 'protect', 'menu', 'jumbotron', 'post', 'interpreter']);
@@ -44,15 +46,15 @@ $smarty->assign('menu', core::$model['menu']->topMenu_read());
 
 //jumbotron
 $jumbotron = core::$model['jumbotron']->read();
-if($jumbotron <> false) $smarty->assign('jumbotron', $jumbotron);
+
+if ($jumbotron <> false) {
+    $smarty->assign('jumbotron', $jumbotron);
+}
 
 //smarty add config
-foreach(['header_google_site_verification', 'header_keywords', 'header_description', 'title', 'header_title', 'header_charset'] as $configName)
+foreach (['header_google_site_verification', 'header_keywords', 'header_description', 'title', 'header_title', 'header_charset'] as $configName) {
     $smarty->assign($configName, core::$model['config']->read($configName));
+}
 
 //loading post controller
 core::loadController('main');
-
-if(boolval(core::$model['config']->read('debugBarForUser', false)))
-    core::loadView('debug');
-?>
